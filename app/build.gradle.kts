@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 android {
@@ -53,16 +54,16 @@ dependencies {
 
     val composeBom = platform(libs.compose.bom)
 
-    implementation (libs.androidx.core.ktx)
-    implementation (libs.androidx.lifecycle)
-    implementation (libs.bundles.compose)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle)
+    implementation(libs.bundles.compose)
     implementation(composeBom)
 
-    testImplementation (libs.junit4)
-    androidTestImplementation (libs.androidx.junit)
-    androidTestImplementation (libs.androidx.espresso)
-    androidTestImplementation (composeBom)
-    androidTestImplementation (libs.androidx.compose.junit4)
-    debugImplementation (libs.androidx.compose.ui.tooling)
-    debugImplementation (libs.androidx.compose.ui.manifest)
+    testImplementation(libs.junit4)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso)
+    androidTestImplementation(composeBom)
+    androidTestImplementation(libs.androidx.compose.junit4)
+    debugImplementation(libs.androidx.compose.ui.tooling)
+    debugImplementation(libs.androidx.compose.ui.manifest)
 }

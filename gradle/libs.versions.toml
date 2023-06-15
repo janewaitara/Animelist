@@ -8,6 +8,7 @@ androidxComposeBom = "2023.01.00"
 junit4 = "4.13.2"
 androidxJunit = "1.1.5"
 androidxEspressoCore = "3.5.1"
+ktlint = "10.2.1"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "ktx" }
@@ -31,6 +32,7 @@ androidx-compose-ui-manifest = { module = "androidx.compose.ui:ui-test-manifest"
 compose = ["compose-activity", "compose-ui", "compose-material3", "compose-ui-graphics", "compose-ui-tooling"]
 
 [plugins]
-android-application = {id = "com.android.application", version.ref = "androidApplication" }
-android-library = {id = "com.android.library", version.ref = "androidApplication"}
-jetbrains-kotlin = {id = "org.jetbrains.kotlin.android", version.ref = "kotlin"}
+android-application = { id = "com.android.application", version.ref = "androidApplication" }
+android-library = { id = "com.android.library", version.ref = "androidApplication" }
+jetbrains-kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }

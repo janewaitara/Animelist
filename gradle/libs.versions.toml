@@ -8,7 +8,7 @@ androidxComposeBom = "2023.01.00"
 junit4 = "4.13.2"
 androidxJunit = "1.1.5"
 androidxEspressoCore = "3.5.1"
-ktlint = "10.2.1"
+ktlint = "11.4.0"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "ktx" }

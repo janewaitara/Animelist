@@ -22,7 +22,7 @@ compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling-preview" }
 
 junit4 = { module = "junit:junit", version.ref = "junit4" }
 androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidxJunit" }
-androidx-espresson = { module = "androidx.test.espresso:espresso-core", version.ref = "androidxEspressoCore" }
+androidx-espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "androidxEspressoCore" }
 androidx-compose-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 androidx-compose-ui-manifest = { module = "androidx.compose.ui:ui-test-manifest" }

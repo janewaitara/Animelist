@@ -13,3 +13,7 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Project exclude paths
+/build-logic/build/
+/.idea/

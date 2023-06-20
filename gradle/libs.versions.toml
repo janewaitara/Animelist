@@ -9,6 +9,7 @@ junit4 = "4.13.2"
 androidxJunit = "1.1.5"
 androidxEspressoCore = "3.5.1"
 ktlint = "11.4.0"
+detekt = "1.23.0"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "ktx" }
@@ -36,3 +37,4 @@ android-application = { id = "com.android.application", version.ref = "androidAp
 android-library = { id = "com.android.library", version.ref = "androidApplication" }
 jetbrains-kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt"}

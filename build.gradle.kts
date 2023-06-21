@@ -1,5 +1,4 @@
 import org.jetbrains.kotlin.builtins.StandardNames.FqNames.set
-import org.jetbrains.kotlin.contracts.model.structure.ESConstants.wildcard
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {

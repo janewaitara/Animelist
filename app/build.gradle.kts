@@ -67,4 +67,6 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.manifest)
+
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.0")
 }

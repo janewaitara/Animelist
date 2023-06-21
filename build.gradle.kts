@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.builtins.StandardNames.FqNames.set
+import org.jetbrains.kotlin.contracts.model.structure.ESConstants.wildcard
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
     alias(libs.plugins.android.application) apply false
@@ -16,5 +19,12 @@ allprojects {
             exclude { element -> element.file.path.contains("generated/") }
         }
         disabledRules.set(setOf("no-wildcard-imports"))
+    }
+}
+subprojects {
+    apply(plugin = "io.gitlab.arturbosch.detekt")
+    detekt {
+        config = files("${project.rootDir}/detekt.yml")
+        parallel = true
     }
 }

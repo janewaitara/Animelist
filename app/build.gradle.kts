@@ -69,5 +69,5 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.manifest)
 
     // Enables formatting rule set in detekt
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.0")
+    detektPlugins(libs.detekt.formatting)
 }

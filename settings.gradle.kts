@@ -15,3 +15,7 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Animelist"
 include(":app")
+include(":feature:search")
+include(":feature:anime")
+include(":feature:home")
+include(":feature:yourList")

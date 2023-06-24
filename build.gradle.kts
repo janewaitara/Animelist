@@ -9,6 +9,13 @@ plugins {
     alias(libs.plugins.detekt)
 }
 
+buildscript {
+    dependencies {
+        classpath(libs.hilt.gradle)
+        classpath("com.android.tools.build:gradle:8.0.1")
+    }
+}
+
 allprojects {
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
     ktlint {

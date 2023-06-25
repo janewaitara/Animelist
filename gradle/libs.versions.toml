@@ -13,6 +13,7 @@ ktlint = "11.4.0"
 detekt = "1.23.0"
 hilt = "2.45"
 hiltWithOtherLibs = "1.0.0"
+apollographql = "3.8.2"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "ktx" }
@@ -33,6 +34,8 @@ hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", ve
 hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltWithOtherLibs" }
 hilt-navigation = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltWithOtherLibs" }
 hilt-work = { module = "androidx.hilt:hilt-work", version.ref = "hiltWithOtherLibs" }
+
+apollographql = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apollographql" }
 
 junit4 = { module = "junit:junit", version.ref = "junit4" }
 androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidxJunit" }

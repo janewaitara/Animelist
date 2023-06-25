@@ -1,0 +1,53 @@
+[versions]
+androidApplication = "8.0.1"
+kotlin = "1.8.10"
+ktx = "1.10.0"
+androidxAppCompat = "1.6.1"
+androidxLifecycle = "2.5.1"
+androidxActivityCompose = "1.7.2"
+androidxComposeBom = "2023.01.00"
+junit4 = "4.13.2"
+androidxJunit = "1.1.5"
+androidxEspressoCore = "3.5.1"
+ktlint = "11.4.0"
+detekt = "1.23.0"
+hilt = "2.45"
+hiltWithOtherLibs = "1.0.0"
+
+[libraries]
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "ktx" }
+androidx-lifecycle = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
+androidx-appCompat = { module = "androidx.appcompat:appcompat", version.ref = "androidxAppCompat" }
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
+compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
+compose-activity = { module = "androidx.activity:activity-compose", version.ref = "androidxActivityCompose" }
+compose-ui = { module = "androidx.compose.ui:ui" }
+compose-material3 = { module = "androidx.compose.material3:material3" }
+compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
+compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling-preview" }
+detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+
+hilt-gradle = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
+hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltWithOtherLibs" }
+hilt-navigation = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltWithOtherLibs" }
+hilt-work = { module = "androidx.hilt:hilt-work", version.ref = "hiltWithOtherLibs" }
+
+junit4 = { module = "junit:junit", version.ref = "junit4" }
+androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidxJunit" }
+androidx-espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "androidxEspressoCore" }
+androidx-compose-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
+androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+androidx-compose-ui-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
+
+[bundles]
+compose = ["compose-activity", "compose-ui", "compose-material3", "compose-ui-graphics", "compose-ui-tooling"]
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "androidApplication" }
+android-library = { id = "com.android.library", version.ref = "androidApplication" }
+jetbrains-kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+hilt-plugin = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }

@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google()
         mavenCentral()
@@ -13,4 +14,13 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Animelist"
-include ':app'
+include(":app")
+include(":feature:search")
+include(":feature:anime")
+include(":feature:home")
+include(":feature:yourList")
+include(":core:network")
+include(":core:data")
+include(":core:domain")
+include(":core:ui")
+include(":core:designsystem")

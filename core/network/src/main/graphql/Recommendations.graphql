@@ -1,0 +1,20 @@
+query Recommendations {
+    Page {
+        recommendations {
+            media {
+                id
+                title {
+                    romaji
+                    english
+                    native
+                }
+                type
+                coverImage {
+                    medium
+                }
+                episodes
+                duration
+            }
+        }
+    }
+}

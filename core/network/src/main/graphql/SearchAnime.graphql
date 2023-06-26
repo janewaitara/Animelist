@@ -1,0 +1,18 @@
+query SearchAnime($search: String, $type: MediaType, $sort: [MediaSort], $formatIn: [MediaFormat]) {
+    Page {
+        media(search: $search, type: $type, sort: $sort, format_in: $formatIn) {
+            id
+            coverImage {
+                medium
+            }
+            title {
+                english
+                native
+                romaji
+            }
+            episodes
+            duration
+            format
+        }
+    }
+}

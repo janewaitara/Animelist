@@ -15,7 +15,7 @@ interface AnimeRepository {
         perPage: Int?,
         type: MediaType?,
         sortList: List<MediaSort>?,
-        formatIn: List<MediaFormat>?,
+        formatIn: List<MediaFormat>?
     ): Flow<List<AnimeListQuery.Medium>>
 
     fun getRecommendations(): Flow<List<RecommendationsQuery.Media>>

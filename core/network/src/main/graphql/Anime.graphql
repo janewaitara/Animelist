@@ -1,0 +1,56 @@
+query Anime($mediaId: Int, $page: Int, $perPage: Int) {
+    Media(id: $mediaId) {
+        bannerImage
+        coverImage {
+            medium
+        }
+        title {
+            english
+            native
+            romaji
+        }
+        description
+        duration
+        genres
+        type
+        trailer {
+            id
+            site
+            thumbnail
+        }
+        episodes
+        format
+        characters(page: $page, perPage: $perPage) {
+            pageInfo {
+                hasNextPage
+            }
+            nodes {
+                id
+                name {
+                    full
+                }
+                image {
+                    medium
+                }
+            }
+        }
+        recommendations {
+            nodes {
+                media {
+                    title {
+                        native
+                        english
+                        romaji
+                    }
+                    bannerImage
+                }
+            }
+        }
+        studios {
+            nodes {
+                name
+                siteUrl
+            }
+        }
+    }
+}

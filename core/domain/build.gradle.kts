@@ -36,10 +36,16 @@ android {
 
 dependencies {
 
+    implementation(project(":core:network"))
+
     implementation(libs.androidx.core.ktx)
 
     // Enables formatting rule set in detekt
     detektPlugins(libs.detekt.formatting)
+
+    // Coroutines
+    implementation(libs.coroutines)
+    implementation(libs.coroutinesAndroid)
 
     testImplementation(libs.junit4)
     androidTestImplementation(libs.androidx.junit)

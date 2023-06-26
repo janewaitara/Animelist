@@ -14,6 +14,7 @@ detekt = "1.23.0"
 hilt = "2.45"
 hiltWithOtherLibs = "1.0.0"
 apollographql = "3.8.2"
+coroutines = "1.5.0"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "ktx" }
@@ -36,6 +37,9 @@ hilt-navigation = { module = "androidx.hilt:hilt-navigation-compose", version.re
 hilt-work = { module = "androidx.hilt:hilt-work", version.ref = "hiltWithOtherLibs" }
 
 apollographql = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apollographql" }
+
+coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+coroutinesAndroid = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 
 junit4 = { module = "junit:junit", version.ref = "junit4" }
 androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidxJunit" }

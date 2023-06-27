@@ -37,6 +37,7 @@ hilt-navigation = { module = "androidx.hilt:hilt-navigation-compose", version.re
 hilt-work = { module = "androidx.hilt:hilt-work", version.ref = "hiltWithOtherLibs" }
 
 apollographql = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apollographql" }
+apollographql-inMemoryCache = { module = "com.apollographql.apollo3:apollo-normalized-cache", version.ref = "apollographql" }
 
 coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutinesAndroid = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }

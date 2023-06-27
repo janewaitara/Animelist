@@ -51,6 +51,7 @@ dependencies {
 
     // ApolloGraphql
     implementation(libs.apollographql)
+    implementation(libs.apollographql.inMemoryCache)
 
     testImplementation(libs.junit4)
     androidTestImplementation(libs.androidx.junit)

@@ -19,7 +19,7 @@ interface AnimeRepository {
         formatIn: List<MediaFormat>?
     ): Flow<Result<List<AnimeListQuery.Medium>>>
 
-    fun getRecommendations(): Flow<Result<List<RecommendationsQuery.Media>>>
+    fun getRecommendations(): Flow<Result<List<RecommendationsQuery.Recommendation>>>
 
     fun getAnime(animeId: Int, page: Int?, perPage: Int?): Flow<Result<AnimeQuery.Media>>
 }

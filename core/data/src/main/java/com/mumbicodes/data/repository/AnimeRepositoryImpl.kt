@@ -28,8 +28,14 @@ class AnimeRepositoryImpl(private val apolloClient: ApolloClient) : AnimeReposit
         TODO("")
     }
 
-    override fun getRecommendations(): Flow<Result<List<RecommendationsQuery.Media>>> {
-        TODO("")
+    override fun getRecommendations(): Flow<Result<List<RecommendationsQuery.Recommendation>>> {
+        return apolloClient.query(
+            RecommendationsQuery()
+        ).fetchPolicy(FetchPolicy.NetworkFirst)
+            .toFlow()
+            .asResult {
+                it.Page?.recommendations?.filterNotNull().orEmpty()
+            }
     }
 
     override fun getAnime(animeId: Int, page: Int?, perPage: Int?): Flow<Result<AnimeQuery.Media>> {

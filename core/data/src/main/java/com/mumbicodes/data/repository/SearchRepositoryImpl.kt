@@ -21,7 +21,13 @@ class SearchRepositoryImpl(private val apolloClient: ApolloClient) : SearchRepos
         sortList: List<MediaSort>?,
         formatIn: List<MediaFormat>?
     ): Flow<Result<List<SearchAnimeQuery.Medium>>> {
-        TODO("Not yet implemented")
+        return apolloClient.query(
+            SearchAnimeQuery(search = Optional.present(searchParam))
+        ).fetchPolicy(FetchPolicy.NetworkFirst)
+            .toFlow()
+            .asResult {
+                it.Page?.media?.filterNotNull().orEmpty()
+            }
     }
 
     override fun searchCharacter(searchParam: String): Flow<Result<List<SearchCharacterQuery.Character>>> {

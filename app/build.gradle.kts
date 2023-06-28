@@ -55,6 +55,10 @@ android {
 
 dependencies {
 
+    implementation(project(":core:network"))
+    implementation(project(":core:domain"))
+    implementation(project(":core:data"))
+
     val composeBom = platform(libs.compose.bom)
 
     implementation(libs.androidx.core.ktx)

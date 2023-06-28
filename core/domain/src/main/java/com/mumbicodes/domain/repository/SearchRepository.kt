@@ -1,5 +1,6 @@
 package com.mumbicodes.domain.repository
 
+import com.mumbicodes.common.result.Result
 import com.mumbicodes.network.SearchAnimeQuery
 import com.mumbicodes.network.SearchCharacterQuery
 import com.mumbicodes.network.type.MediaFormat
@@ -14,7 +15,7 @@ interface SearchRepository {
         type: MediaType?,
         sortList: List<MediaSort>?,
         formatIn: List<MediaFormat>?
-    ): Flow<List<SearchAnimeQuery.Medium>>
+    ): Flow<Result<List<SearchAnimeQuery.Medium>>>
 
-    fun searchCharacter(searchParam: String): Flow<List<SearchCharacterQuery.Character>>
+    fun searchCharacter(searchParam: String): Flow<Result<List<SearchCharacterQuery.Character>>>
 }

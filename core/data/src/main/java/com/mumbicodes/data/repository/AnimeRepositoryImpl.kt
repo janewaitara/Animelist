@@ -13,10 +13,8 @@ import com.mumbicodes.network.RecommendationsQuery
 import com.mumbicodes.network.type.MediaFormat
 import com.mumbicodes.network.type.MediaSort
 import com.mumbicodes.network.type.MediaType
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class AnimeRepositoryImpl(private val apolloClient: ApolloClient) : AnimeRepository {
     override fun getAnimeList(
         page: Int?,
@@ -25,7 +23,17 @@ class AnimeRepositoryImpl(private val apolloClient: ApolloClient) : AnimeReposit
         sortList: List<MediaSort>?,
         formatIn: List<MediaFormat>?
     ): Flow<Result<List<AnimeListQuery.Medium>>> {
-        TODO("")
+        return apolloClient.query(
+            AnimeListQuery(
+                page = Optional.presentIfNotNull(page),
+                perPage = Optional.presentIfNotNull(perPage),
+                type = Optional.presentIfNotNull(type),
+                sort = Optional.presentIfNotNull(sortList),
+                formatIn = Optional.presentIfNotNull(formatIn)
+            )
+        ).fetchPolicy(FetchPolicy.NetworkFirst).toFlow().asResult {
+            it.Page?.media?.filterNotNull().orEmpty()
+        }
     }
 
     override fun getRecommendations(): Flow<Result<List<RecommendationsQuery.Recommendation>>> {

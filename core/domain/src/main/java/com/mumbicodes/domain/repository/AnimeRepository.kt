@@ -1,5 +1,6 @@
 package com.mumbicodes.domain.repository
 
+import com.mumbicodes.common.result.Result
 import com.mumbicodes.network.AnimeListQuery
 import com.mumbicodes.network.AnimeQuery
 import com.mumbicodes.network.RecommendationsQuery
@@ -16,9 +17,9 @@ interface AnimeRepository {
         type: MediaType?,
         sortList: List<MediaSort>?,
         formatIn: List<MediaFormat>?
-    ): Flow<List<AnimeListQuery.Medium>>
+    ): Flow<Result<List<AnimeListQuery.Medium>>>
 
-    fun getRecommendations(): Flow<List<RecommendationsQuery.Media>>
+    fun getRecommendations(): Flow<Result<List<RecommendationsQuery.Media>>>
 
-    fun getAnime(animeId: Int, page: Int?, perPage: Int?): Flow<AnimeQuery.Media>
+    fun getAnime(animeId: Int, page: Int?, perPage: Int?): Flow<Result<AnimeQuery.Media>>
 }

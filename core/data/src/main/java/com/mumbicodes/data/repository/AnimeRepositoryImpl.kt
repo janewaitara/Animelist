@@ -1,6 +1,7 @@
 package com.mumbicodes.data.repository
 
 import com.apollographql.apollo3.ApolloClient
+import com.mumbicodes.common.result.Result
 import com.mumbicodes.domain.repository.AnimeRepository
 import com.mumbicodes.network.AnimeListQuery
 import com.mumbicodes.network.AnimeQuery
@@ -17,15 +18,15 @@ class AnimeRepositoryImpl(private val apolloClient: ApolloClient) : AnimeReposit
         type: MediaType?,
         sortList: List<MediaSort>?,
         formatIn: List<MediaFormat>?
-    ): Flow<List<AnimeListQuery.Medium>> {
+    ): Flow<Result<List<AnimeListQuery.Medium>>> {
         TODO("")
     }
 
-    override fun getRecommendations(): Flow<List<RecommendationsQuery.Media>> {
+    override fun getRecommendations(): Flow<Result<List<RecommendationsQuery.Media>>> {
         TODO("")
     }
 
-    override fun getAnime(animeId: Int, page: Int?, perPage: Int?): Flow<AnimeQuery.Media> {
+    override fun getAnime(animeId: Int, page: Int?, perPage: Int?): Flow<Result<AnimeQuery.Media>> {
         TODO("")
     }
 }

@@ -36,6 +36,8 @@ android {
 
 dependencies {
 
+    implementation(project(":core:network"))
+
     implementation(libs.androidx.core.ktx)
 
     // Enables formatting rule set in detekt

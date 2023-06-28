@@ -36,10 +36,17 @@ android {
 
 dependencies {
 
+    implementation(project(":core:network"))
+    implementation(project(":core:domain"))
+
     implementation(libs.androidx.core.ktx)
 
     // Enables formatting rule set in detekt
     detektPlugins(libs.detekt.formatting)
+
+    // ApolloGraphql
+    implementation(libs.apollographql)
+    implementation(libs.apollographql.inMemoryCache)
 
     testImplementation(libs.junit4)
     androidTestImplementation(libs.androidx.junit)

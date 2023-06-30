@@ -7,6 +7,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.onStart
 
 sealed interface Result<out T> {
     object Loading : Result<Nothing>
@@ -25,6 +26,8 @@ fun <T : Operation.Data, R> Flow<ApolloResponse<T>>.asResult(transform: (T) -> R
         } else {
             error("Unknown error occurred. There was no data or errors received")
         }
+    }.onStart {
+        emit(Result.Loading)
     }.catch {
-        Result.Failure(it)
+        emit(Result.Failure(it))
     }

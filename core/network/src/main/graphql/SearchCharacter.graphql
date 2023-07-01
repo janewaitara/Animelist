@@ -1,0 +1,16 @@
+query SearchCharacter($search: String) {
+    Page {
+        characters(search: $search) {
+            id
+            name {
+                full
+                native
+            }
+            gender
+            age
+            image {
+                medium
+            }
+        }
+    }
+}

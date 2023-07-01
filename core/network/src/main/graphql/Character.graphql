@@ -1,0 +1,34 @@
+query Character($characterId: Int) {
+    Character(id: $characterId) {
+        id
+        name {
+            full
+            native
+        }
+        description
+        gender
+        image {
+            large
+        }
+        age
+        dateOfBirth {
+            year
+            month
+            day
+        }
+        media {
+            nodes {
+                coverImage {
+                    medium
+                }
+                bannerImage
+                description
+                title {
+                    english
+                    native
+                }
+            }
+        }
+        siteUrl
+    }
+}

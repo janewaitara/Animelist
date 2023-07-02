@@ -6,6 +6,7 @@ androidxAppCompat = "1.6.1"
 androidxLifecycle = "2.5.1"
 androidxActivityCompose = "1.7.2"
 androidxComposeBom = "2023.01.00"
+androidxComposeNavigation = "2.6.0"
 junit4 = "4.13.2"
 androidxJunit = "1.1.5"
 androidxEspressoCore = "3.5.1"
@@ -27,6 +28,8 @@ compose-ui = { module = "androidx.compose.ui:ui" }
 compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling-preview" }
+compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "androidxComposeNavigation"}
+
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 
 hilt-gradle = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
@@ -50,7 +53,7 @@ androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 androidx-compose-ui-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 
 [bundles]
-compose = ["compose-activity", "compose-ui", "compose-material3", "compose-ui-graphics", "compose-ui-tooling"]
+compose = ["compose-activity", "compose-ui", "compose-material3", "compose-ui-graphics", "compose-ui-tooling", "compose-navigation"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidApplication" }

@@ -2,6 +2,7 @@ package com.mumbicodes.animelist.com.mumbicodes.animelist.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.remember
 import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -17,6 +18,13 @@ import com.mumbicodes.search.navigation.SEARCH_SCREEN_ROUTE
 import com.mumbicodes.search.navigation.navigateToSearchScreen
 import com.mumbicodes.yourlist.navigation.YOUR_LIST_SCREEN_ROUTE
 import com.mumbicodes.yourlist.navigation.navigateToYourListScreen
+
+@Composable
+fun rememberAnimeListAppState(navController: NavHostController): AnimeListAppState {
+    return remember(navController) {
+        AnimeListAppState(navController)
+    }
+}
 
 @Stable
 class AnimeListAppState(

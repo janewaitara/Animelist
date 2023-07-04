@@ -53,7 +53,7 @@ androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 androidx-compose-ui-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 
 [bundles]
-compose = ["compose-activity", "compose-ui", "compose-material3", "compose-ui-graphics", "compose-ui-tooling", "compose-navigation"]
+compose = ["compose-foundation","compose-activity", "compose-ui", "compose-material3", "compose-ui-graphics", "compose-ui-tooling", "compose-navigation"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidApplication" }

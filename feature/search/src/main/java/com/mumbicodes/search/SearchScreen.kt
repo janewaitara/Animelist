@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 @Composable
 fun SearchScreen(modifier: Modifier = Modifier) {
     Text(
-        text = "This is the home screen",
+        text = "This is the search screen",
         modifier = modifier
     )
 }

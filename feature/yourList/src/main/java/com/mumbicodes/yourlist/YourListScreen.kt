@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 @Composable
 fun YourListScreen(modifier: Modifier = Modifier) {
     Text(
-        text = "This is the home screen",
+        text = "This is your lIST screen",
         modifier = modifier
     )
 }

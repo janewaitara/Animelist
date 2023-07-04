@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import com.mumbicodes.anime.navigation.animeDetailsScreen
+import com.mumbicodes.anime.navigation.navigateToAnimeDetails
 import com.mumbicodes.animelist.com.mumbicodes.animelist.ui.AnimeListAppState
 import com.mumbicodes.home.navigation.HOME_SCREEN_ROUTE
 import com.mumbicodes.home.navigation.homeScreen
@@ -16,12 +17,15 @@ fun AnimeListNavHost(
     animeListAppState: AnimeListAppState,
     startDestination: String = HOME_SCREEN_ROUTE
 ) {
+    val navController = animeListAppState.navController
     NavHost(
         modifier = modifier,
-        navController = animeListAppState.navController,
+        navController = navController,
         startDestination = startDestination
     ) {
-        homeScreen()
+        homeScreen(
+            onAnimeClicked = { navController.navigateToAnimeDetails() }
+        )
         searchScreen()
         yourListScreen()
         animeDetailsScreen()

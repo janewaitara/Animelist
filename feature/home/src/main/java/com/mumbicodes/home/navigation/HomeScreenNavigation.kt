@@ -13,8 +13,11 @@ fun NavController.navigateToHomeScreen(navOptions: NavOptions? = null) {
     this.navigate(HOME_SCREEN_ROUTE, navOptions)
 }
 
-fun NavGraphBuilder.homeScreen() {
+fun NavGraphBuilder.homeScreen(onAnimeClicked: () -> Unit) {
     composable(route = HOME_SCREEN_ROUTE) {
-        HomeScreen(modifier = Modifier)
+        HomeScreen(
+            modifier = Modifier,
+            onAnimeClicked = onAnimeClicked
+        )
     }
 }

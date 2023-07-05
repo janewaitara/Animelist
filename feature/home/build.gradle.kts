@@ -1,8 +1,12 @@
+import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("org.jlleitschuh.gradle.ktlint")
     id("io.gitlab.arturbosch.detekt")
+    id("dagger.hilt.android.plugin")
+    id("kotlin-kapt")
 }
 
 android {
@@ -42,6 +46,9 @@ android {
 
 dependencies {
 
+    implementation(project(":core:domain"))
+    implementation(project(":core:network"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appCompat)
 
@@ -50,6 +57,16 @@ dependencies {
     implementation(libs.bundles.compose)
     implementation(libs.compose.navigation)
     implementation(composeBom)
+
+    // lifecycle
+    implementation(libs.androidx.lifecycle)
+    implementation(libs.androidx.lifecycle.viewModel)
+
+    // Hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+    kapt(libs.hilt.compiler)
+    implementation(libs.hilt.navigation)
 
     testImplementation(libs.junit4)
     androidTestImplementation(libs.androidx.junit)

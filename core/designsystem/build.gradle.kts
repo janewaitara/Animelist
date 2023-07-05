@@ -36,8 +36,13 @@ android {
 
 dependencies {
 
+    val composeBom = platform(libs.compose.bom)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appCompat)
+    implementation(libs.bundles.compose)
+    implementation(libs.compose.navigation)
+    implementation(composeBom)
 
     // Enables formatting rule set in detekt
     detektPlugins(libs.detekt.formatting)

@@ -58,6 +58,12 @@ dependencies {
     implementation(project(":core:network"))
     implementation(project(":core:domain"))
     implementation(project(":core:data"))
+    implementation(project(":core:designsystem"))
+
+    implementation(project(":feature:home"))
+    implementation(project(":feature:search"))
+    implementation(project(":feature:yourList"))
+    implementation(project(":feature:anime"))
 
     val composeBom = platform(libs.compose.bom)
 

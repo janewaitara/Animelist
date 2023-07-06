@@ -9,7 +9,9 @@ sealed interface HomeScreenUiStates {
 
     data class Animes(
         val recommended: List<RecommendationsQuery.Recommendation>,
-        val trending: List<AnimeListQuery.Medium>,
-        val popular: List<AnimeListQuery.Medium>
+        val trending: List<AnimeListQuery.Medium> = listOf(),
+        val popular: List<AnimeListQuery.Medium> = listOf()
     ) : HomeScreenUiStates
+
+    data class Error(val errorMessage: String) : HomeScreenUiStates
 }

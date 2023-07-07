@@ -4,16 +4,14 @@ import com.mumbicodes.network.AnimeListQuery
 import com.mumbicodes.network.RecommendationsQuery
 
 // TODO create a model class and mapper for the different classes to remove the network from the features
-sealed interface HomeScreenUiStates {
-    object Loading : HomeScreenUiStates
+sealed interface RecommendedAnimesUiStates {
+    object Loading : RecommendedAnimesUiStates
 
-    data class Animes(
-        val recommended: List<RecommendationsQuery.Recommendation> = listOf(),
-        val trending: List<AnimeListQuery.Medium> = listOf(),
-        val popular: List<AnimeListQuery.Medium> = listOf()
-    ) : HomeScreenUiStates
+    data class RecommendedAnimes(
+        val recommended: List<RecommendationsQuery.Recommendation> = listOf()
+    ) : RecommendedAnimesUiStates
 
-    data class Error(val errorMessage: String) : HomeScreenUiStates
+    data class Error(val errorMessage: String) : RecommendedAnimesUiStates
 }
 
 sealed interface PopularAnimeStates {

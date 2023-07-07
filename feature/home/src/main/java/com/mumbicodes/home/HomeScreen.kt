@@ -18,11 +18,12 @@ fun HomeScreen(
     onAnimeClicked: () -> Unit,
     homeScreenViewModel: HomeScreenViewModel = hiltViewModel()
 ) {
-    val homeScreenUiStates: HomeScreenUiStates by homeScreenViewModel.uiState.collectAsStateWithLifecycle()
+    val recommendedAnimesUiStates: RecommendedAnimesUiStates
+        by homeScreenViewModel.recommendedUiState.collectAsStateWithLifecycle()
     val popularAnimeUiStates: PopularAnimeStates by homeScreenViewModel.popularUiState.collectAsStateWithLifecycle()
     Column() {
-        when (homeScreenUiStates) {
-            is HomeScreenUiStates.Animes -> {
+        when (recommendedAnimesUiStates) {
+            is RecommendedAnimesUiStates.RecommendedAnimes -> {
                 Column() {
                     Text(
                         text = "Recommended",
@@ -31,7 +32,7 @@ fun HomeScreen(
                         }
                     )
                     Text(
-                        text = (homeScreenUiStates as HomeScreenUiStates.Animes)
+                        text = (recommendedAnimesUiStates as RecommendedAnimesUiStates.RecommendedAnimes)
                             .recommended.first().media?.title?.english
                             ?: "It is empty",
                         modifier = modifier.clickable {
@@ -43,11 +44,11 @@ fun HomeScreen(
                 }
             }
 
-            is HomeScreenUiStates.Error -> {
+            is RecommendedAnimesUiStates.Error -> {
                 TODO()
             }
 
-            HomeScreenUiStates.Loading -> {
+            RecommendedAnimesUiStates.Loading -> {
                 Text(
                     text = "This is the loading state",
                     modifier = modifier.clickable {
@@ -69,7 +70,8 @@ fun HomeScreen(
                         }
                     )
                     Text(
-                        text = (popularAnimeUiStates as PopularAnimeStates.PopularAnimes).popular.first().title?.english
+                        text = (popularAnimeUiStates as PopularAnimeStates.PopularAnimes)
+                            .popular.first().title?.english
                             ?: "It is empty",
                         modifier = modifier.clickable {
                             onAnimeClicked()

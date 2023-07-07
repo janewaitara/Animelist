@@ -25,6 +25,35 @@ class HomeScreenViewModel @Inject constructor
     private val recommendedAnimes: Flow<Result<List<RecommendationsQuery.Recommendation>>> =
         animeRepository.getRecommendations()
 
+    private var _recommendedUiState: StateFlow<RecommendedAnimesUiStates> =
+        recommendedAnimes.map {
+            when (it) {
+                is Result.ApplicationError -> {
+                    RecommendedAnimesUiStates.Error(it.errors.joinToString())
+                }
+
+                is Result.Failure -> {
+                    RecommendedAnimesUiStates.Error(it.toString())
+                }
+
+                Result.Loading -> {
+                    Log.e("Data", "KLoaing")
+                    RecommendedAnimesUiStates.Loading
+                }
+
+                is Result.Success -> {
+                    Log.e("Data 6", it.data.first().media?.title?.english ?: "No data")
+                    RecommendedAnimesUiStates.RecommendedAnimes(recommended = it.data)
+                }
+            }
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = RecommendedAnimesUiStates.Loading
+        )
+
+    val recommendedUiState: StateFlow<RecommendedAnimesUiStates> = _recommendedUiState
+
     // TODO think of a better way to manage the data classes
     private val popularAnimes: Flow<Result<List<AnimeListQuery.Medium>>> =
         animeRepository.getAnimeList(
@@ -40,35 +69,6 @@ class HomeScreenViewModel @Inject constructor
                 MediaFormat.MANGA
             )
         )
-
-    private var _uiState: StateFlow<HomeScreenUiStates> =
-        recommendedAnimes.map {
-            when (it) {
-                is Result.ApplicationError -> {
-                    HomeScreenUiStates.Error(it.errors.joinToString())
-                }
-
-                is Result.Failure -> {
-                    HomeScreenUiStates.Error(it.toString())
-                }
-
-                Result.Loading -> {
-                    Log.e("Data", "KLoaing")
-                    HomeScreenUiStates.Loading
-                }
-
-                is Result.Success -> {
-                    Log.e("Data 6", it.data.first().media?.title?.english ?: "No data")
-                    HomeScreenUiStates.Animes(recommended = it.data)
-                }
-            }
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = HomeScreenUiStates.Loading
-        )
-
-    val uiState: StateFlow<HomeScreenUiStates> = _uiState
 
     private var _popularUiState: StateFlow<PopularAnimeStates> =
         popularAnimes.map {

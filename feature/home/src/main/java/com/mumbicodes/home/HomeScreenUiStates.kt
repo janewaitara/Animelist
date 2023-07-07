@@ -23,3 +23,13 @@ sealed interface PopularAnimeStates {
 
     data class Error(val errorMessage: String) : PopularAnimeStates
 }
+
+sealed interface TrendingAnimeStates {
+    object Loading : TrendingAnimeStates
+
+    data class TrendingAnimes(
+        val trending: List<AnimeListQuery.Medium> = listOf()
+    ) : TrendingAnimeStates
+
+    data class Error(val errorMessage: String) : TrendingAnimeStates
+}

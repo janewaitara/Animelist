@@ -1,6 +1,5 @@
 package com.mumbicodes.home
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mumbicodes.common.result.Result
@@ -37,12 +36,10 @@ class HomeScreenViewModel @Inject constructor
                 }
 
                 Result.Loading -> {
-                    Log.e("Data", "KLoaing")
                     RecommendedAnimesUiStates.Loading
                 }
 
                 is Result.Success -> {
-                    Log.e("Data 6", it.data.first().media?.title?.english ?: "No data")
                     RecommendedAnimesUiStates.RecommendedAnimes(recommended = it.data)
                 }
             }
@@ -60,7 +57,7 @@ class HomeScreenViewModel @Inject constructor
             page = 0,
             perPage = 30,
             type = MediaType.ANIME,
-            sortList = listOf(MediaSort.TRENDING),
+            sortList = listOf(MediaSort.POPULARITY),
             formatIn = listOf(
                 MediaFormat.MOVIE,
                 MediaFormat.MUSIC,
@@ -82,12 +79,10 @@ class HomeScreenViewModel @Inject constructor
                 }
 
                 Result.Loading -> {
-                    Log.e("Data", "KLoaing")
                     PopularAnimeStates.Loading
                 }
 
                 is Result.Success -> {
-                    // Log.e("Data 6", it.data.first().media?.title?.english ?: "No data")
                     PopularAnimeStates.PopularAnimes(popular = it.data)
                 }
             }
@@ -98,4 +93,46 @@ class HomeScreenViewModel @Inject constructor
         )
 
     val popularUiState: StateFlow<PopularAnimeStates> = _popularUiState
+
+    private val trendingAnimes: Flow<Result<List<AnimeListQuery.Medium>>> =
+        animeRepository.getAnimeList(
+            page = 0,
+            perPage = 30,
+            type = MediaType.ANIME,
+            sortList = listOf(MediaSort.TRENDING),
+            formatIn = listOf(
+                MediaFormat.MOVIE,
+                MediaFormat.MUSIC,
+                MediaFormat.TV,
+                MediaFormat.SPECIAL,
+                MediaFormat.MANGA
+            )
+        )
+
+    private var _trendingUiState: StateFlow<TrendingAnimeStates> =
+        trendingAnimes.map {
+            when (it) {
+                is Result.ApplicationError -> {
+                    TrendingAnimeStates.Error(it.errors.joinToString())
+                }
+
+                is Result.Failure -> {
+                    TrendingAnimeStates.Error(it.toString())
+                }
+
+                Result.Loading -> {
+                    TrendingAnimeStates.Loading
+                }
+
+                is Result.Success -> {
+                    TrendingAnimeStates.TrendingAnimes(trending = it.data)
+                }
+            }
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = TrendingAnimeStates.Loading
+        )
+
+    val trendingUiState: StateFlow<TrendingAnimeStates> = _trendingUiState
 }

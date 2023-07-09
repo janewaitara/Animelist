@@ -3,6 +3,8 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("org.jlleitschuh.gradle.ktlint")
     id("io.gitlab.arturbosch.detekt")
+    id("dagger.hilt.android.plugin")
+    id("kotlin-kapt")
 }
 
 android {
@@ -41,6 +43,10 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:domain"))
+    implementation(project(":core:network"))
+    implementation(project(":core:common"))
+
     val composeBom = platform(libs.compose.bom)
 
     implementation(libs.androidx.core.ktx)
@@ -49,6 +55,12 @@ dependencies {
     implementation(libs.bundles.compose)
     implementation(libs.compose.navigation)
     implementation(composeBom)
+
+    // Hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+    kapt(libs.hilt.compiler)
+    implementation(libs.hilt.navigation)
 
     testImplementation(libs.junit4)
     androidTestImplementation(libs.androidx.junit)

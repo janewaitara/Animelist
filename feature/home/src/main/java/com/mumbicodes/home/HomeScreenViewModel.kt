@@ -11,8 +11,10 @@ import com.mumbicodes.network.type.MediaSort
 import com.mumbicodes.network.type.MediaType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
@@ -135,4 +137,19 @@ class HomeScreenViewModel @Inject constructor
         )
 
     val trendingUiState: StateFlow<TrendingAnimeStates> = _trendingUiState
+
+    private val _animeSortType: MutableStateFlow<AnimeSortType> = MutableStateFlow(AnimeSortType.RECOMMENDED)
+    val animeSortType = _animeSortType.asStateFlow()
+
+    /**
+     * Used when a user clicks see all on any of the sortList in the home page
+     * The state is then used to know what list to display
+     * */
+    fun updateAnimeSortType(selectedAnimeSortType: AnimeSortType) {
+        _animeSortType.value = selectedAnimeSortType
+    }
+}
+
+enum class AnimeSortType {
+    RECOMMENDED, TRENDING, POPULAR
 }

@@ -3,7 +3,6 @@ package com.mumbicodes.anime
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mumbicodes.common.result.Result
-import com.mumbicodes.domain.repository.AnimeDetailsScreenUiState
 import com.mumbicodes.domain.repository.AnimeRepository
 import com.mumbicodes.network.AnimeQuery
 import kotlinx.coroutines.flow.Flow

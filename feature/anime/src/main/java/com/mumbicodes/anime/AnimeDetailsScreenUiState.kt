@@ -1,4 +1,4 @@
-package com.mumbicodes.domain.repository
+package com.mumbicodes.anime
 
 import com.mumbicodes.network.AnimeQuery
 

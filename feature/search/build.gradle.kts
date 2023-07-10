@@ -41,6 +41,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:network"))
+
     val composeBom = platform(libs.compose.bom)
 
     implementation(libs.androidx.core.ktx)

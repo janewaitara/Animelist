@@ -1,5 +1,6 @@
 package com.mumbicodes.search
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mumbicodes.common.result.Result
@@ -19,14 +20,18 @@ import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 class SearchViewModel @Inject constructor(
-    private val searchRepository: SearchRepository
+    private val searchRepository: SearchRepository,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+
+    private val searchParameter = savedStateHandle.get<String>(SEARCH_QUERY)
+
     private val _searchMainFilterUiState: MutableStateFlow<SearchType> =
         MutableStateFlow(SearchType.ANIME)
     val searchMainFilterUiState = _searchMainFilterUiState.asStateFlow()
 
     val characterSearchResultsState: StateFlow<CharacterSearchUiState> = searchCharacter(
-        searchParam = ""
+        searchParam = searchParameter ?: ""
     ).map {
         when (it) {
             is Result.ApplicationError -> {
@@ -54,7 +59,7 @@ class SearchViewModel @Inject constructor(
     )
 
     val animeSearchResultsState: StateFlow<AnimeSearchUiState> = searchAnime(
-        searchParam = ""
+        searchParam = searchParameter ?: ""
     ).map {
         when (it) {
             is Result.ApplicationError -> {
@@ -88,6 +93,12 @@ class SearchViewModel @Inject constructor(
         _searchMainFilterUiState.value = userSearchMainFilter
     }
 
+    /**
+     * Called everytime the user types on the search input field*/
+    fun onSearchParameterChanged(searchParam: String) {
+        savedStateHandle[SEARCH_QUERY] = searchParam
+    }
+
     private fun searchCharacter(searchParam: String): Flow<Result<List<SearchCharacterQuery.Character>>> =
         searchRepository.searchCharacter(searchParam = searchParam)
 
@@ -114,3 +125,5 @@ class SearchViewModel @Inject constructor(
 enum class SearchType {
     ANIME, CHARACTER
 }
+
+private const val SEARCH_QUERY = "searchQuery"

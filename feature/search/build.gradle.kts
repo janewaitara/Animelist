@@ -58,6 +58,9 @@ dependencies {
     implementation(libs.compose.navigation)
     implementation(composeBom)
 
+    // lifecycle
+    implementation(libs.bundles.lifecycle)
+
     // Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)

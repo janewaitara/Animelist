@@ -4,7 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mumbicodes.common.result.Result
 import com.mumbicodes.domain.repository.SearchRepository
+import com.mumbicodes.network.SearchAnimeQuery
 import com.mumbicodes.network.SearchCharacterQuery
+import com.mumbicodes.network.type.MediaFormat
+import com.mumbicodes.network.type.MediaSort
+import com.mumbicodes.network.type.MediaType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -49,6 +53,34 @@ class SearchViewModel @Inject constructor(
         initialValue = CharacterSearchUiState.Loading
     )
 
+    val animeSearchResultsState: StateFlow<AnimeSearchUiState> = searchAnime(
+        searchParam = ""
+    ).map {
+        when (it) {
+            is Result.ApplicationError -> {
+                AnimeSearchUiState.Error(it.errors.joinToString())
+            }
+
+            is Result.Failure -> {
+                AnimeSearchUiState.Error(it.exception.message.toString())
+            }
+
+            Result.Loading -> {
+                AnimeSearchUiState.Loading
+            }
+
+            is Result.Success -> {
+                AnimeSearchUiState.AnimeResults(
+                    data = it.data
+                )
+            }
+        }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = AnimeSearchUiState.Loading
+    )
+
     /**
      * Updates the main search item user is searching for
      * */
@@ -58,6 +90,25 @@ class SearchViewModel @Inject constructor(
 
     private fun searchCharacter(searchParam: String): Flow<Result<List<SearchCharacterQuery.Character>>> =
         searchRepository.searchCharacter(searchParam = searchParam)
+
+    private fun searchAnime(searchParam: String): Flow<Result<List<SearchAnimeQuery.Medium>>> =
+        searchRepository.searchAnime(
+            searchParam = searchParam,
+            type = MediaType.ANIME,
+            sortList = listOf(
+                MediaSort.TRENDING,
+                MediaSort.POPULARITY,
+                MediaSort.FORMAT,
+                MediaSort.TYPE
+            ),
+            formatIn = listOf(
+                MediaFormat.MOVIE,
+                MediaFormat.MUSIC,
+                MediaFormat.TV,
+                MediaFormat.SPECIAL,
+                MediaFormat.MANGA
+            )
+        )
 }
 
 enum class SearchType {

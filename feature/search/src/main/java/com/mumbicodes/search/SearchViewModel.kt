@@ -11,6 +11,13 @@ class SearchViewModel @Inject constructor(
     private val _searchMainFilterUiState: MutableStateFlow<SearchType> =
         MutableStateFlow(SearchType.ANIME)
     val searchMainFilterUiState = _searchMainFilterUiState.asStateFlow()
+
+    /**
+     * Updates the main search item user is searching for
+     * */
+    fun updateSearchFilter(userSearchMainFilter: SearchType) {
+        _searchMainFilterUiState.value = userSearchMainFilter
+    }
 }
 
 enum class SearchType {

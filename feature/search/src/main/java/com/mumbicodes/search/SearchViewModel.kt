@@ -10,6 +10,7 @@ import com.mumbicodes.network.SearchCharacterQuery
 import com.mumbicodes.network.type.MediaFormat
 import com.mumbicodes.network.type.MediaSort
 import com.mumbicodes.network.type.MediaType
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -19,6 +20,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
+@HiltViewModel
 class SearchViewModel @Inject constructor(
     private val searchRepository: SearchRepository,
     private val savedStateHandle: SavedStateHandle

@@ -6,7 +6,7 @@ sealed interface CharacterScreenUiState {
 
     object Loading : CharacterScreenUiState
 
-    data class CharacterState(
+    data class CharacterDetails(
         val data: CharacterQuery.Character
     ) : CharacterScreenUiState
 

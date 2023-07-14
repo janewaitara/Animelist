@@ -55,6 +55,9 @@ dependencies {
     implementation(composeBom)
     implementation(libs.bundles.compose)
 
+    // Accompanist
+    implementation(libs.accompanist)
+
     // Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)

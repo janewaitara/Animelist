@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import com.mumbicodes.anime.navigation.animeDetailsScreen
 import com.mumbicodes.anime.navigation.navigateToAnimeDetails
 import com.mumbicodes.animelist.com.mumbicodes.animelist.ui.AnimeListAppState
+import com.mumbicodes.character.navigation.characterBottomSheet
 import com.mumbicodes.home.navigation.HOME_SCREEN_ROUTE
 import com.mumbicodes.home.navigation.homeScreen
 import com.mumbicodes.search.navigation.searchScreen
@@ -29,5 +30,6 @@ fun AnimeListNavHost(
         searchScreen()
         yourListScreen()
         animeDetailsScreen()
+        characterBottomSheet()
     }
 }

@@ -64,6 +64,7 @@ dependencies {
     implementation(project(":feature:search"))
     implementation(project(":feature:yourList"))
     implementation(project(":feature:anime"))
+    implementation(project(":feature:character"))
 
     val composeBom = platform(libs.compose.bom)
 

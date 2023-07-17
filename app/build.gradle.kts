@@ -73,6 +73,9 @@ dependencies {
     implementation(libs.bundles.compose)
     implementation(composeBom)
 
+    // Accompanist
+    implementation(libs.accompanist)
+
     testImplementation(libs.junit4)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso)
@@ -83,6 +86,9 @@ dependencies {
 
     // Enables formatting rule set in detekt
     detektPlugins(libs.detekt.formatting)
+
+    // Work - solves the issue = Targeting S+ (version 31 and above) requires that one of FLAG_IMMUTABLE
+    implementation("androidx.work:work-runtime-ktx:2.8.1")
 
     // Hilt
     implementation(libs.hilt.android)

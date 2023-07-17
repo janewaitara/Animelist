@@ -9,6 +9,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.google.accompanist.navigation.material.BottomSheetNavigator
+import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
+import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
 import com.mumbicodes.animelist.com.mumbicodes.animelist.navigation.MainAppDestinations
 import com.mumbicodes.animelist.com.mumbicodes.animelist.navigation.MainAppDestinations.HOME
 import com.mumbicodes.animelist.com.mumbicodes.animelist.navigation.MainAppDestinations.SEARCH
@@ -20,16 +23,24 @@ import com.mumbicodes.search.navigation.navigateToSearchScreen
 import com.mumbicodes.yourlist.navigation.YOUR_LIST_SCREEN_ROUTE
 import com.mumbicodes.yourlist.navigation.navigateToYourListScreen
 
+@OptIn(ExperimentalMaterialNavigationApi::class)
 @Composable
-fun rememberAnimeListAppState(navController: NavHostController = rememberNavController()): AnimeListAppState {
-    return remember(navController) {
-        AnimeListAppState(navController)
+fun rememberAnimeListAppState(
+    bottomSheetNavigator: BottomSheetNavigator = rememberBottomSheetNavigator(),
+    navController: NavHostController = rememberNavController(
+        bottomSheetNavigator
+    )
+): AnimeListAppState {
+    return remember(navController, bottomSheetNavigator) {
+        AnimeListAppState(navController, bottomSheetNavigator)
     }
 }
 
 @Stable
+@OptIn(ExperimentalMaterialNavigationApi::class)
 class AnimeListAppState(
-    val navController: NavHostController
+    val navController: NavHostController,
+    val bottomSheetNavigator: BottomSheetNavigator
 ) {
     val currentDestination: NavDestination?
         @Composable get() = navController.currentBackStackEntryAsState().value?.destination

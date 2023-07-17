@@ -47,7 +47,12 @@ fun HomeScreen(
             }
 
             is RecommendedAnimesUiStates.Error -> {
-                TODO()
+                Text(
+                    text = (recommendedAnimesUiStates as RecommendedAnimesUiStates.Error).errorMessage,
+                    modifier = modifier.clickable {
+                        onAnimeClicked()
+                    }
+                )
             }
 
             RecommendedAnimesUiStates.Loading -> {
@@ -83,7 +88,12 @@ fun HomeScreen(
             }
 
             is PopularAnimeStates.Error -> {
-                TODO()
+                Text(
+                    text = (popularAnimeUiStates as PopularAnimeStates.Error).errorMessage,
+                    modifier = modifier.clickable {
+                        onAnimeClicked()
+                    }
+                )
             }
 
             PopularAnimeStates.Loading -> {
@@ -119,7 +129,12 @@ fun HomeScreen(
             }
 
             is TrendingAnimeStates.Error -> {
-                TODO()
+                Text(
+                    text = (trendingAnimeUiStates as TrendingAnimeStates.Error).errorMessage,
+                    modifier = modifier.clickable {
+                        onAnimeClicked()
+                    }
+                )
             }
 
             TrendingAnimeStates.Loading -> {

@@ -21,6 +21,8 @@ fun HomeScreen(
     val recommendedAnimesUiStates: RecommendedAnimesUiStates
         by homeScreenViewModel.recommendedUiState.collectAsStateWithLifecycle()
     val popularAnimeUiStates: PopularAnimeStates by homeScreenViewModel.popularUiState.collectAsStateWithLifecycle()
+    val trendingAnimeUiStates: TrendingAnimeStates by homeScreenViewModel.trendingUiState.collectAsStateWithLifecycle()
+    val emptyString = "It is empty"
     Column() {
         when (recommendedAnimesUiStates) {
             is RecommendedAnimesUiStates.RecommendedAnimes -> {
@@ -34,7 +36,7 @@ fun HomeScreen(
                     Text(
                         text = (recommendedAnimesUiStates as RecommendedAnimesUiStates.RecommendedAnimes)
                             .recommended.first().media?.title?.english
-                            ?: "It is empty",
+                            ?: emptyString,
                         modifier = modifier.clickable {
                             onAnimeClicked()
                         }
@@ -45,7 +47,12 @@ fun HomeScreen(
             }
 
             is RecommendedAnimesUiStates.Error -> {
-                TODO()
+                Text(
+                    text = (recommendedAnimesUiStates as RecommendedAnimesUiStates.Error).errorMessage,
+                    modifier = modifier.clickable {
+                        onAnimeClicked()
+                    }
+                )
             }
 
             RecommendedAnimesUiStates.Loading -> {
@@ -72,7 +79,7 @@ fun HomeScreen(
                     Text(
                         text = (popularAnimeUiStates as PopularAnimeStates.PopularAnimes)
                             .popular.first().title?.english
-                            ?: "It is empty",
+                            ?: emptyString,
                         modifier = modifier.clickable {
                             onAnimeClicked()
                         }
@@ -81,12 +88,58 @@ fun HomeScreen(
             }
 
             is PopularAnimeStates.Error -> {
-                TODO()
+                Text(
+                    text = (popularAnimeUiStates as PopularAnimeStates.Error).errorMessage,
+                    modifier = modifier.clickable {
+                        onAnimeClicked()
+                    }
+                )
             }
 
             PopularAnimeStates.Loading -> {
                 Text(
                     text = "This is the loading popular state",
+                    modifier = modifier.clickable {
+                        onAnimeClicked()
+                    }
+                )
+            }
+        }
+
+        when (trendingAnimeUiStates) {
+            is TrendingAnimeStates.TrendingAnimes -> {
+                Column() {
+                    Spacer(modifier = Modifier.height(48.dp))
+
+                    Text(
+                        text = "Trending:",
+                        modifier = modifier.clickable {
+                            onAnimeClicked()
+                        }
+                    )
+                    Text(
+                        text = (trendingAnimeUiStates as TrendingAnimeStates.TrendingAnimes)
+                            .trending.first().title?.english
+                            ?: emptyString,
+                        modifier = modifier.clickable {
+                            onAnimeClicked()
+                        }
+                    )
+                }
+            }
+
+            is TrendingAnimeStates.Error -> {
+                Text(
+                    text = (trendingAnimeUiStates as TrendingAnimeStates.Error).errorMessage,
+                    modifier = modifier.clickable {
+                        onAnimeClicked()
+                    }
+                )
+            }
+
+            TrendingAnimeStates.Loading -> {
+                Text(
+                    text = "This is the loading trending state",
                     modifier = modifier.clickable {
                         onAnimeClicked()
                     }

@@ -16,8 +16,8 @@ fun NavController.navigateToAnimeDetails(navOptions: NavOptions? = null) {
 /**
  * TODO add nested navigation for anime characters
  * */
-fun NavGraphBuilder.animeDetailsScreen() {
+fun NavGraphBuilder.animeDetailsScreen(onCharacterClicked: () -> Unit) {
     composable(route = ANIME_DETAILS_ROUTE) {
-        AnimeDetailsScreen(modifier = Modifier)
+        AnimeDetailsScreen(modifier = Modifier, onCharacterClicked = onCharacterClicked)
     }
 }

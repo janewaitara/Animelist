@@ -5,7 +5,7 @@ ktx = "1.10.0"
 androidxAppCompat = "1.6.1"
 androidxLifecycle = "2.6.0"
 androidxActivityCompose = "1.7.2"
-androidxComposeBom = "2023.01.00"
+androidxComposeBom = "2023.06.01"
 androidxComposeNavigation = "2.6.0"
 junit4 = "4.13.2"
 androidxJunit = "1.1.5"
@@ -16,6 +16,7 @@ hilt = "2.45"
 hiltWithOtherLibs = "1.0.0"
 apollographql = "3.8.2"
 coroutines = "1.5.0"
+accompanist = "0.30.0"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "ktx" }
@@ -29,6 +30,7 @@ compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling-preview" }
 compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "androidxComposeNavigation"}
+accompanist = { module = "com.google.accompanist:accompanist-navigation-material", version.ref = "accompanist"}
 
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 

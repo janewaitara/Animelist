@@ -64,6 +64,7 @@ dependencies {
     implementation(project(":feature:search"))
     implementation(project(":feature:yourList"))
     implementation(project(":feature:anime"))
+    implementation(project(":feature:character"))
 
     val composeBom = platform(libs.compose.bom)
 
@@ -71,6 +72,9 @@ dependencies {
     implementation(libs.androidx.lifecycle)
     implementation(libs.bundles.compose)
     implementation(composeBom)
+
+    // Accompanist
+    implementation(libs.accompanist)
 
     testImplementation(libs.junit4)
     androidTestImplementation(libs.androidx.junit)
@@ -82,6 +86,9 @@ dependencies {
 
     // Enables formatting rule set in detekt
     detektPlugins(libs.detekt.formatting)
+
+    // Work - solves the issue = Targeting S+ (version 31 and above) requires that one of FLAG_IMMUTABLE
+    implementation("androidx.work:work-runtime-ktx:2.8.1")
 
     // Hilt
     implementation(libs.hilt.android)

@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.mumbicodes.anime"
+    namespace = "com.mumbicodes.character"
     compileSdk = 33
 
     defaultConfig {
@@ -43,18 +43,20 @@ android {
 }
 
 dependencies {
+
     implementation(project(":core:domain"))
     implementation(project(":core:network"))
     implementation(project(":core:common"))
 
-    val composeBom = platform(libs.compose.bom)
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appCompat)
 
-    implementation(libs.bundles.compose)
-    implementation(libs.compose.navigation)
+    val composeBom = platform(libs.compose.bom)
     implementation(composeBom)
+    implementation(libs.bundles.compose)
+
+    // Accompanist
+    implementation(libs.accompanist)
 
     // Hilt
     implementation(libs.hilt.android)

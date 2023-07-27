@@ -1,9 +1,8 @@
 plugins {
     id("animelist.android.library")
+    id("animelist.android.hilt")
     id("org.jlleitschuh.gradle.ktlint")
     id("io.gitlab.arturbosch.detekt")
-    id("dagger.hilt.android.plugin")
-    id("kotlin-kapt")
 }
 
 android {
@@ -47,9 +46,6 @@ dependencies {
     implementation(libs.accompanist)
 
     // Hilt
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
-    kapt(libs.hilt.compiler)
     implementation(libs.hilt.navigation)
 
     // Enables formatting rule set in detekt

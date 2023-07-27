@@ -27,5 +27,9 @@ gradlePlugin {
             id = "animelist.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
         }
+        register("androidHilt"){
+            id = "animelist.android.hilt"
+            implementationClass = "AndroidHiltConventionPlugin"
+        }
     }
 }

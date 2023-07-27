@@ -2,9 +2,8 @@ plugins {
     id("animelist.android.library")
     id("org.jlleitschuh.gradle.ktlint")
     id("io.gitlab.arturbosch.detekt")
-    id("dagger.hilt.android.plugin")
     id("com.apollographql.apollo3") version "3.8.2"
-    id("kotlin-kapt")
+    id("animelist.android.hilt")
 }
 
 android {
@@ -30,11 +29,6 @@ dependencies {
 
     // Enables formatting rule set in detekt
     detektPlugins(libs.detekt.formatting)
-
-    // Hilt
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
-    kapt(libs.hilt.compiler)
 
     // ApolloGraphql
     implementation(libs.apollographql)

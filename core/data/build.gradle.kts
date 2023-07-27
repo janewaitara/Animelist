@@ -1,9 +1,8 @@
 plugins {
     id("animelist.android.library")
+    id("animelist.android.hilt")
     id("org.jlleitschuh.gradle.ktlint")
     id("io.gitlab.arturbosch.detekt")
-    id("dagger.hilt.android.plugin")
-    id("kotlin-kapt")
 }
 
 android {
@@ -37,9 +36,4 @@ dependencies {
     // ApolloGraphql
     implementation(libs.apollographql)
     implementation(libs.apollographql.inMemoryCache)
-
-    // Hilt
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
-    kapt(libs.hilt.compiler)
 }

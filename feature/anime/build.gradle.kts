@@ -1,6 +1,5 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    id("animelist.android.library")
     id("org.jlleitschuh.gradle.ktlint")
     id("io.gitlab.arturbosch.detekt")
     id("dagger.hilt.android.plugin")
@@ -9,11 +8,8 @@ plugins {
 
 android {
     namespace = "com.mumbicodes.anime"
-    compileSdk = 33
 
     defaultConfig {
-        minSdk = 24
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
@@ -26,13 +22,6 @@ android {
                 "proguard-rules.pro"
             )
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
     }
     buildFeatures {
         compose = true
@@ -49,7 +38,6 @@ dependencies {
 
     val composeBom = platform(libs.compose.bom)
 
-    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appCompat)
 
     implementation(libs.bundles.compose)
@@ -61,10 +49,6 @@ dependencies {
     kapt(libs.hilt.android.compiler)
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.navigation)
-
-    testImplementation(libs.junit4)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso)
 
     // Enables formatting rule set in detekt
     detektPlugins(libs.detekt.formatting)

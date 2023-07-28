@@ -3,8 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("org.jlleitschuh.gradle.ktlint")
     id("io.gitlab.arturbosch.detekt")
-    id("dagger.hilt.android.plugin")
-    id("kotlin-kapt")
+    id("animelist.android.hilt")
 }
 
 android {
@@ -91,9 +90,6 @@ dependencies {
     implementation("androidx.work:work-runtime-ktx:2.8.1")
 
     // Hilt
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
-    kapt(libs.hilt.compiler)
     implementation(libs.hilt.navigation)
     implementation(libs.hilt.work)
 }

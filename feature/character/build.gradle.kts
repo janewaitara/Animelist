@@ -1,6 +1,7 @@
 plugins {
     id("animelist.android.library")
     id("animelist.android.hilt")
+    id("animelist.android.library.compose")
     id("org.jlleitschuh.gradle.ktlint")
     id("io.gitlab.arturbosch.detekt")
 }
@@ -22,12 +23,6 @@ android {
             )
         }
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.2"
-    }
 }
 
 dependencies {
@@ -38,15 +33,8 @@ dependencies {
 
     implementation(libs.androidx.appCompat)
 
-    val composeBom = platform(libs.compose.bom)
-    implementation(composeBom)
-    implementation(libs.bundles.compose)
-
     // Accompanist
     implementation(libs.accompanist)
-
-    // Hilt
-    implementation(libs.hilt.navigation)
 
     // Enables formatting rule set in detekt
     detektPlugins(libs.detekt.formatting)

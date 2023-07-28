@@ -31,5 +31,9 @@ gradlePlugin {
             id = "animelist.android.hilt"
             implementationClass = "AndroidHiltConventionPlugin"
         }
+        register("androidLibraryCompose"){
+            id = "animelist.android.library.compose"
+            implementationClass = "AndroidLibraryComposeConventionPlugin"
+        }
     }
 }

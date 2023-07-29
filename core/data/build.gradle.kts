@@ -1,19 +1,14 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    id("animelist.android.library")
+    id("animelist.android.hilt")
     id("org.jlleitschuh.gradle.ktlint")
     id("io.gitlab.arturbosch.detekt")
-    id("dagger.hilt.android.plugin")
-    id("kotlin-kapt")
 }
 
 android {
     namespace = "com.mumbicodes.data"
-    compileSdk = 33
 
     defaultConfig {
-        minSdk = 24
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
@@ -27,13 +22,6 @@ android {
             )
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
 }
 
 dependencies {
@@ -42,21 +30,10 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:common"))
 
-    implementation(libs.androidx.core.ktx)
-
     // Enables formatting rule set in detekt
     detektPlugins(libs.detekt.formatting)
 
     // ApolloGraphql
     implementation(libs.apollographql)
     implementation(libs.apollographql.inMemoryCache)
-
-    // Hilt
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
-    kapt(libs.hilt.compiler)
-
-    testImplementation(libs.junit4)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso)
 }

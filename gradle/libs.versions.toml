@@ -57,6 +57,10 @@ androidx-compose-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 androidx-compose-ui-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 
+# Dependencies of the included build-logic
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidApplication" }
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+
 [bundles]
 compose = ["compose-foundation","compose-activity", "compose-ui", "compose-material3", "compose-ui-graphics", "compose-ui-tooling", "compose-navigation"]
 lifecycle = ["androidx-lifecycle","androidx-lifecycle-viewModel", "androidx-lifecycle-compose"]

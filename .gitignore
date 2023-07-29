@@ -16,4 +16,6 @@ local.properties
 
 # Project exclude paths
 /build-logic/build/
+/build-logic/convention/build/
+/build-logic/.gradle
 /.idea/

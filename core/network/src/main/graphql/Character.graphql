@@ -18,6 +18,7 @@ query Character($characterId: Int) {
         }
         media {
             nodes {
+                id
                 coverImage {
                     medium
                 }

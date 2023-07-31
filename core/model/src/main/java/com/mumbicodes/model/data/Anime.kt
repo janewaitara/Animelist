@@ -3,6 +3,7 @@ package com.mumbicodes.model.data
 import com.mumbicodes.network.CharacterQuery
 
 data class Anime(
+    val id: Int,
     val bannerImage: String?,
     val coverImage: String?,
     val title: AnimeTitle?,
@@ -49,11 +50,11 @@ enum class MediaFormat {
 
 // Mappers
 internal fun CharacterQuery.Node.toAnime() = Anime(
+    id = this.id,
     coverImage = this.coverImage?.medium,
     bannerImage = this.bannerImage,
     description = this.description,
     title = this.title?.toAnimeTitle()
-
 )
 
 private fun CharacterQuery.Title.toAnimeTitle() = AnimeTitle(

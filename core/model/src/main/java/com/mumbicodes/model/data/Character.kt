@@ -2,14 +2,14 @@ package com.mumbicodes.model.data
 
 data class Character(
     val id: Int,
-    val name: CharacterName,
-    val description: String,
-    val age: Int,
-    val gender: String,
-    val dateOfBirth: DateOfBirth,
-    val image: String
+    val name: CharacterName?,
+    val description: String?,
+    val age: Int?,
+    val gender: String?,
+    val image: String?,
+    val dateOfBirth: DateOfBirth?,
+    val animes: List<Anime?>?
 )
-// TODO add animes nodes
 
 data class CharacterName(
     val full: String,

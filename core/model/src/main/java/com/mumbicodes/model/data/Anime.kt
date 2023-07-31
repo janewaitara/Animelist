@@ -2,6 +2,7 @@ package com.mumbicodes.model.data
 
 import com.mumbicodes.network.AnimeQuery
 import com.mumbicodes.network.CharacterQuery
+import com.mumbicodes.network.RecommendationsQuery
 import com.mumbicodes.network.SearchAnimeQuery
 import com.mumbicodes.network.type.MediaFormat
 import com.mumbicodes.network.type.MediaType
@@ -88,6 +89,15 @@ fun AnimeQuery.Media.toModelAnime() = Anime(
     }
 )
 
+fun RecommendationsQuery.Media.toModelAnime() = Anime(
+    id = this.id,
+    title = this.title?.toAnimeTitle(),
+    type = this.type?.toLocalMediaType(),
+    coverImage = this.coverImage?.medium,
+    episodes = this.episodes,
+    duration = this.duration
+)
+
 internal fun CharacterQuery.Node.toAnime() = Anime(
     id = this.id,
     coverImage = this.coverImage?.medium,
@@ -147,6 +157,12 @@ internal fun AnimeQuery.Media1.toAnime() = Anime(
 )
 
 private fun AnimeQuery.Title1.toAnimeTitle() = AnimeTitle(
+    native = this.native,
+    english = this.english,
+    romaji = null
+)
+
+private fun RecommendationsQuery.Title.toAnimeTitle() = AnimeTitle(
     native = this.native,
     english = this.english,
     romaji = null

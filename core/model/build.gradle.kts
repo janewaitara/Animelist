@@ -24,6 +24,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:network"))
+
     implementation(libs.androidx.appCompat)
 
     // Enables formatting rule set in detekt

@@ -1,5 +1,6 @@
 package com.mumbicodes.model.data
 
+import com.mumbicodes.network.AnimeListQuery
 import com.mumbicodes.network.AnimeQuery
 import com.mumbicodes.network.CharacterQuery
 import com.mumbicodes.network.RecommendationsQuery
@@ -98,6 +99,14 @@ fun RecommendationsQuery.Media.toModelAnime() = Anime(
     duration = this.duration
 )
 
+fun AnimeListQuery.Medium.toModelAnime() = Anime(
+    id = this.id,
+    title = this.title.toAnimeTitle(),
+    coverImage = this.coverImage?.medium,
+    type = this.type?.toLocalMediaType(),
+    duration = this.duration,
+    episodes = this.episodes
+)
 internal fun CharacterQuery.Node.toAnime() = Anime(
     id = this.id,
     coverImage = this.coverImage?.medium,
@@ -166,4 +175,10 @@ private fun RecommendationsQuery.Title.toAnimeTitle() = AnimeTitle(
     native = this.native,
     english = this.english,
     romaji = null
+)
+
+private fun AnimeListQuery.Title?.toAnimeTitle() = AnimeTitle(
+    native = this?.native,
+    english = this?.english,
+    romaji = this?.romaji
 )

@@ -1,19 +1,21 @@
 package com.mumbicodes.model.data
 
+import com.mumbicodes.network.CharacterQuery
+
 data class Anime(
     val bannerImage: String?,
     val coverImage: String?,
     val title: AnimeTitle?,
     val description: String?,
-    val duration: Int?,
-    val genres: List<String?>?,
-    val type: MediaType?,
-    val trailer: MediaTrailer?,
-    val episodes: Int?,
-    val format: MediaFormat?,
-    val characters: List<Character?>?,
-    val recommendations: List<Anime?>?,
-    val studios: List<String?>?
+    val duration: Int? = 0,
+    val genres: List<String?>? = emptyList(),
+    val type: MediaType? = null,
+    val trailer: MediaTrailer? = null,
+    val episodes: Int? = 0,
+    val format: MediaFormat? = null,
+    val characters: List<Character?>? = emptyList(),
+    val recommendations: List<Anime?>? = emptyList(),
+    val studios: List<String?>? = emptyList()
 )
 
 data class AnimeTitle(
@@ -44,3 +46,18 @@ enum class MediaFormat {
     NOVEL,
     ONE_SHOT
 }
+
+// Mappers
+internal fun CharacterQuery.Node.toAnime() = Anime(
+    coverImage = this.coverImage?.medium,
+    bannerImage = this.bannerImage,
+    description = this.description,
+    title = this.title?.toAnimeTitle()
+
+)
+
+private fun CharacterQuery.Title.toAnimeTitle() = AnimeTitle(
+    native = this.native,
+    english = this.english,
+    romaji = null
+)

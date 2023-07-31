@@ -1,5 +1,6 @@
 package com.mumbicodes.model.data
 
+import com.mumbicodes.network.AnimeQuery
 import com.mumbicodes.network.CharacterQuery
 import com.mumbicodes.network.SearchCharacterQuery
 
@@ -7,8 +8,8 @@ data class Character(
     val id: Int,
     val name: CharacterName?,
     val description: String? = "",
-    val age: String?,
-    val gender: String?,
+    val age: String? = "",
+    val gender: String? = null,
     val image: String?,
     val dateOfBirth: DateOfBirth? = null,
     val animes: List<Anime?>? = emptyList()
@@ -65,4 +66,13 @@ private fun CharacterQuery.DateOfBirth.toDateOfBirth() = DateOfBirth(
     month = this.month,
     day = this.day
 
+)
+internal fun AnimeQuery.Node.toCharacter() = Character(
+    id = this.id,
+    name = this.name?.toCharacterName(),
+    image = this.image?.medium
+)
+private fun AnimeQuery.Name.toCharacterName() = CharacterName(
+    full = this.full,
+    native = ""
 )

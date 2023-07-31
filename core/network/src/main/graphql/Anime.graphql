@@ -38,6 +38,7 @@ query Anime($mediaId: Int, $page: Int, $perPage: Int) {
         recommendations {
             nodes {
                 media {
+                    id
                     title {
                         native
                         english

@@ -1,13 +1,13 @@
 package com.mumbicodes.search
 
-import com.mumbicodes.network.SearchAnimeQuery
+import com.mumbicodes.model.data.Anime
 import com.mumbicodes.network.SearchCharacterQuery
 
 sealed interface AnimeSearchUiState {
     object Loading : AnimeSearchUiState
 
     data class AnimeResults(
-        val data: List<SearchAnimeQuery.Medium>
+        val data: List<Anime>
     ) : AnimeSearchUiState
 
     data class Error(val errorMessage: String) : AnimeSearchUiState

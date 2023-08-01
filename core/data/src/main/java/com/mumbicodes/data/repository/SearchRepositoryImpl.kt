@@ -7,6 +7,8 @@ import com.apollographql.apollo3.cache.normalized.fetchPolicy
 import com.mumbicodes.common.result.Result
 import com.mumbicodes.common.result.asResult
 import com.mumbicodes.domain.repository.SearchRepository
+import com.mumbicodes.model.data.Anime
+import com.mumbicodes.model.data.toModelAnime
 import com.mumbicodes.network.SearchAnimeQuery
 import com.mumbicodes.network.SearchCharacterQuery
 import com.mumbicodes.network.type.MediaFormat
@@ -20,13 +22,15 @@ class SearchRepositoryImpl(private val apolloClient: ApolloClient) : SearchRepos
         type: MediaType?,
         sortList: List<MediaSort>?,
         formatIn: List<MediaFormat>?
-    ): Flow<Result<List<SearchAnimeQuery.Medium>>> {
+    ): Flow<Result<List<Anime>>> {
         return apolloClient.query(
             SearchAnimeQuery(search = Optional.present(searchParam))
         ).fetchPolicy(FetchPolicy.NetworkFirst)
             .toFlow()
             .asResult {
-                it.Page?.media?.filterNotNull().orEmpty()
+                it.Page?.media?.filterNotNull().orEmpty().map { searchAnimeQueryMedium ->
+                    searchAnimeQueryMedium.toModelAnime()
+                }
             }
     }
 

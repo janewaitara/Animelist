@@ -136,7 +136,7 @@ fun LocalMediaSort.toNetworkMediaType(): MediaSort = when (this) {
     LocalMediaSort.TRENDING -> MediaSort.TRENDING
 }
 
-private fun LocalMediaFormat.toLocalMediaFormat(): MediaFormat = when (this) {
+fun LocalMediaFormat.toNetworkMediaFormat(): MediaFormat = when (this) {
     LocalMediaFormat.TV -> MediaFormat.TV
     LocalMediaFormat.TV_SHORT -> MediaFormat.TV_SHORT
     LocalMediaFormat.MOVIE -> MediaFormat.MOVIE

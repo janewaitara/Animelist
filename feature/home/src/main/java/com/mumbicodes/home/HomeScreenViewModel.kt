@@ -5,9 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.mumbicodes.common.result.Result
 import com.mumbicodes.domain.repository.AnimeRepository
 import com.mumbicodes.model.data.Anime
-import com.mumbicodes.network.type.MediaFormat
-import com.mumbicodes.network.type.MediaSort
-import com.mumbicodes.network.type.MediaType
+import com.mumbicodes.model.data.LocalMediaFormat
+import com.mumbicodes.model.data.LocalMediaSort
+import com.mumbicodes.model.data.LocalMediaType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -57,14 +57,14 @@ class HomeScreenViewModel @Inject constructor
         animeRepository.getAnimeList(
             page = 0,
             perPage = 30,
-            type = MediaType.ANIME,
-            sortList = listOf(MediaSort.POPULARITY),
+            type = LocalMediaType.ANIME,
+            sortList = listOf(LocalMediaSort.POPULARITY),
             formatIn = listOf(
-                MediaFormat.MOVIE,
-                MediaFormat.MUSIC,
-                MediaFormat.TV,
-                MediaFormat.SPECIAL,
-                MediaFormat.MANGA
+                LocalMediaFormat.MOVIE,
+                LocalMediaFormat.MUSIC,
+                LocalMediaFormat.TV,
+                LocalMediaFormat.SPECIAL,
+                LocalMediaFormat.MANGA
             )
         )
 
@@ -99,14 +99,14 @@ class HomeScreenViewModel @Inject constructor
         animeRepository.getAnimeList(
             page = 0,
             perPage = 30,
-            type = MediaType.ANIME,
-            sortList = listOf(MediaSort.TRENDING),
+            type = LocalMediaType.ANIME,
+            sortList = listOf(LocalMediaSort.TRENDING),
             formatIn = listOf(
-                MediaFormat.MOVIE,
-                MediaFormat.MUSIC,
-                MediaFormat.TV,
-                MediaFormat.SPECIAL,
-                MediaFormat.MANGA
+                LocalMediaFormat.MOVIE,
+                LocalMediaFormat.MUSIC,
+                LocalMediaFormat.TV,
+                LocalMediaFormat.SPECIAL,
+                LocalMediaFormat.MANGA
             )
         )
 
@@ -137,7 +137,8 @@ class HomeScreenViewModel @Inject constructor
 
     val trendingUiState: StateFlow<TrendingAnimeStates> = _trendingUiState
 
-    private val _animeSortType: MutableStateFlow<AnimeSortType> = MutableStateFlow(AnimeSortType.RECOMMENDED)
+    private val _animeSortType: MutableStateFlow<AnimeSortType> =
+        MutableStateFlow(AnimeSortType.RECOMMENDED)
     val animeSortType = _animeSortType.asStateFlow()
 
     /**

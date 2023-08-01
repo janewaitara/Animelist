@@ -2,9 +2,9 @@ package com.mumbicodes.domain.repository
 
 import com.mumbicodes.common.result.Result
 import com.mumbicodes.model.data.Anime
-import com.mumbicodes.network.type.MediaFormat
-import com.mumbicodes.network.type.MediaSort
-import com.mumbicodes.network.type.MediaType
+import com.mumbicodes.model.data.LocalMediaFormat
+import com.mumbicodes.model.data.LocalMediaSort
+import com.mumbicodes.model.data.LocalMediaType
 import kotlinx.coroutines.flow.Flow
 
 interface AnimeRepository {
@@ -12,9 +12,9 @@ interface AnimeRepository {
     fun getAnimeList(
         page: Int?,
         perPage: Int?,
-        type: MediaType?,
-        sortList: List<MediaSort>?,
-        formatIn: List<MediaFormat>?
+        type: LocalMediaType?,
+        sortList: List<LocalMediaSort>?,
+        formatIn: List<LocalMediaFormat>?
     ): Flow<Result<List<Anime>>>
 
     fun getRecommendations(): Flow<Result<List<Anime>>>

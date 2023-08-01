@@ -8,30 +8,36 @@ import com.mumbicodes.common.result.Result
 import com.mumbicodes.common.result.asResult
 import com.mumbicodes.domain.repository.AnimeRepository
 import com.mumbicodes.model.data.Anime
+import com.mumbicodes.model.data.LocalMediaFormat
+import com.mumbicodes.model.data.LocalMediaSort
+import com.mumbicodes.model.data.LocalMediaType
 import com.mumbicodes.model.data.toModelAnime
+import com.mumbicodes.model.data.toNetworkMediaFormat
+import com.mumbicodes.model.data.toNetworkMediaType
 import com.mumbicodes.network.AnimeListQuery
 import com.mumbicodes.network.AnimeQuery
 import com.mumbicodes.network.RecommendationsQuery
-import com.mumbicodes.network.type.MediaFormat
-import com.mumbicodes.network.type.MediaSort
-import com.mumbicodes.network.type.MediaType
 import kotlinx.coroutines.flow.Flow
 
 class AnimeRepositoryImpl(private val apolloClient: ApolloClient) : AnimeRepository {
     override fun getAnimeList(
         page: Int?,
         perPage: Int?,
-        type: MediaType?,
-        sortList: List<MediaSort>?,
-        formatIn: List<MediaFormat>?
+        type: LocalMediaType?,
+        sortList: List<LocalMediaSort>?,
+        formatIn: List<LocalMediaFormat>?
     ): Flow<Result<List<Anime>>> {
         return apolloClient.query(
             AnimeListQuery(
                 page = Optional.presentIfNotNull(page),
                 perPage = Optional.presentIfNotNull(perPage),
-                type = Optional.presentIfNotNull(type),
-                sort = Optional.presentIfNotNull(sortList),
-                formatIn = Optional.presentIfNotNull(formatIn)
+                type = Optional.presentIfNotNull(type?.toNetworkMediaType()),
+                sort = Optional.presentIfNotNull(sortList?.map { it.toNetworkMediaType() }),
+                formatIn = Optional.presentIfNotNull(
+                    formatIn?.map {
+                        it.toNetworkMediaFormat()
+                    }
+                )
             )
         ).fetchPolicy(FetchPolicy.NetworkFirst).toFlow().asResult {
             it.Page?.media?.filterNotNull().orEmpty().map { animeListQueryMedium ->

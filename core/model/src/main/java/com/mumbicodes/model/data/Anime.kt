@@ -113,6 +113,20 @@ fun LocalMediaType.toNetworkMediaType(): MediaType = when (this) {
     LocalMediaType.MANGA -> MediaType.MANGA
 }
 
+private fun LocalMediaFormat.toLocalMediaFormat(): MediaFormat = when (this) {
+    LocalMediaFormat.TV -> MediaFormat.TV
+    LocalMediaFormat.TV_SHORT -> MediaFormat.TV_SHORT
+    LocalMediaFormat.MOVIE -> MediaFormat.MOVIE
+    LocalMediaFormat.SPECIAL -> MediaFormat.SPECIAL
+    LocalMediaFormat.OVA -> MediaFormat.OVA
+    LocalMediaFormat.ONA -> MediaFormat.ONA
+    LocalMediaFormat.MUSIC -> MediaFormat.MUSIC
+    LocalMediaFormat.MANGA -> MediaFormat.MANGA
+    LocalMediaFormat.NOVEL -> MediaFormat.NOVEL
+    LocalMediaFormat.ONE_SHOT -> MediaFormat.ONE_SHOT
+    LocalMediaFormat.UNKNOWN -> MediaFormat.UNKNOWN__
+}
+
 internal fun CharacterQuery.Node.toAnime() = Anime(
     id = this.id,
     coverImage = this.coverImage?.medium,

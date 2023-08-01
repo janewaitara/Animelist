@@ -2,7 +2,7 @@ package com.mumbicodes.domain.repository
 
 import com.mumbicodes.common.result.Result
 import com.mumbicodes.model.data.Anime
-import com.mumbicodes.network.SearchCharacterQuery
+import com.mumbicodes.model.data.Character
 import com.mumbicodes.network.type.MediaFormat
 import com.mumbicodes.network.type.MediaSort
 import com.mumbicodes.network.type.MediaType
@@ -17,5 +17,5 @@ interface SearchRepository {
         formatIn: List<MediaFormat>?
     ): Flow<Result<List<Anime>>>
 
-    fun searchCharacter(searchParam: String): Flow<Result<List<SearchCharacterQuery.Character>>>
+    fun searchCharacter(searchParam: String): Flow<Result<List<Character>>>
 }

@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.mumbicodes.common.result.Result
 import com.mumbicodes.domain.repository.SearchRepository
 import com.mumbicodes.model.data.Anime
-import com.mumbicodes.network.SearchCharacterQuery
+import com.mumbicodes.model.data.Character
 import com.mumbicodes.network.type.MediaFormat
 import com.mumbicodes.network.type.MediaSort
 import com.mumbicodes.network.type.MediaType
@@ -101,7 +101,7 @@ class SearchViewModel @Inject constructor(
         savedStateHandle[SEARCH_QUERY] = searchParam
     }
 
-    private fun searchCharacter(searchParam: String): Flow<Result<List<SearchCharacterQuery.Character>>> =
+    private fun searchCharacter(searchParam: String): Flow<Result<List<Character>>> =
         searchRepository.searchCharacter(searchParam = searchParam)
 
     private fun searchAnime(searchParam: String): Flow<Result<List<Anime>>> =

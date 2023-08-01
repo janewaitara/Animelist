@@ -8,7 +8,9 @@ import com.mumbicodes.common.result.Result
 import com.mumbicodes.common.result.asResult
 import com.mumbicodes.domain.repository.SearchRepository
 import com.mumbicodes.model.data.Anime
+import com.mumbicodes.model.data.Character
 import com.mumbicodes.model.data.toModelAnime
+import com.mumbicodes.model.data.toModelCharacter
 import com.mumbicodes.network.SearchAnimeQuery
 import com.mumbicodes.network.SearchCharacterQuery
 import com.mumbicodes.network.type.MediaFormat
@@ -34,13 +36,15 @@ class SearchRepositoryImpl(private val apolloClient: ApolloClient) : SearchRepos
             }
     }
 
-    override fun searchCharacter(searchParam: String): Flow<Result<List<SearchCharacterQuery.Character>>> {
+    override fun searchCharacter(searchParam: String): Flow<Result<List<Character>>> {
         return apolloClient.query(
             SearchCharacterQuery(search = Optional.present(searchParam))
         ).fetchPolicy(FetchPolicy.NetworkFirst)
             .toFlow()
             .asResult {
-                it.Page?.characters?.filterNotNull().orEmpty()
+                it.Page?.characters?.filterNotNull().orEmpty().map { searchCharacterQueryCharacter ->
+                    searchCharacterQueryCharacter.toModelCharacter()
+                }
             }
     }
 }

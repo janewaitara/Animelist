@@ -7,6 +7,8 @@ import com.apollographql.apollo3.cache.normalized.fetchPolicy
 import com.mumbicodes.common.result.Result
 import com.mumbicodes.common.result.asResult
 import com.mumbicodes.domain.repository.AnimeRepository
+import com.mumbicodes.model.data.Anime
+import com.mumbicodes.model.data.toModelAnime
 import com.mumbicodes.network.AnimeListQuery
 import com.mumbicodes.network.AnimeQuery
 import com.mumbicodes.network.RecommendationsQuery
@@ -36,13 +38,15 @@ class AnimeRepositoryImpl(private val apolloClient: ApolloClient) : AnimeReposit
         }
     }
 
-    override fun getRecommendations(): Flow<Result<List<RecommendationsQuery.Recommendation>>> {
+    override fun getRecommendations(): Flow<Result<List<Anime>>> {
         return apolloClient.query(
             RecommendationsQuery()
         ).fetchPolicy(FetchPolicy.NetworkFirst)
             .toFlow()
             .asResult {
-                it.Page?.recommendations?.filterNotNull().orEmpty()
+                it.Page?.recommendations?.filterNotNull().orEmpty().map { recommendationsQuery ->
+                    recommendationsQuery.media!!.toModelAnime()
+                }
             }
     }
 

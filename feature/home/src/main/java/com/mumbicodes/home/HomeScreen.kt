@@ -35,7 +35,7 @@ fun HomeScreen(
                     )
                     Text(
                         text = (recommendedAnimesUiStates as RecommendedAnimesUiStates.RecommendedAnimes)
-                            .recommended.first().media?.title?.english
+                            .recommended.first().title?.english
                             ?: emptyString,
                         modifier = modifier.clickable {
                             onAnimeClicked()

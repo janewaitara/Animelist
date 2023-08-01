@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mumbicodes.common.result.Result
 import com.mumbicodes.domain.repository.AnimeRepository
+import com.mumbicodes.model.data.Anime
 import com.mumbicodes.network.AnimeListQuery
-import com.mumbicodes.network.RecommendationsQuery
 import com.mumbicodes.network.type.MediaFormat
 import com.mumbicodes.network.type.MediaSort
 import com.mumbicodes.network.type.MediaType
@@ -23,7 +23,7 @@ import javax.inject.Inject
 class HomeScreenViewModel @Inject constructor
 (private val animeRepository: AnimeRepository) : ViewModel() {
 
-    private val recommendedAnimes: Flow<Result<List<RecommendationsQuery.Recommendation>>> =
+    private val recommendedAnimes: Flow<Result<List<Anime>>> =
         animeRepository.getRecommendations()
 
     private var _recommendedUiState: StateFlow<RecommendedAnimesUiStates> =

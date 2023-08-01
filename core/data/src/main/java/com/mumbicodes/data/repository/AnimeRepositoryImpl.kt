@@ -50,7 +50,7 @@ class AnimeRepositoryImpl(private val apolloClient: ApolloClient) : AnimeReposit
             }
     }
 
-    override fun getAnime(animeId: Int, page: Int?, perPage: Int?): Flow<Result<AnimeQuery.Media>> {
+    override fun getAnime(animeId: Int, page: Int?, perPage: Int?): Flow<Result<Anime>> {
         return apolloClient.query(
             AnimeQuery(
                 mediaId = Optional.present(animeId),
@@ -60,7 +60,7 @@ class AnimeRepositoryImpl(private val apolloClient: ApolloClient) : AnimeReposit
         ).fetchPolicy(FetchPolicy.NetworkFirst)
             .toFlow()
             .asResult {
-                it.Media!!
+                it.Media!!.toModelAnime()
             }
     }
 }

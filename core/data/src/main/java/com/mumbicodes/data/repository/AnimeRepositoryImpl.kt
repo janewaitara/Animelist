@@ -24,7 +24,7 @@ class AnimeRepositoryImpl(private val apolloClient: ApolloClient) : AnimeReposit
         type: MediaType?,
         sortList: List<MediaSort>?,
         formatIn: List<MediaFormat>?
-    ): Flow<Result<List<AnimeListQuery.Medium>>> {
+    ): Flow<Result<List<Anime>>> {
         return apolloClient.query(
             AnimeListQuery(
                 page = Optional.presentIfNotNull(page),
@@ -34,7 +34,9 @@ class AnimeRepositoryImpl(private val apolloClient: ApolloClient) : AnimeReposit
                 formatIn = Optional.presentIfNotNull(formatIn)
             )
         ).fetchPolicy(FetchPolicy.NetworkFirst).toFlow().asResult {
-            it.Page?.media?.filterNotNull().orEmpty()
+            it.Page?.media?.filterNotNull().orEmpty().map { animeListQueryMedium ->
+                animeListQueryMedium.toModelAnime()
+            }
         }
     }
 

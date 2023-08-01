@@ -79,7 +79,8 @@ fun HomeScreen(
                     Text(
                         text = (popularAnimeUiStates as PopularAnimeStates.PopularAnimes)
                             .popular.first().title?.english
-                            ?: emptyString,
+                            ?: (popularAnimeUiStates as PopularAnimeStates.PopularAnimes)
+                                .popular.first().title?.romaji ?: emptyString,
                         modifier = modifier.clickable {
                             onAnimeClicked()
                         }

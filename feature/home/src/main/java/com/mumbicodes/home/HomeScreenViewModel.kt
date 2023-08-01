@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.mumbicodes.common.result.Result
 import com.mumbicodes.domain.repository.AnimeRepository
 import com.mumbicodes.model.data.Anime
-import com.mumbicodes.network.AnimeListQuery
 import com.mumbicodes.network.type.MediaFormat
 import com.mumbicodes.network.type.MediaSort
 import com.mumbicodes.network.type.MediaType
@@ -54,7 +53,7 @@ class HomeScreenViewModel @Inject constructor
     val recommendedUiState: StateFlow<RecommendedAnimesUiStates> = _recommendedUiState
 
     // TODO think of a better way to manage the data classes
-    private val popularAnimes: Flow<Result<List<AnimeListQuery.Medium>>> =
+    private val popularAnimes: Flow<Result<List<Anime>>> =
         animeRepository.getAnimeList(
             page = 0,
             perPage = 30,
@@ -96,7 +95,7 @@ class HomeScreenViewModel @Inject constructor
 
     val popularUiState: StateFlow<PopularAnimeStates> = _popularUiState
 
-    private val trendingAnimes: Flow<Result<List<AnimeListQuery.Medium>>> =
+    private val trendingAnimes: Flow<Result<List<Anime>>> =
         animeRepository.getAnimeList(
             page = 0,
             perPage = 30,

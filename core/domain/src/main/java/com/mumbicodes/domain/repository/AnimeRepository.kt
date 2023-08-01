@@ -2,7 +2,6 @@ package com.mumbicodes.domain.repository
 
 import com.mumbicodes.common.result.Result
 import com.mumbicodes.model.data.Anime
-import com.mumbicodes.network.AnimeListQuery
 import com.mumbicodes.network.type.MediaFormat
 import com.mumbicodes.network.type.MediaSort
 import com.mumbicodes.network.type.MediaType
@@ -16,7 +15,7 @@ interface AnimeRepository {
         type: MediaType?,
         sortList: List<MediaSort>?,
         formatIn: List<MediaFormat>?
-    ): Flow<Result<List<AnimeListQuery.Medium>>>
+    ): Flow<Result<List<Anime>>>
 
     fun getRecommendations(): Flow<Result<List<Anime>>>
 

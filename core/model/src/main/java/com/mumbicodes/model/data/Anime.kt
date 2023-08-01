@@ -107,6 +107,12 @@ fun AnimeListQuery.Medium.toModelAnime() = Anime(
     duration = this.duration,
     episodes = this.episodes
 )
+
+fun LocalMediaType.toNetworkMediaType(): MediaType = when (this) {
+    LocalMediaType.ANIME -> MediaType.ANIME
+    LocalMediaType.MANGA -> MediaType.MANGA
+}
+
 internal fun CharacterQuery.Node.toAnime() = Anime(
     id = this.id,
     coverImage = this.coverImage?.medium,

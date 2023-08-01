@@ -6,6 +6,7 @@ import com.mumbicodes.network.CharacterQuery
 import com.mumbicodes.network.RecommendationsQuery
 import com.mumbicodes.network.SearchAnimeQuery
 import com.mumbicodes.network.type.MediaFormat
+import com.mumbicodes.network.type.MediaSort
 import com.mumbicodes.network.type.MediaType
 
 data class Anime(
@@ -53,6 +54,17 @@ enum class LocalMediaFormat {
     NOVEL,
     ONE_SHOT,
     UNKNOWN
+}
+
+enum class LocalMediaSort {
+    TYPE,
+    TYPE_DESC,
+    FORMAT,
+    FORMAT_DESC,
+    POPULARITY,
+    POPULARITY_DESC,
+    TRENDING,
+    TRENDING_DESC
 }
 
 /**
@@ -111,6 +123,17 @@ fun AnimeListQuery.Medium.toModelAnime() = Anime(
 fun LocalMediaType.toNetworkMediaType(): MediaType = when (this) {
     LocalMediaType.ANIME -> MediaType.ANIME
     LocalMediaType.MANGA -> MediaType.MANGA
+}
+
+fun LocalMediaSort.toNetworkMediaType(): MediaSort = when (this) {
+    LocalMediaSort.TYPE -> MediaSort.TYPE
+    LocalMediaSort.TYPE_DESC -> MediaSort.TYPE_DESC
+    LocalMediaSort.FORMAT -> MediaSort.FORMAT
+    LocalMediaSort.FORMAT_DESC -> MediaSort.FORMAT_DESC
+    LocalMediaSort.POPULARITY -> MediaSort.POPULARITY
+    LocalMediaSort.POPULARITY_DESC -> MediaSort.POPULARITY_DESC
+    LocalMediaSort.TRENDING_DESC -> MediaSort.TRENDING_DESC
+    LocalMediaSort.TRENDING -> MediaSort.TRENDING
 }
 
 private fun LocalMediaFormat.toLocalMediaFormat(): MediaFormat = when (this) {

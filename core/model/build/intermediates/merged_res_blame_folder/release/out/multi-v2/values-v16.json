@@ -1,0 +1,72 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.mumbicodes.model-merged_res-19:/values-v16/values-v16.xml",
+            "map": [
+                {
+                    "source": "/Users/waitara/.gradle/caches/transforms-3/4372217e3f39e9ad7ef86aeb38e38a7b/transformed/core-1.10.0/res/values-v16/values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "65",
+                        "endOffsets": "116"
+                    }
+                },
+                {
+                    "source": "/Users/waitara/.gradle/caches/transforms-3/fd074f1e5858246d2aa6bd03e82d2e38/transformed/appcompat-1.6.1/res/values-v16/values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "5",
+                        "endColumns": "12",
+                        "endOffsets": "223"
+                    },
+                    "to": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "121",
+                        "endLines": "6",
+                        "endColumns": "12",
+                        "endOffsets": "289"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "com.mumbicodes.model-mergeReleaseResources-17:/values-v16/values-v16.xml",
+            "map": [
+                {
+                    "source": "/Users/waitara/.gradle/caches/transforms-3/4372217e3f39e9ad7ef86aeb38e38a7b/transformed/core-1.10.0/res/values-v16/values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "65",
+                        "endOffsets": "116"
+                    }
+                },
+                {
+                    "source": "/Users/waitara/.gradle/caches/transforms-3/fd074f1e5858246d2aa6bd03e82d2e38/transformed/appcompat-1.6.1/res/values-v16/values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "5",
+                        "endColumns": "12",
+                        "endOffsets": "223"
+                    },
+                    "to": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "121",
+                        "endLines": "6",
+                        "endColumns": "12",
+                        "endOffsets": "289"
+                    }
+                }
+            ]
+        }
+    ]
+}

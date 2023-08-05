@@ -28,8 +28,8 @@ android {
 dependencies {
 
     implementation(project(":core:domain"))
-    implementation(project(":core:network"))
     implementation(project(":core:common"))
+    implementation(project(":core:model"))
 
     implementation(libs.androidx.appCompat)
 

@@ -24,9 +24,8 @@ android {
 }
 
 dependencies {
-
-    implementation(project(":core:network"))
     implementation(project(":core:common"))
+    implementation(project(":core:model"))
 
     // Enables formatting rule set in detekt
     detektPlugins(libs.detekt.formatting)

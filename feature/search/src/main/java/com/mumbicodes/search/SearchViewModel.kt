@@ -5,11 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mumbicodes.common.result.Result
 import com.mumbicodes.domain.repository.SearchRepository
-import com.mumbicodes.network.SearchAnimeQuery
-import com.mumbicodes.network.SearchCharacterQuery
-import com.mumbicodes.network.type.MediaFormat
-import com.mumbicodes.network.type.MediaSort
-import com.mumbicodes.network.type.MediaType
+import com.mumbicodes.model.data.Anime
+import com.mumbicodes.model.data.Character
+import com.mumbicodes.model.data.LocalMediaFormat
+import com.mumbicodes.model.data.LocalMediaSort
+import com.mumbicodes.model.data.LocalMediaType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -101,25 +101,25 @@ class SearchViewModel @Inject constructor(
         savedStateHandle[SEARCH_QUERY] = searchParam
     }
 
-    private fun searchCharacter(searchParam: String): Flow<Result<List<SearchCharacterQuery.Character>>> =
+    private fun searchCharacter(searchParam: String): Flow<Result<List<Character>>> =
         searchRepository.searchCharacter(searchParam = searchParam)
 
-    private fun searchAnime(searchParam: String): Flow<Result<List<SearchAnimeQuery.Medium>>> =
+    private fun searchAnime(searchParam: String): Flow<Result<List<Anime>>> =
         searchRepository.searchAnime(
             searchParam = searchParam,
-            type = MediaType.ANIME,
+            type = LocalMediaType.ANIME,
             sortList = listOf(
-                MediaSort.TRENDING,
-                MediaSort.POPULARITY,
-                MediaSort.FORMAT,
-                MediaSort.TYPE
+                LocalMediaSort.TRENDING,
+                LocalMediaSort.POPULARITY,
+                LocalMediaSort.FORMAT,
+                LocalMediaSort.TYPE
             ),
             formatIn = listOf(
-                MediaFormat.MOVIE,
-                MediaFormat.MUSIC,
-                MediaFormat.TV,
-                MediaFormat.SPECIAL,
-                MediaFormat.MANGA
+                LocalMediaFormat.MOVIE,
+                LocalMediaFormat.MUSIC,
+                LocalMediaFormat.TV,
+                LocalMediaFormat.SPECIAL,
+                LocalMediaFormat.MANGA
             )
         )
 }

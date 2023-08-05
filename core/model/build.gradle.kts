@@ -1,12 +1,11 @@
 plugins {
     id("animelist.android.library")
-    id("animelist.android.hilt")
     id("org.jlleitschuh.gradle.ktlint")
     id("io.gitlab.arturbosch.detekt")
 }
 
 android {
-    namespace = "com.mumbicodes.data"
+    namespace = "com.mumbicodes.model"
 
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -25,16 +24,10 @@ android {
 }
 
 dependencies {
-
     implementation(project(":core:network"))
-    implementation(project(":core:domain"))
-    implementation(project(":core:common"))
-    implementation(project(":core:model"))
+
+    implementation(libs.androidx.appCompat)
 
     // Enables formatting rule set in detekt
     detektPlugins(libs.detekt.formatting)
-
-    // ApolloGraphql
-    implementation(libs.apollographql)
-    implementation(libs.apollographql.inMemoryCache)
 }

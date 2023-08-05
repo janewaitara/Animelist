@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mumbicodes.common.result.Result
 import com.mumbicodes.domain.repository.CharacterRepository
-import com.mumbicodes.network.CharacterQuery
+import com.mumbicodes.model.data.Character
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
@@ -44,6 +44,6 @@ class CharacterViewModel @Inject constructor(
             initialValue = CharacterScreenUiState.Loading
         )
 
-    private fun getCharacterById(characterId: Int): Flow<Result<CharacterQuery.Character>> =
+    private fun getCharacterById(characterId: Int): Flow<Result<Character>> =
         characterRepository.getCharacter(characterId = characterId)
 }

@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mumbicodes.common.result.Result
 import com.mumbicodes.domain.repository.AnimeRepository
-import com.mumbicodes.network.AnimeQuery
+import com.mumbicodes.model.data.Anime
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
@@ -47,7 +47,7 @@ class AnimeViewModel @Inject constructor(
         initialValue = AnimeDetailsScreenUiState.Loading
     )
 
-    private fun getAnime(animeId: Int): Flow<Result<AnimeQuery.Media>> {
+    private fun getAnime(animeId: Int): Flow<Result<Anime>> {
         return animeRepository.getAnime(
             animeId = animeId,
             page = 0,

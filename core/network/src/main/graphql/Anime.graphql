@@ -1,5 +1,6 @@
 query Anime($mediaId: Int, $page: Int, $perPage: Int) {
     Media(id: $mediaId) {
+        id
         bannerImage
         coverImage {
             medium
@@ -37,6 +38,7 @@ query Anime($mediaId: Int, $page: Int, $perPage: Int) {
         recommendations {
             nodes {
                 media {
+                    id
                     title {
                         native
                         english

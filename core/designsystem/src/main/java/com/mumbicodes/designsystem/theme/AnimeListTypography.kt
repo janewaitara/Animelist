@@ -27,13 +27,13 @@ data class AnimeListTypography(
         fontFamily = outFitFont,
         fontWeight = FontWeight.Medium,
         fontSize = 32.sp,
-        lineHeight = 44.sp,
+        lineHeight = 44.sp
     ),
     val titleSmall: TextStyle = TextStyle(
         fontFamily = outFitFont,
         fontWeight = FontWeight.Medium,
         fontSize = 24.sp,
-        lineHeight = 32.sp,
+        lineHeight = 32.sp
     ),
     val subTitle: TextStyle = TextStyle(
         fontFamily = outFitFont,
@@ -46,30 +46,30 @@ data class AnimeListTypography(
         fontFamily = outFitFont,
         fontWeight = FontWeight.Medium,
         fontSize = 18.sp,
-        lineHeight = 24.sp,
+        lineHeight = 24.sp
     ),
     val bodyMediumBold: TextStyle = TextStyle(
         fontFamily = outFitFont,
         fontWeight = FontWeight.Medium,
         fontSize = 16.sp,
-        lineHeight = 24.sp,
+        lineHeight = 24.sp
     ),
     val bodyMedium: TextStyle = TextStyle(
         fontFamily = outFitFont,
         fontWeight = FontWeight.Light,
         fontSize = 16.sp,
-        lineHeight = 24.sp,
+        lineHeight = 24.sp
     ),
     val bodySmall: TextStyle = TextStyle(
         fontFamily = outFitFont,
         fontWeight = FontWeight.Light,
         fontSize = 14.sp,
-        lineHeight = 20.sp,
+        lineHeight = 20.sp
     ),
     val bodyExtraSmall: TextStyle = TextStyle(
         fontFamily = outFitFont,
         fontWeight = FontWeight.Light,
         fontSize = 12.sp,
-        lineHeight = 16.sp,
-    ),
+        lineHeight = 16.sp
+    )
 )

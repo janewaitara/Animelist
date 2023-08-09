@@ -113,3 +113,37 @@ fun Modifier.mediumShadow(
 } else {
     this
 }
+
+/**
+ * Check how this will appear on dark Mode
+ * This is shadow used on the primary buttons
+ * */
+@Stable
+fun Modifier.buttonShadow(
+    elevation: Dp = 8.dp,
+    shape: Shape = RectangleShape,
+    clip: Boolean = elevation > 0.dp,
+    ambientColor: Color = Color(0xFFFF7300).copy(alpha = 0.75f),
+    spotColor: Color = Color(0xFFFF7300).copy(alpha = 0.75f)
+) = if (elevation > 0.dp || clip) {
+    inspectable(
+        inspectorInfo = debugInspectorInfo {
+            name = "shadow"
+            properties["elevation"] = elevation
+            properties["shape"] = shape
+            properties["clip"] = clip
+            properties["ambientColor"] = ambientColor
+            properties["spotColor"] = spotColor
+        }
+    ) {
+        graphicsLayer {
+            this.shadowElevation = elevation.toPx()
+            this.shape = shape
+            this.clip = clip
+            this.ambientShadowColor = ambientColor
+            this.spotShadowColor = spotColor
+        }
+    }
+} else {
+    this
+}

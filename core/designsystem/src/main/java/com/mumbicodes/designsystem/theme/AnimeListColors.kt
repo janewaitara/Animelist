@@ -29,6 +29,55 @@ data class AnimeListColors(
     val surfaceBorderInfo: Color
 )
 
+fun lightAnimeListColors(
+    background: Color = Background_light,
+    cardColors: Color = Background_white,
+    primary: Color = Pumpkin_400,
+    onPrimary: Color = Pumpkin_100,
+    surfacePrimaryHover: Color = Pumpkin_500,
+    surfacePrimaryDisabled: Color = Pumpkin_200,
+    surfacePrimaryBorder: Color = Pumpkin_200,
+    textStrong: Color = Grey_800,
+    textNeutral: Color = Grey_700,
+    textWeak: Color = Grey_500,
+    error: Color = FireEngine_400,
+    onError: Color = FireEngine_100,
+    darkErrorText: Color = FireEngine_500,
+    surfaceBorderError: Color = FireEngine_200,
+    success: Color = DarkPastel_400,
+    onSuccess: Color = DarkPastel_100,
+    darkSuccessText: Color = DarkPastel_600,
+    surfaceBorderSuccess: Color = DarkPastel_300,
+    info: Color = Azure_400,
+    onInfo: Color = Azure_100,
+    darkInfoText: Color = Azure_600,
+    surfaceBorderInfo: Color = Azure_300
+) = AnimeListColors(
+    background = background,
+    cardColors = cardColors,
+    primary = primary,
+    onPrimary = onPrimary,
+    surfacePrimaryHover = surfacePrimaryHover,
+    surfacePrimaryDisabled = surfacePrimaryDisabled,
+    surfacePrimaryBorder = surfacePrimaryBorder,
+    textStrong = textStrong,
+    textNeutral = textNeutral,
+    textWeak = textWeak,
+    error = error,
+    onError = onError,
+    darkErrorText = darkErrorText,
+    surfaceBorderError = surfaceBorderError,
+    success = success,
+    onSuccess = onSuccess,
+    darkSuccessText = darkSuccessText,
+    surfaceBorderSuccess = surfaceBorderSuccess,
+    info = info,
+    onInfo = onInfo,
+    darkInfoText = darkInfoText,
+    surfaceBorderInfo = surfaceBorderInfo
+
+)
+
 // Pumpkin Orange
 val Pumpkin_700 = Color(0xFF492100)
 val Pumpkin_600 = Color(0xFF924200)

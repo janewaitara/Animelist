@@ -1,5 +1,5 @@
 # Animelist
-A multimodule Jetpack compose app that shows animes 
+A multimodule Jetpack compose app that fetches and shows animes from anilist. Has a custom design system implemented. 
 
 # Tech Stack
 

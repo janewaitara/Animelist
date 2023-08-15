@@ -36,8 +36,6 @@ import androidx.navigation.NavDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.mumbicodes.animelist.ui.theme.AnimelistTheme
-import com.mumbicodes.designsystem.theme.AnimeListSpacing.Space48dp
-import com.mumbicodes.designsystem.theme.AnimeListSpacing.Space4dp
 
 // TODO research how to move this to design system currently, it causes gradle errors cause of adding app module
 @Composable
@@ -91,7 +89,7 @@ fun RowScope.AddItem(
                 ActiveBarItemIndicator(
                     modifier = Modifier
                         .size(
-                            width = Space48dp,
+                            width = 48.dp,
                             height = 40.dp
                         )
                         .offset(y = (-40).dp)
@@ -148,7 +146,7 @@ fun ActiveBarItemIndicator(modifier: Modifier = Modifier) {
             )
             drawCircle(
                 color = dotIndicatorColor,
-                radius = Space4dp.toPx(),
+                radius = 4.dp.toPx(),
                 center = Offset(size.width / 2, size.height / 4),
                 alpha = 1f,
                 style = Fill

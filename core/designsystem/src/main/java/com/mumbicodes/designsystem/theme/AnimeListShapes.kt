@@ -2,6 +2,7 @@ package com.mumbicodes.designsystem.theme
 
 import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.unit.dp
 
 data class AnimeListShapes(
@@ -9,3 +10,7 @@ data class AnimeListShapes(
     val mediumShape: CornerBasedShape = RoundedCornerShape(8.dp),
     val largeShape: CornerBasedShape = RoundedCornerShape(36.dp)
 )
+
+val LocalAnimeListShapes = staticCompositionLocalOf {
+    AnimeListShapes()
+}

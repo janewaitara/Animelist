@@ -1,5 +1,6 @@
 package com.mumbicodes.designsystem.theme
 
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
@@ -17,3 +18,7 @@ data class AnimeListSpacing(
     val space36dp: Dp = 36.dp,
     val space48dp: Dp = 48.dp
 )
+
+val LocalAnimeListSpace = staticCompositionLocalOf {
+    AnimeListSpacing()
+}

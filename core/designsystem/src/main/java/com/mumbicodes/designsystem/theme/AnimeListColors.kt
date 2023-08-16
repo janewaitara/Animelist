@@ -27,7 +27,9 @@ data class AnimeListColors(
     val info: Color,
     val onInfo: Color,
     val darkInfoText: Color,
-    val surfaceBorderInfo: Color
+    val surfaceBorderInfo: Color,
+    val bottomNavBackground: Color,
+    val bottomNavContentColor: Color
 )
 
 fun lightAnimeListColors(
@@ -52,7 +54,9 @@ fun lightAnimeListColors(
     info: Color = Azure_400,
     onInfo: Color = Azure_100,
     darkInfoText: Color = Azure_600,
-    surfaceBorderInfo: Color = Azure_300
+    surfaceBorderInfo: Color = Azure_300,
+    bottomNavBackground: Color = Background_white,
+    bottomNavContentColor: Color = Grey_600
 ) = AnimeListColors(
     background = background,
     cardColors = cardColors,
@@ -75,7 +79,9 @@ fun lightAnimeListColors(
     info = info,
     onInfo = onInfo,
     darkInfoText = darkInfoText,
-    surfaceBorderInfo = surfaceBorderInfo
+    surfaceBorderInfo = surfaceBorderInfo,
+    bottomNavBackground = bottomNavBackground,
+    bottomNavContentColor = bottomNavContentColor
 
 )
 
@@ -101,7 +107,9 @@ fun darkAnimeListColors(
     info: Color = Azure_300,
     onInfo: Color = Azure_700,
     darkInfoText: Color = Azure_200,
-    surfaceBorderInfo: Color = Azure_300
+    surfaceBorderInfo: Color = Azure_300,
+    bottomNavBackground: Color = Background_dark.copy(alpha = 0.95f),
+    bottomNavContentColor: Color = Grey_400
 ) = AnimeListColors(
     background = background,
     cardColors = cardColors,
@@ -124,8 +132,9 @@ fun darkAnimeListColors(
     info = info,
     onInfo = onInfo,
     darkInfoText = darkInfoText,
-    surfaceBorderInfo = surfaceBorderInfo
-
+    surfaceBorderInfo = surfaceBorderInfo,
+    bottomNavBackground = bottomNavBackground,
+    bottomNavContentColor = bottomNavContentColor
 )
 
 val LocalAnimeListColors = staticCompositionLocalOf<AnimeListColors> {

@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -35,7 +34,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.mumbicodes.animelist.ui.theme.AnimelistTheme
+import com.mumbicodes.designsystem.theme.AnimeListTheme
+import com.mumbicodes.designsystem.theme.AnimeTheme
 
 // TODO research how to move this to design system currently, it causes gradle errors cause of adding app module
 @Composable
@@ -46,7 +46,7 @@ fun BottomBarComponent(
 ) {
     Row(
         modifier = Modifier
-            .background(MaterialTheme.colorScheme.background)
+            .background(AnimeTheme.colors.bottomNavBackground)
             .padding(top = 8.dp, bottom = 8.dp)
             .height(72.dp)
             .fillMaxWidth(),
@@ -71,7 +71,7 @@ fun RowScope.AddItem(
     onItemClick: (MainAppDestinations) -> Unit
 ) {
     val contentColor =
-        if (itemIsSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline
+        if (itemIsSelected) AnimeTheme.colors.primary else AnimeTheme.colors.bottomNavContentColor
     Box(
         modifier = Modifier
             // .clip(shape = MaterialTheme.shapes.small)
@@ -115,7 +115,7 @@ fun RowScope.AddItem(
                 modifier = Modifier
                     .fillMaxWidth(),
                 text = stringResource(id = destination.iconLabel),
-                style = MaterialTheme.typography.bodySmall,
+                style = AnimeTheme.typography.bodyExtraSmall,
                 color = contentColor,
                 textAlign = TextAlign.Center
             )
@@ -130,8 +130,8 @@ fun ActiveBarItemIndicator(modifier: Modifier = Modifier) {
         modifier = modifier,
         contentAlignment = Alignment.Center
     ) {
-        val backgroundColor = MaterialTheme.colorScheme.background
-        val dotIndicatorColor = MaterialTheme.colorScheme.primary
+        val backgroundColor = AnimeTheme.colors.bottomNavBackground
+        val dotIndicatorColor = AnimeTheme.colors.primary
         Canvas(
             modifier = Modifier.fillMaxSize()
         ) {
@@ -166,7 +166,7 @@ fun provideCurrentDestination(): NavDestination? {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
 fun BottomNavPreview() {
-    AnimelistTheme {
+    AnimeListTheme {
         BottomBarComponent(
             destinations = mainAppDestinations,
             currentDestination = provideCurrentDestination(),
@@ -179,14 +179,14 @@ fun BottomNavPreview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
 fun BottomNavItemPreview() {
-    AnimelistTheme {
+    AnimeListTheme {
         Box(
             Modifier.size(200.dp),
             contentAlignment = Alignment.BottomCenter
         ) {
             Row(
                 modifier = Modifier
-                    .background(MaterialTheme.colorScheme.background)
+                    .background(AnimeTheme.colors.bottomNavBackground)
                     .padding(top = 8.dp, bottom = 8.dp)
                     .height(72.dp)
                     .fillMaxWidth(),

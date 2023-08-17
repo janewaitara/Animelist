@@ -1,6 +1,7 @@
 package com.mumbicodes.designsystem.theme
 
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
@@ -140,6 +141,8 @@ fun darkAnimeListColors(
 val LocalAnimeListColors = staticCompositionLocalOf<AnimeListColors> {
     lightAnimeListColors()
 }
+
+internal val LocalContentColor = compositionLocalOf { Color.Black }
 
 // Pumpkin Orange
 val Pumpkin_700 = Color(0xFF492100)

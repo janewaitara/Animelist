@@ -16,7 +16,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.isContainer
+import androidx.compose.ui.semantics.semantics
 import com.mumbicodes.designsystem.theme.AnimeListColors
 import com.mumbicodes.designsystem.theme.AnimeTheme
 import com.mumbicodes.designsystem.theme.LocalContentColor
@@ -94,6 +97,67 @@ fun Surface(
                     enabled = enabled,
                     onClick = onClick
                 ),
+            propagateMinConstraints = true
+        ) {
+            content()
+        }
+    }
+}
+
+/**
+ * See the other overload for a clickable surface.
+ *
+ * The Surface is responsible for:
+ *
+ * 1) Clipping: Surface clips its children to the shape specified by [shape]
+ *
+ * 2) Borders: If [shape] has a border, then it will also be drawn.
+ *
+ * 3) Background: Surface fills the shape specified by [shape] with the [backgroundColor].
+ *
+ * 4) Content color: Surface uses [contentColor] to specify a preferred color for the content of
+ * this surface - this is used by the [Text] and [Icon] components as a default color.
+ * If no [contentColor] is set, this surface will try and match its background color to a color
+ * defined in the theme [AnimeListColors], and return the corresponding content color. For example, if
+ * the [backgroundColor] of this surface is [AnimeListColors.primary], [contentColor] will be set to
+ * [AnimeListColors.onPrimary]. If [backgroundColor] is not part of the theme palette, [contentColor] will keep
+ * the same value set above this Surface.
+ *
+ * To manually retrieve the content color inside a surface, use [LocalContentColor].
+ *
+ * 5) Blocking touch propagation behind the surface.
+ *
+ * @param modifier Modifier to be applied to the layout corresponding to the surface
+ * @param shape Defines the surface's shape as well its shadow.
+ * @param backgroundColor The background color. Use [Color.Transparent] to have no color.
+ * @param contentColor The preferred content color provided by this Surface to its children.
+ * Defaults to either the matching content color for [backgroundColor], or if [backgroundColor] is not a color from the
+ * theme, this will keep the same value set above this Surface.
+ * @param border Optional border to draw on top of the surface
+ */
+@Composable
+fun Surface(
+    modifier: Modifier = Modifier,
+    shape: Shape = RectangleShape,
+    backgroundColor: Color = AnimeTheme.colors.cardColors,
+    contentColor: Color = contentColorFor(backgroundColor),
+    border: BorderStroke? = null,
+    content: @Composable () -> Unit
+) {
+    CompositionLocalProvider(
+        LocalContentColor provides contentColor
+    ) {
+        Box(
+            modifier = modifier
+                .surface(
+                    shape = shape,
+                    backgroundColor = backgroundColor,
+                    border = border
+                )
+                .semantics(mergeDescendants = false) {
+                    isContainer = true
+                }
+                .pointerInput(Unit) {},
             propagateMinConstraints = true
         ) {
             content()

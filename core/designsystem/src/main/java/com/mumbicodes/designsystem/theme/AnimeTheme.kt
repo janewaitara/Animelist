@@ -4,6 +4,7 @@ import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
@@ -16,6 +17,7 @@ import androidx.core.view.WindowCompat
 object AnimeTheme {
     val colors: AnimeListColors
         @Composable
+        @ReadOnlyComposable
         get() = LocalAnimeListColors.current
 
     val typography: AnimeListTypography

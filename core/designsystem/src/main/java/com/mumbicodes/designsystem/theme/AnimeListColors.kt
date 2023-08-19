@@ -1,9 +1,12 @@
 package com.mumbicodes.designsystem.theme
 
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.takeOrElse
 
 @Immutable
 data class AnimeListColors(
@@ -140,6 +143,35 @@ fun darkAnimeListColors(
 
 val LocalAnimeListColors = staticCompositionLocalOf<AnimeListColors> {
     lightAnimeListColors()
+}
+
+@Composable
+@ReadOnlyComposable
+fun contentColorFor(backgroundColor: Color) =
+    AnimeTheme.colors.contentColorFor(backgroundColor).takeOrElse { LocalContentColor.current }
+
+/**
+ * This function tries to match the provided [backgroundColor] to a 'background' color in [AnimeListColors],
+ * and then will return the corresponding color used for content. For example, when
+ * [backgroundColor] is [AnimeListColors.primary], this will return [AnimeListColors.onPrimary].
+ *
+ * If [backgroundColor] does not match a background color in the theme, this will return
+ * [Color.Unspecified].
+ *
+ * @return the matching content color for [backgroundColor]. If [backgroundColor] is not present in
+ * the theme's [AnimeListColors], then returns [Color.Unspecified].
+ */
+private fun AnimeListColors.contentColorFor(backgroundColor: Color): Color {
+    return when (backgroundColor) {
+        background -> textNeutral
+        cardColors -> textStrong
+        primary -> onPrimary
+        error -> onError
+        info -> onInfo
+        success -> onSuccess
+        bottomNavBackground -> bottomNavContentColor
+        else -> Color.Unspecified
+    }
 }
 
 internal val LocalContentColor = compositionLocalOf { Color.Black }

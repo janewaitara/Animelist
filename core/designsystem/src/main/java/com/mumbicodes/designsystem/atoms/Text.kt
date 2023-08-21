@@ -29,7 +29,7 @@ import com.mumbicodes.designsystem.theme.LocalContentColor
 fun Text(
     text: String,
     modifier: Modifier = Modifier,
-    color: Color = AnimeTheme.colors.textNeutral,
+    color: Color = Color.Unspecified,
     textDecoration: TextDecoration? = null,
     textAlign: TextAlign? = null,
     overflow: TextOverflow = TextOverflow.Clip,

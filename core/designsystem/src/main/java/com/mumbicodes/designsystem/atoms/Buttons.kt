@@ -2,6 +2,7 @@ package com.mumbicodes.designsystem.atoms
 
 import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.Interaction
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -109,15 +110,57 @@ fun PrimaryButton(
     }
 }
 
+/***
+ * Text buttons are used for less-pronounced actions, including those located in dialogs and cards.
+ * In cards, text buttons help maintain an emphasis on card content.
+ * Text buttons are used for the lowest priority actions, especially when presenting multiple options.
+ */
+@Composable
+fun TextButton(
+    modifier: Modifier = Modifier,
+    text: String = "",
+    iconLeft: @Composable (() -> Unit)? = null,
+    iconRight: @Composable (() -> Unit)? = null,
+    onClick: () -> Unit,
+    enabled: Boolean = true,
+    shape: Shape = AnimeTheme.shapes.smallShape,
+    color: Color = Color.Transparent,
+    border: BorderStroke? = null,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
+) =
+    PrimaryButton(
+        onClick = onClick,
+        modifier = modifier,
+        enabled = enabled,
+        color = color,
+        shape = shape,
+        contentColor = AnimeTheme.colors.primary,
+        iconLeft = iconLeft,
+        iconRight = iconRight,
+        border = border,
+        interactionSource = interactionSource
+    ) {
+        Text(
+            text = text,
+            style = AnimeTheme.typography.bodyMediumBold
+        )
+    }
+
 @Preview
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun ButtonsPreview() {
     AnimeListTheme {
-        Column {
+        Column(
+            modifier = Modifier
+                .background(color = AnimeTheme.colors.background)
+                .padding(48.dp)
+        ) {
             PrimaryButton(onClick = {}) {
-                Text(text = "Button")
+                Text(text = "Primary Button", style = AnimeTheme.typography.bodyMediumBold)
             }
+
+            TextButton(text = "Text button", onClick = { })
         }
     }
 }

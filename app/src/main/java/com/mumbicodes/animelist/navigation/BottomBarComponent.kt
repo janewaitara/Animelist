@@ -64,7 +64,7 @@ fun BottomBarComponent(
     }
 }
 
-//TODO What if we animate the position of the indicator horizontally instead of the animated visibility
+// TODO What if we animate the position of the indicator horizontally instead of the animated visibility
 @Composable
 fun RowScope.AddItem(
     itemIsSelected: Boolean,

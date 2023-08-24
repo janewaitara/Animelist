@@ -17,8 +17,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -34,6 +32,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.mumbicodes.designsystem.atoms.Icon
+import com.mumbicodes.designsystem.atoms.Text
 import com.mumbicodes.designsystem.theme.AnimeListTheme
 import com.mumbicodes.designsystem.theme.AnimeTheme
 
@@ -64,6 +64,7 @@ fun BottomBarComponent(
     }
 }
 
+//TODO What if we animate the position of the indicator horizontally instead of the animated visibility
 @Composable
 fun RowScope.AddItem(
     itemIsSelected: Boolean,

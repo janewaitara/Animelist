@@ -1,15 +1,24 @@
 package com.mumbicodes.designsystem.theme
 
+import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-object AnimeListSpacing {
-    val Space4dp = 4.dp
-    val Space8dp = 8.dp
-    val Space16dp = 16.dp
-    val Space12dp = 12.dp
-    val Space20dp = 20.dp
-    val Space24dp = 24.dp
-    val Space32dp = 32.dp
-    val Space36dp = 36.dp
-    val Space48dp = 48.dp
+/**
+ * Work on the space tokens for the different form factors
+ * */
+data class AnimeListSpacing(
+    val space4dp: Dp = 4.dp,
+    val space8dp: Dp = 8.dp,
+    val space16dp: Dp = 16.dp,
+    val space12dp: Dp = 12.dp,
+    val space20dp: Dp = 20.dp,
+    val space24dp: Dp = 24.dp,
+    val space32dp: Dp = 32.dp,
+    val space36dp: Dp = 36.dp,
+    val space48dp: Dp = 48.dp
+)
+
+val LocalAnimeListSpace = staticCompositionLocalOf {
+    AnimeListSpacing()
 }

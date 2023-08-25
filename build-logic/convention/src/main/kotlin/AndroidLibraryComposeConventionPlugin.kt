@@ -26,6 +26,7 @@ class AndroidLibraryComposeConventionPlugin : Plugin<Project> {
                 add("implementation", libs.findBundle("compose").get())
                 add("implementation", libs.findLibrary("compose.navigation").get())
                 add("implementation", libs.findLibrary("hilt.navigation").get())
+                add("debugImplementation", libs.findLibrary("androidx.compose.ui.tooling").get())
             }
         }
     }

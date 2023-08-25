@@ -2,4 +2,6 @@
 <resources>
     <string name="buttonTitle">See all</string>
     <string name="animeSection">Anime Section</string>
+    <string name="numberOfEpisodes"> episodes</string>
+    <string name="episodesDuration"> min</string>
 </resources>

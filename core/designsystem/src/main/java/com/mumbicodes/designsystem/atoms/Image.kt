@@ -14,15 +14,16 @@ import com.mumbicodes.designsystem.theme.AnimeListTheme
 
 @Composable
 fun Image(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     contentDescription: String? = null,
-    coverImageUrl: String? = null
+    coverImageUrl: String? = null,
+    contentScale: ContentScale = ContentScale.Fit
 ) {
     AsyncImage(
         model = coverImageUrl,
         contentDescription = contentDescription,
         modifier = modifier.size(width = 140.dp, height = 120.dp),
-        contentScale = ContentScale.Fit,
+        contentScale = contentScale,
         placeholder = painterResource(id = R.drawable.anime_placeholder)
     )
 }

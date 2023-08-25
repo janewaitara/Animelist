@@ -31,6 +31,7 @@ compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling-preview" }
 compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "androidxComposeNavigation"}
 accompanist = { module = "com.google.accompanist:accompanist-navigation-material", version.ref = "accompanist"}
+androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout-compose", version = "1.0.1" }
 
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 

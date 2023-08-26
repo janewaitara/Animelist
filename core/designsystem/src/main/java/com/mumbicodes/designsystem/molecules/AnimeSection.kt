@@ -24,17 +24,17 @@ import com.mumbicodes.designsystem.theme.AnimeTheme
 
 @Composable
 fun AnimeSection(
+    modifier: Modifier = Modifier,
     @StringRes sectionTitle: Int,
     @StringRes buttonText: Int,
     buttonOnClick: () -> Unit,
     content: @Composable () -> Unit
-
 ) {
     Column(
         modifier = Modifier.background(color = AnimeTheme.colors.background)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {

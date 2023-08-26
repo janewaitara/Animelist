@@ -5,7 +5,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.mumbicodes.home.HomeScreen
+import com.mumbicodes.home.HomeScreenRoute
 
 const val HOME_SCREEN_ROUTE = "home_route"
 
@@ -15,7 +15,7 @@ fun NavController.navigateToHomeScreen(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.homeScreen(onAnimeClicked: () -> Unit) {
     composable(route = HOME_SCREEN_ROUTE) {
-        HomeScreen(
+        HomeScreenRoute(
             modifier = Modifier,
             onAnimeClicked = onAnimeClicked
         )

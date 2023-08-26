@@ -48,7 +48,7 @@ fun VerticalAnimeComponent(
                 },
             contentDescription = "$animeTitle cover image",
             coverImageUrl = coverImageUrl,
-            contentScale = ContentScale.FillHeight
+            contentScale = ContentScale.Crop
         )
         Text(
             modifier = Modifier

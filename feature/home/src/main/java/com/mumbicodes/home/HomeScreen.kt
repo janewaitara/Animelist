@@ -156,5 +156,51 @@ fun HomeScreen(
                 )
             }
         }
+
+        // Popular section
+        when (popularAnimeUiStates) {
+            is PopularAnimeStates.PopularAnimes -> {
+                AnimeSection(
+                    modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
+                    sectionTitle = R.string.popular,
+                    buttonText = R.string.seeAll,
+                    buttonOnClick = onSeeAllButtonClicked
+                ) {
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(AnimeTheme.space.space12dp),
+                        contentPadding = PaddingValues(horizontal = AnimeTheme.space.space20dp)
+                    ) {
+                        items(popularAnimeUiStates.popular) { anime ->
+                            VerticalAnimeComponent(
+                                onClick = onAnimeClicked,
+                                coverImageUrl = anime.coverImage,
+                                animeTitle = anime.title?.english ?: anime.title?.romaji
+                                    ?: anime.title?.native ?: ""
+                            )
+                        }
+                    }
+                }
+            }
+
+            is PopularAnimeStates.Error -> {
+                // TODO Create an error banner
+                Text(
+                    text = popularAnimeUiStates.errorMessage,
+                    modifier = Modifier.clickable {
+                        onAnimeClicked()
+                    }
+                )
+            }
+
+            PopularAnimeStates.Loading -> {
+                // TODO Create a loading skeleton
+                Text(
+                    text = "This is the loading state for popular",
+                    modifier = Modifier.clickable {
+                        onAnimeClicked()
+                    }
+                )
+            }
+        }
     }
 }

@@ -110,5 +110,51 @@ fun HomeScreen(
                 )
             }
         }
+
+        // Recommended section
+        when (recommendedAnimeUiStates) {
+            is RecommendedAnimesUiStates.RecommendedAnimes -> {
+                AnimeSection(
+                    modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
+                    sectionTitle = R.string.recommended,
+                    buttonText = R.string.seeAll,
+                    buttonOnClick = onSeeAllButtonClicked
+                ) {
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(AnimeTheme.space.space12dp),
+                        contentPadding = PaddingValues(horizontal = AnimeTheme.space.space20dp)
+                    ) {
+                        items(recommendedAnimeUiStates.recommended) { anime ->
+                            VerticalAnimeComponent(
+                                onClick = onAnimeClicked,
+                                coverImageUrl = anime.coverImage,
+                                animeTitle = anime.title?.english ?: anime.title?.romaji
+                                    ?: anime.title?.native ?: ""
+                            )
+                        }
+                    }
+                }
+            }
+
+            is RecommendedAnimesUiStates.Error -> {
+                // TODO Create an error banner
+                Text(
+                    text = (recommendedAnimeUiStates as RecommendedAnimesUiStates.Error).errorMessage,
+                    modifier = Modifier.clickable {
+                        onAnimeClicked()
+                    }
+                )
+            }
+
+            RecommendedAnimesUiStates.Loading -> {
+                // TODO Create a loading skeleton
+                Text(
+                    text = "This is the loading state",
+                    modifier = Modifier.clickable {
+                        onAnimeClicked()
+                    }
+                )
+            }
+        }
     }
 }

@@ -10,8 +10,8 @@ import com.mumbicodes.anime.navigation.navigateToAnimeDetails
 import com.mumbicodes.animelist.com.mumbicodes.animelist.ui.AnimeListAppState
 import com.mumbicodes.character.navigation.characterBottomSheet
 import com.mumbicodes.character.navigation.navigateToCharacterBottomSheet
-import com.mumbicodes.home.navigation.HOME_SCREEN_ROUTE
-import com.mumbicodes.home.navigation.homeScreen
+import com.mumbicodes.home.navigation.HOME_GRAPH
+import com.mumbicodes.home.navigation.homeGraph
 import com.mumbicodes.search.navigation.searchScreen
 import com.mumbicodes.yourlist.navigation.yourListScreen
 
@@ -20,7 +20,7 @@ import com.mumbicodes.yourlist.navigation.yourListScreen
 fun AnimeListNavHost(
     modifier: Modifier = Modifier,
     animeListAppState: AnimeListAppState,
-    startDestination: String = HOME_SCREEN_ROUTE
+    startDestination: String = HOME_GRAPH
 ) {
     val navController = animeListAppState.navController
 
@@ -30,7 +30,7 @@ fun AnimeListNavHost(
             navController = navController,
             startDestination = startDestination
         ) {
-            homeScreen(
+            homeGraph(
                 onAnimeClicked = {
                     navController.navigateToAnimeDetails()
                 }

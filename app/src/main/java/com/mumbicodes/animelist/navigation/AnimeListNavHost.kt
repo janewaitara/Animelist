@@ -10,6 +10,7 @@ import com.mumbicodes.anime.navigation.navigateToAnimeDetails
 import com.mumbicodes.animelist.com.mumbicodes.animelist.ui.AnimeListAppState
 import com.mumbicodes.character.navigation.characterBottomSheet
 import com.mumbicodes.character.navigation.navigateToCharacterBottomSheet
+import com.mumbicodes.home.navigation.ALL_CATEGORIES_ROUTE
 import com.mumbicodes.home.navigation.HOME_GRAPH
 import com.mumbicodes.home.navigation.homeGraph
 import com.mumbicodes.search.navigation.searchScreen
@@ -33,6 +34,9 @@ fun AnimeListNavHost(
             homeGraph(
                 onAnimeClicked = {
                     navController.navigateToAnimeDetails()
+                },
+                onSeeAllButtonClicked = {
+                    navController.navigate(ALL_CATEGORIES_ROUTE)
                 }
             )
             searchScreen()

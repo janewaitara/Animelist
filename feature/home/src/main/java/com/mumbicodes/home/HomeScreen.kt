@@ -27,7 +27,8 @@ import com.mumbicodes.home.components.VerticalAnimeComponent
 fun HomeScreenRoute(
     modifier: Modifier = Modifier,
     onAnimeClicked: () -> Unit,
-    homeScreenViewModel: HomeScreenViewModel = hiltViewModel()
+    homeScreenViewModel: HomeScreenViewModel = hiltViewModel(),
+    onSeeAllButtonClicked: () -> Unit
 ) {
     val recommendedAnimeUiStates: RecommendedAnimesUiStates
         by homeScreenViewModel.recommendedUiState.collectAsStateWithLifecycle()
@@ -40,7 +41,7 @@ fun HomeScreenRoute(
         popularAnimeUiStates = popularAnimeUiStates,
         trendingAnimeUiStates = trendingAnimeUiStates,
         onAnimeClicked = onAnimeClicked,
-        onSeeAllButtonClicked = {}
+        onSeeAllButtonClicked = onSeeAllButtonClicked
     )
 }
 
@@ -70,7 +71,7 @@ fun HomeScreen(
             is TrendingAnimeStates.TrendingAnimes -> {
                 AnimeSection(
                     modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
-                    sectionTitle = R.string.popular,
+                    sectionTitle = R.string.trending,
                     buttonText = R.string.seeAll,
                     buttonOnClick = onSeeAllButtonClicked
                 ) {

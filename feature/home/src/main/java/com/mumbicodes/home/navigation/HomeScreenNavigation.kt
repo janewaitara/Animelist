@@ -10,12 +10,13 @@ import com.mumbicodes.home.HomeScreenRoute
 
 const val HOME_GRAPH = "home_graph"
 const val HOME_SCREEN_ROUTE = "home_route"
+const val ALL_CATEGORIES_ROUTE = "all_categories"
 
 fun NavController.navigateToHomeGraph(navOptions: NavOptions? = null) {
     this.navigate(HOME_GRAPH, navOptions)
 }
 
-fun NavGraphBuilder.homeGraph(onAnimeClicked: () -> Unit) {
+fun NavGraphBuilder.homeGraph(onAnimeClicked: () -> Unit, onSeeAllButtonClicked: () -> Unit) {
     navigation(
         startDestination = HOME_SCREEN_ROUTE,
         route = HOME_GRAPH
@@ -23,8 +24,12 @@ fun NavGraphBuilder.homeGraph(onAnimeClicked: () -> Unit) {
         composable(route = HOME_SCREEN_ROUTE) {
             HomeScreenRoute(
                 modifier = Modifier,
-                onAnimeClicked = onAnimeClicked
+                onAnimeClicked = onAnimeClicked,
+                onSeeAllButtonClicked = onSeeAllButtonClicked
             )
+        }
+        composable(route = ALL_CATEGORIES_ROUTE) {
+            AllCategoriesScreenRoute(onAnimeClicked = onAnimeClicked)
         }
     }
 }

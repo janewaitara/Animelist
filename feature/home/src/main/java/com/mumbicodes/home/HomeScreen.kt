@@ -41,7 +41,10 @@ fun HomeScreenRoute(
         popularAnimeUiStates = popularAnimeUiStates,
         trendingAnimeUiStates = trendingAnimeUiStates,
         onAnimeClicked = onAnimeClicked,
-        onSeeAllButtonClicked = onSeeAllButtonClicked
+        onSeeAllButtonClicked = {
+            homeScreenViewModel.updateAnimeSortType(it)
+            onSeeAllButtonClicked()
+        }
     )
 }
 
@@ -52,7 +55,7 @@ fun HomeScreen(
     popularAnimeUiStates: PopularAnimeStates,
     trendingAnimeUiStates: TrendingAnimeStates,
     onAnimeClicked: () -> Unit,
-    onSeeAllButtonClicked: () -> Unit
+    onSeeAllButtonClicked: (AnimeSortType) -> Unit
 ) {
     Column(
         modifier = modifier.verticalScroll(rememberScrollState()),
@@ -73,7 +76,7 @@ fun HomeScreen(
                     modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
                     sectionTitle = R.string.trending,
                     buttonText = R.string.seeAll,
-                    buttonOnClick = onSeeAllButtonClicked
+                    buttonOnClick = { onSeeAllButtonClicked(AnimeSortType.TRENDING) }
                 ) {
                     LazyRow(
                         horizontalArrangement = Arrangement.spacedBy(AnimeTheme.space.space12dp),
@@ -119,7 +122,7 @@ fun HomeScreen(
                     modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
                     sectionTitle = R.string.recommended,
                     buttonText = R.string.seeAll,
-                    buttonOnClick = onSeeAllButtonClicked
+                    buttonOnClick = { onSeeAllButtonClicked(AnimeSortType.RECOMMENDED) }
                 ) {
                     LazyRow(
                         horizontalArrangement = Arrangement.spacedBy(AnimeTheme.space.space12dp),
@@ -165,7 +168,7 @@ fun HomeScreen(
                     modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
                     sectionTitle = R.string.popular,
                     buttonText = R.string.seeAll,
-                    buttonOnClick = onSeeAllButtonClicked
+                    buttonOnClick = { onSeeAllButtonClicked(AnimeSortType.POPULAR) }
                 ) {
                     LazyRow(
                         horizontalArrangement = Arrangement.spacedBy(AnimeTheme.space.space12dp),

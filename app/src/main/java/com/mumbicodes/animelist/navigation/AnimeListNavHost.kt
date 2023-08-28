@@ -32,6 +32,7 @@ fun AnimeListNavHost(
             startDestination = startDestination
         ) {
             homeGraph(
+                navController = navController,
                 onAnimeClicked = {
                     navController.navigateToAnimeDetails()
                 },

@@ -12,6 +12,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import com.mumbicodes.home.AllCategoriesScreenRoute
 import com.mumbicodes.home.HomeScreenRoute
 import com.mumbicodes.home.HomeScreenViewModel
 

@@ -57,7 +57,7 @@ fun HorizontalAnimeComponent(
             Image(
                 modifier = Modifier.clip(shape = AnimeTheme.shapes.mediumShape),
                 coverImageUrl = coverImageUrl,
-                contentScale = ContentScale.FillHeight
+                contentScale = ContentScale.Crop
             )
             Spacer(modifier = Modifier.width(AnimeTheme.space.space16dp))
 

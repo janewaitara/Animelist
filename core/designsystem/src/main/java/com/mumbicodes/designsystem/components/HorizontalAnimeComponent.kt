@@ -78,7 +78,7 @@ fun HorizontalAnimeComponent(
                 Text(
                     text = animeDescription,
                     color = AnimeTheme.colors.textWeak,
-                    style = AnimeTheme.typography.bodyExtraSmall,
+                    style = AnimeTheme.typography.bodySmall,
                     textAlign = TextAlign.Start,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis

@@ -8,6 +8,7 @@ query Recommendations {
                     english
                     native
                 }
+                description
                 type
                 coverImage {
                     medium

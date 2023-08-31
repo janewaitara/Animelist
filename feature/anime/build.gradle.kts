@@ -32,6 +32,9 @@ dependencies {
 
     implementation(libs.androidx.appCompat)
 
+    // lifecycle
+    implementation(libs.bundles.lifecycle)
+
     // Enables formatting rule set in detekt
     detektPlugins(libs.detekt.formatting)
 }

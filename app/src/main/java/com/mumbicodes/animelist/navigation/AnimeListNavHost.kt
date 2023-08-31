@@ -6,7 +6,7 @@ import androidx.navigation.compose.NavHost
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
 import com.mumbicodes.anime.navigation.animeDetailsScreen
-import com.mumbicodes.anime.navigation.navigateToAnimeGraph
+import com.mumbicodes.anime.navigation.navigateToAnimeScreen
 import com.mumbicodes.animelist.com.mumbicodes.animelist.ui.AnimeListAppState
 import com.mumbicodes.character.navigation.characterBottomSheet
 import com.mumbicodes.character.navigation.navigateToCharacterBottomSheet
@@ -34,7 +34,7 @@ fun AnimeListNavHost(
             homeGraph(
                 navController = navController,
                 onAnimeClicked = {
-                    navController.navigateToAnimeGraph()
+                    navController.navigateToAnimeScreen(animeId = 7)
                 },
                 onSeeAllButtonClicked = {
                     navController.navigate(ALL_CATEGORIES_ROUTE)

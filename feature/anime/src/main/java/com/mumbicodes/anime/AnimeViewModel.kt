@@ -1,7 +1,9 @@
 package com.mumbicodes.anime
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mumbicodes.anime.constants.ANIMEID
 import com.mumbicodes.common.result.Result
 import com.mumbicodes.domain.repository.AnimeRepository
 import com.mumbicodes.model.data.Anime
@@ -15,12 +17,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AnimeViewModel @Inject constructor(
-    private val animeRepository: AnimeRepository
+    private val animeRepository: AnimeRepository,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     // TODO update the animeId to be the value passed to SavedState
     private val _animeDetails: StateFlow<AnimeDetailsScreenUiState> = getAnime(
-        animeId = 0
+        animeId = savedStateHandle.get<Int>(ANIMEID) ?: 0
     ).map { animeDetailsResult ->
         when (animeDetailsResult) {
             is Result.ApplicationError -> {
@@ -46,6 +49,8 @@ class AnimeViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = AnimeDetailsScreenUiState.Loading
     )
+
+    val animeDetails: StateFlow<AnimeDetailsScreenUiState> = _animeDetails
 
     private fun getAnime(animeId: Int): Flow<Result<Anime>> {
         return animeRepository.getAnime(

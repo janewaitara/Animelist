@@ -26,7 +26,7 @@ fun NavController.navigateToHomeGraph(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.homeGraph(
     navController: NavHostController,
-    onAnimeClicked: () -> Unit,
+    onAnimeClicked: (Int) -> Unit,
     onSeeAllButtonClicked: () -> Unit
 ) {
     navigation(

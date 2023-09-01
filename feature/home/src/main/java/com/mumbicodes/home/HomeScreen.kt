@@ -26,7 +26,7 @@ import com.mumbicodes.home.components.VerticalAnimeComponent
 @Composable
 fun HomeScreenRoute(
     modifier: Modifier = Modifier,
-    onAnimeClicked: () -> Unit,
+    onAnimeClicked: (Int) -> Unit,
     homeScreenViewModel: HomeScreenViewModel = hiltViewModel(),
     onSeeAllButtonClicked: () -> Unit
 ) {
@@ -54,7 +54,7 @@ fun HomeScreen(
     recommendedAnimeUiStates: RecommendedAnimesUiStates,
     popularAnimeUiStates: PopularAnimeStates,
     trendingAnimeUiStates: TrendingAnimeStates,
-    onAnimeClicked: () -> Unit,
+    onAnimeClicked: (Int) -> Unit,
     onSeeAllButtonClicked: (AnimeSortType) -> Unit
 ) {
     Column(
@@ -84,7 +84,7 @@ fun HomeScreen(
                     ) {
                         items(trendingAnimeUiStates.trending) { anime ->
                             VerticalAnimeComponent(
-                                onClick = onAnimeClicked,
+                                onClick = { onAnimeClicked(anime.id) },
                                 coverImageUrl = anime.coverImage,
                                 animeTitle = anime.title?.english ?: anime.title?.romaji
                                     ?: anime.title?.native ?: ""
@@ -99,7 +99,6 @@ fun HomeScreen(
                 Text(
                     text = trendingAnimeUiStates.errorMessage,
                     modifier = Modifier.clickable {
-                        onAnimeClicked()
                     }
                 )
             }
@@ -109,7 +108,6 @@ fun HomeScreen(
                 Text(
                     text = "This is the loading state",
                     modifier = Modifier.clickable {
-                        onAnimeClicked()
                     }
                 )
             }
@@ -130,7 +128,7 @@ fun HomeScreen(
                     ) {
                         items(recommendedAnimeUiStates.recommended) { anime ->
                             VerticalAnimeComponent(
-                                onClick = onAnimeClicked,
+                                onClick = { onAnimeClicked(anime.id) },
                                 coverImageUrl = anime.coverImage,
                                 animeTitle = anime.title?.english ?: anime.title?.romaji
                                     ?: anime.title?.native ?: ""
@@ -145,7 +143,6 @@ fun HomeScreen(
                 Text(
                     text = (recommendedAnimeUiStates as RecommendedAnimesUiStates.Error).errorMessage,
                     modifier = Modifier.clickable {
-                        onAnimeClicked()
                     }
                 )
             }
@@ -155,7 +152,6 @@ fun HomeScreen(
                 Text(
                     text = "This is the loading state",
                     modifier = Modifier.clickable {
-                        onAnimeClicked()
                     }
                 )
             }
@@ -176,7 +172,7 @@ fun HomeScreen(
                     ) {
                         items(popularAnimeUiStates.popular) { anime ->
                             VerticalAnimeComponent(
-                                onClick = onAnimeClicked,
+                                onClick = { onAnimeClicked(anime.id) },
                                 coverImageUrl = anime.coverImage,
                                 animeTitle = anime.title?.english ?: anime.title?.romaji
                                     ?: anime.title?.native ?: ""
@@ -191,7 +187,6 @@ fun HomeScreen(
                 Text(
                     text = popularAnimeUiStates.errorMessage,
                     modifier = Modifier.clickable {
-                        onAnimeClicked()
                     }
                 )
             }
@@ -201,7 +196,6 @@ fun HomeScreen(
                 Text(
                     text = "This is the loading state for popular",
                     modifier = Modifier.clickable {
-                        onAnimeClicked()
                     }
                 )
             }

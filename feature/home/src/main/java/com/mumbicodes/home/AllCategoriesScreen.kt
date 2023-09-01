@@ -16,7 +16,7 @@ import com.mumbicodes.designsystem.theme.AnimeTheme
 fun AllCategoriesScreenRoute(
     modifier: Modifier = Modifier,
     homeScreenViewModel: HomeScreenViewModel = hiltViewModel(),
-    onAnimeClicked: () -> Unit,
+    onAnimeClicked: (Int) -> Unit,
     onBackButtonClicked: () -> Unit = {}
 ) {
     val animeSortType by homeScreenViewModel.animeSortType.collectAsStateWithLifecycle()
@@ -53,7 +53,7 @@ fun AllCategoriesScreen(
     recommendedAnimeUiStates: RecommendedAnimesUiStates,
     popularAnimeUiStates: PopularAnimeStates,
     trendingAnimeUiStates: TrendingAnimeStates,
-    onAnimeClicked: () -> Unit,
+    onAnimeClicked: (Int) -> Unit,
     onBackButtonClicked: () -> Unit
 ) {
     when (animeSortType) {
@@ -68,7 +68,7 @@ fun AllCategoriesScreen(
                     ) {
                         items(recommendedAnimeUiStates.recommended) { anime ->
                             HorizontalAnimeComponent(
-                                onClick = onAnimeClicked,
+                                onClick = { onAnimeClicked(anime.id) },
                                 coverImageUrl = anime.coverImage,
                                 animeTitle = anime.title?.english ?: anime.title?.romaji
                                     ?: anime.title?.native ?: "",
@@ -92,7 +92,7 @@ fun AllCategoriesScreen(
                     ) {
                         items(trendingAnimeUiStates.trending) { anime ->
                             HorizontalAnimeComponent(
-                                onClick = onAnimeClicked,
+                                onClick = { onAnimeClicked(anime.id) },
                                 coverImageUrl = anime.coverImage,
                                 animeTitle = anime.title?.english ?: anime.title?.romaji
                                     ?: anime.title?.native ?: "",
@@ -116,7 +116,7 @@ fun AllCategoriesScreen(
                     ) {
                         items(popularAnimeUiStates.popular) { anime ->
                             HorizontalAnimeComponent(
-                                onClick = onAnimeClicked,
+                                onClick = { onAnimeClicked(anime.id) },
                                 coverImageUrl = anime.coverImage,
                                 animeTitle = anime.title?.english ?: anime.title?.romaji
                                     ?: anime.title?.native ?: "",

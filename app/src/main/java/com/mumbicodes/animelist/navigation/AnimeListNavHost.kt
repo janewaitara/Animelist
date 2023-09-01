@@ -33,8 +33,8 @@ fun AnimeListNavHost(
         ) {
             homeGraph(
                 navController = navController,
-                onAnimeClicked = {
-                    navController.navigateToAnimeScreen(animeId = 7)
+                onAnimeClicked = { animeId ->
+                    navController.navigateToAnimeScreen(animeId = animeId)
                 },
                 onSeeAllButtonClicked = {
                     navController.navigate(ALL_CATEGORIES_ROUTE)

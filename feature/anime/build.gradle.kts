@@ -35,6 +35,7 @@ dependencies {
 
     // lifecycle
     implementation(libs.bundles.lifecycle)
+    implementation(libs.androidx.constraintlayout)
 
     // Enables formatting rule set in detekt
     detektPlugins(libs.detekt.formatting)

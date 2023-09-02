@@ -1,15 +1,15 @@
 package com.mumbicodes.anime
 
 import androidx.compose.foundation.clickable
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mumbicodes.designsystem.atoms.Text
 
 @Composable
-fun AnimeDetailsScreen(
+fun AnimeDetailsRoute(
     modifier: Modifier = Modifier,
     animeViewModel: AnimeViewModel = hiltViewModel(),
     onCharacterClicked: () -> Unit
@@ -17,6 +17,19 @@ fun AnimeDetailsScreen(
     val animeDetailsState: AnimeDetailsScreenUiState
         by animeViewModel.animeDetails.collectAsStateWithLifecycle()
 
+    AnimeDetailsScreen(
+        modifier = Modifier,
+        animeDetailsState = animeDetailsState,
+        onCharacterClicked = onCharacterClicked
+    )
+}
+
+@Composable
+fun AnimeDetailsScreen(
+    modifier: Modifier = Modifier,
+    animeDetailsState: AnimeDetailsScreenUiState,
+    onCharacterClicked: () -> Unit
+) {
     when (animeDetailsState) {
         is AnimeDetailsScreenUiState.AnimeDetails -> {
             Text(

@@ -8,7 +8,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.mumbicodes.anime.AnimeDetailsScreen
+import com.mumbicodes.anime.AnimeDetailsRoute
 import com.mumbicodes.anime.constants.ANIMEID
 
 const val ANIME_GRAPH = "anime_graph_route"
@@ -44,7 +44,7 @@ fun NavGraphBuilder.animeDetailsScreen(onCharacterClicked: () -> Unit) {
                 }
             )
         ) {
-            AnimeDetailsScreen(modifier = Modifier, onCharacterClicked = onCharacterClicked)
+            AnimeDetailsRoute(modifier = Modifier, onCharacterClicked = onCharacterClicked)
         }
     }
 }

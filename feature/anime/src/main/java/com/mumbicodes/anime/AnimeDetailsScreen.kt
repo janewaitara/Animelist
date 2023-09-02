@@ -30,6 +30,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mumbicodes.designsystem.R
 import com.mumbicodes.designsystem.atoms.CircleDecoration
 import com.mumbicodes.designsystem.atoms.Image
+import com.mumbicodes.designsystem.atoms.PrimaryButton
 import com.mumbicodes.designsystem.atoms.Text
 import com.mumbicodes.designsystem.theme.AnimeListTheme
 import com.mumbicodes.designsystem.theme.AnimeTheme
@@ -48,7 +49,8 @@ fun AnimeDetailsRoute(
     AnimeDetailsScreen(
         modifier = modifier,
         animeDetailsState = animeDetailsState,
-        onCharacterClicked = onCharacterClicked
+        onCharacterClicked = onCharacterClicked,
+        onSaveButtonClicked = {}
     )
 }
 
@@ -56,14 +58,16 @@ fun AnimeDetailsRoute(
 fun AnimeDetailsScreen(
     modifier: Modifier = Modifier,
     animeDetailsState: AnimeDetailsScreenUiState,
-    onCharacterClicked: () -> Unit
+    onCharacterClicked: () -> Unit,
+    onSaveButtonClicked: () -> Unit
 ) {
     when (animeDetailsState) {
         is AnimeDetailsScreenUiState.AnimeDetails -> {
             AnimeDetailsContent(
                 modifier = modifier,
                 anime = animeDetailsState.animeDetails,
-                onCharacterClicked = onCharacterClicked
+                onCharacterClicked = onCharacterClicked,
+                onSaveButtonClicked = onSaveButtonClicked
             )
         }
 
@@ -86,7 +90,8 @@ fun AnimeDetailsScreen(
 fun AnimeDetailsContent(
     modifier: Modifier,
     anime: Anime,
-    onCharacterClicked: () -> Unit
+    onCharacterClicked: () -> Unit,
+    onSaveButtonClicked: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
@@ -94,6 +99,11 @@ fun AnimeDetailsContent(
         AnimeDetailsHeader(
             modifier = Modifier,
             anime = anime
+        )
+        AnimeDescAndCTA(
+            modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
+            animeDesc = anime.description,
+            onSaveButtonClicked = {}
         )
     }
 }
@@ -231,6 +241,40 @@ fun AnimeDetailsHeader(
                     overflow = TextOverflow.Ellipsis
                 )
             }
+            // TODO add anime genre with Flow row
+        }
+    }
+}
+
+@Composable
+fun AnimeDescAndCTA(
+    modifier: Modifier,
+    animeDesc: String?,
+    onSaveButtonClicked: () -> Unit
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(AnimeTheme.space.space20dp)
+    ) {
+        // TODO think of how to show see more on text that are long
+        animeDesc?.let {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = it,
+                color = AnimeTheme.colors.textNeutral,
+                style = AnimeTheme.typography.bodyMedium,
+                textAlign = TextAlign.Start
+            )
+        }
+
+        PrimaryButton(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = onSaveButtonClicked
+        ) {
+            Text(
+                text = stringResource(id = com.mumbicodes.anime.R.string.addToList),
+                style = AnimeTheme.typography.bodyMediumBold
+            )
         }
     }
 }

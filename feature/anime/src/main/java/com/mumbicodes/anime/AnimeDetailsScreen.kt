@@ -3,6 +3,8 @@ package com.mumbicodes.anime
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowColumn
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,6 +12,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -32,6 +36,8 @@ import com.mumbicodes.designsystem.atoms.CircleDecoration
 import com.mumbicodes.designsystem.atoms.Image
 import com.mumbicodes.designsystem.atoms.PrimaryButton
 import com.mumbicodes.designsystem.atoms.Text
+import com.mumbicodes.designsystem.components.HorizontalAnimeComponent
+import com.mumbicodes.designsystem.molecules.AnimeSection
 import com.mumbicodes.designsystem.theme.AnimeListTheme
 import com.mumbicodes.designsystem.theme.AnimeTheme
 import com.mumbicodes.model.data.Anime
@@ -50,7 +56,8 @@ fun AnimeDetailsRoute(
         modifier = modifier,
         animeDetailsState = animeDetailsState,
         onCharacterClicked = onCharacterClicked,
-        onSaveButtonClicked = {}
+        onSaveButtonClicked = {},
+        onAnimeClicked = { }
     )
 }
 
@@ -59,7 +66,8 @@ fun AnimeDetailsScreen(
     modifier: Modifier = Modifier,
     animeDetailsState: AnimeDetailsScreenUiState,
     onCharacterClicked: () -> Unit,
-    onSaveButtonClicked: () -> Unit
+    onSaveButtonClicked: () -> Unit,
+    onAnimeClicked: (Int) -> Unit
 ) {
     when (animeDetailsState) {
         is AnimeDetailsScreenUiState.AnimeDetails -> {
@@ -67,7 +75,8 @@ fun AnimeDetailsScreen(
                 modifier = modifier,
                 anime = animeDetailsState.animeDetails,
                 onCharacterClicked = onCharacterClicked,
-                onSaveButtonClicked = onSaveButtonClicked
+                onSaveButtonClicked = onSaveButtonClicked,
+                onAnimeClicked = onAnimeClicked
             )
         }
 
@@ -91,10 +100,15 @@ fun AnimeDetailsContent(
     modifier: Modifier,
     anime: Anime,
     onCharacterClicked: () -> Unit,
-    onSaveButtonClicked: () -> Unit
+    onSaveButtonClicked: () -> Unit,
+    onAnimeClicked: (Int) -> Unit
 ) {
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(bottom = AnimeTheme.space.space48dp),
+        verticalArrangement = Arrangement.spacedBy(AnimeTheme.space.space24dp)
     ) {
         AnimeDetailsHeader(
             modifier = Modifier,
@@ -103,7 +117,12 @@ fun AnimeDetailsContent(
         AnimeDescAndCTA(
             modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
             animeDesc = anime.description,
-            onSaveButtonClicked = {}
+            onSaveButtonClicked = onSaveButtonClicked
+        )
+        AnimeRecommendations(
+            modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
+            recommendedAnimes = anime.recommendations,
+            onAnimeClicked = onAnimeClicked
         )
     }
 }
@@ -275,6 +294,45 @@ fun AnimeDescAndCTA(
                 text = stringResource(id = com.mumbicodes.anime.R.string.addToList),
                 style = AnimeTheme.typography.bodyMediumBold
             )
+        }
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun AnimeRecommendations(
+    modifier: Modifier,
+    recommendedAnimes: List<Anime?>?,
+    onAnimeClicked: (Int) -> Unit
+) {
+    recommendedAnimes?.let {
+        val animes = it.toSet()
+        // TODO hide the see all button if the list is short and
+        // do not show section if the animes are the same as the anime in view
+        AnimeSection(
+            modifier = modifier,
+            sectionTitle = com.mumbicodes.anime.R.string.recommendationsSectionTitle,
+            buttonText = com.mumbicodes.anime.R.string.seeAll,
+            buttonOnClick = { /*TODO*/ }
+        ) {
+            FlowColumn(
+                modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
+                verticalArrangement = Arrangement.spacedBy(AnimeTheme.space.space16dp)
+            ) {
+                animes.take(3).forEach { recommendedAnime ->
+                    recommendedAnime?.let { anime ->
+                        HorizontalAnimeComponent(
+                            onClick = { onAnimeClicked(anime.id) },
+                            coverImageUrl = anime.coverImage,
+                            animeTitle = anime.title?.english ?: anime.title?.romaji
+                                ?: anime.title?.native ?: "",
+                            animeDescription = anime.description ?: "",
+                            numberOfEpisodes = anime.episodes ?: 0,
+                            episodeDuration = anime.duration ?: 0
+                        )
+                    }
+                }
+            }
         }
     }
 }

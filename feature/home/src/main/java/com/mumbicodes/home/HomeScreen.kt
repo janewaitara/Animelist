@@ -1,9 +1,16 @@
 package com.mumbicodes.home
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -11,138 +18,184 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mumbicodes.designsystem.atoms.Image
+import com.mumbicodes.designsystem.molecules.AnimeSection
+import com.mumbicodes.designsystem.theme.AnimeTheme
+import com.mumbicodes.home.components.VerticalAnimeComponent
+
+@Composable
+fun HomeScreenRoute(
+    modifier: Modifier = Modifier,
+    onAnimeClicked: (Int) -> Unit,
+    homeScreenViewModel: HomeScreenViewModel = hiltViewModel(),
+    onSeeAllButtonClicked: () -> Unit
+) {
+    val recommendedAnimeUiStates: RecommendedAnimesUiStates
+        by homeScreenViewModel.recommendedUiState.collectAsStateWithLifecycle()
+    val popularAnimeUiStates: PopularAnimeStates by homeScreenViewModel.popularUiState.collectAsStateWithLifecycle()
+    val trendingAnimeUiStates: TrendingAnimeStates by homeScreenViewModel.trendingUiState.collectAsStateWithLifecycle()
+
+    HomeScreen(
+        modifier = modifier,
+        recommendedAnimeUiStates = recommendedAnimeUiStates,
+        popularAnimeUiStates = popularAnimeUiStates,
+        trendingAnimeUiStates = trendingAnimeUiStates,
+        onAnimeClicked = onAnimeClicked,
+        onSeeAllButtonClicked = {
+            homeScreenViewModel.updateAnimeSortType(it)
+            onSeeAllButtonClicked()
+        }
+    )
+}
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    onAnimeClicked: () -> Unit,
-    homeScreenViewModel: HomeScreenViewModel = hiltViewModel()
+    recommendedAnimeUiStates: RecommendedAnimesUiStates,
+    popularAnimeUiStates: PopularAnimeStates,
+    trendingAnimeUiStates: TrendingAnimeStates,
+    onAnimeClicked: (Int) -> Unit,
+    onSeeAllButtonClicked: (AnimeSortType) -> Unit
 ) {
-    val recommendedAnimesUiStates: RecommendedAnimesUiStates
-        by homeScreenViewModel.recommendedUiState.collectAsStateWithLifecycle()
-    val popularAnimeUiStates: PopularAnimeStates by homeScreenViewModel.popularUiState.collectAsStateWithLifecycle()
-    val trendingAnimeUiStates: TrendingAnimeStates by homeScreenViewModel.trendingUiState.collectAsStateWithLifecycle()
-    val emptyString = "It is empty"
-    Column() {
-        when (recommendedAnimesUiStates) {
-            is RecommendedAnimesUiStates.RecommendedAnimes -> {
-                Column() {
-                    Text(
-                        text = "Recommended",
-                        modifier = modifier.clickable {
-                            onAnimeClicked()
-                        }
-                    )
-                    Text(
-                        text = (recommendedAnimesUiStates as RecommendedAnimesUiStates.RecommendedAnimes)
-                            .recommended.first().title?.english
-                            ?: emptyString,
-                        modifier = modifier.clickable {
-                            onAnimeClicked()
-                        }
-                    )
+    Column(
+        modifier = modifier.verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(AnimeTheme.space.space32dp)
+    ) {
+        // TODO which image is this coming from:
+        Image(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(214.dp),
+            coverImageUrl = null
+        )
 
-                    Spacer(modifier = Modifier.height(48.dp))
-                }
-            }
-
-            is RecommendedAnimesUiStates.Error -> {
-                Text(
-                    text = (recommendedAnimesUiStates as RecommendedAnimesUiStates.Error).errorMessage,
-                    modifier = modifier.clickable {
-                        onAnimeClicked()
-                    }
-                )
-            }
-
-            RecommendedAnimesUiStates.Loading -> {
-                Text(
-                    text = "This is the loading state",
-                    modifier = modifier.clickable {
-                        onAnimeClicked()
-                    }
-                )
-            }
-        }
-
-        when (popularAnimeUiStates) {
-            is PopularAnimeStates.PopularAnimes -> {
-                Column() {
-                    Spacer(modifier = Modifier.height(48.dp))
-
-                    Text(
-                        text = "Popular:",
-                        modifier = modifier.clickable {
-                            onAnimeClicked()
-                        }
-                    )
-                    Text(
-                        text = (popularAnimeUiStates as PopularAnimeStates.PopularAnimes)
-                            .popular.first().title?.english
-                            ?: (popularAnimeUiStates as PopularAnimeStates.PopularAnimes)
-                                .popular.first().title?.romaji ?: emptyString,
-                        modifier = modifier.clickable {
-                            onAnimeClicked()
-                        }
-                    )
-                }
-            }
-
-            is PopularAnimeStates.Error -> {
-                Text(
-                    text = (popularAnimeUiStates as PopularAnimeStates.Error).errorMessage,
-                    modifier = modifier.clickable {
-                        onAnimeClicked()
-                    }
-                )
-            }
-
-            PopularAnimeStates.Loading -> {
-                Text(
-                    text = "This is the loading popular state",
-                    modifier = modifier.clickable {
-                        onAnimeClicked()
-                    }
-                )
-            }
-        }
-
+        // Trending section
         when (trendingAnimeUiStates) {
             is TrendingAnimeStates.TrendingAnimes -> {
-                Column() {
-                    Spacer(modifier = Modifier.height(48.dp))
-
-                    Text(
-                        text = "Trending:",
-                        modifier = modifier.clickable {
-                            onAnimeClicked()
+                AnimeSection(
+                    modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
+                    sectionTitle = R.string.trending,
+                    buttonText = R.string.seeAll,
+                    buttonOnClick = { onSeeAllButtonClicked(AnimeSortType.TRENDING) }
+                ) {
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(AnimeTheme.space.space12dp),
+                        contentPadding = PaddingValues(horizontal = AnimeTheme.space.space20dp)
+                    ) {
+                        items(trendingAnimeUiStates.trending) { anime ->
+                            VerticalAnimeComponent(
+                                onClick = { onAnimeClicked(anime.id) },
+                                coverImageUrl = anime.coverImage,
+                                animeTitle = anime.title?.english ?: anime.title?.romaji
+                                    ?: anime.title?.native ?: ""
+                            )
                         }
-                    )
-                    Text(
-                        text = (trendingAnimeUiStates as TrendingAnimeStates.TrendingAnimes)
-                            .trending.first().title?.english
-                            ?: emptyString,
-                        modifier = modifier.clickable {
-                            onAnimeClicked()
-                        }
-                    )
+                    }
                 }
             }
 
             is TrendingAnimeStates.Error -> {
+                // TODO Create an error banner
                 Text(
-                    text = (trendingAnimeUiStates as TrendingAnimeStates.Error).errorMessage,
-                    modifier = modifier.clickable {
-                        onAnimeClicked()
+                    text = trendingAnimeUiStates.errorMessage,
+                    modifier = Modifier.clickable {
                     }
                 )
             }
 
             TrendingAnimeStates.Loading -> {
+                // TODO Create a loading skeleton
                 Text(
-                    text = "This is the loading trending state",
-                    modifier = modifier.clickable {
-                        onAnimeClicked()
+                    text = "This is the loading state",
+                    modifier = Modifier.clickable {
+                    }
+                )
+            }
+        }
+
+        // Recommended section
+        when (recommendedAnimeUiStates) {
+            is RecommendedAnimesUiStates.RecommendedAnimes -> {
+                AnimeSection(
+                    modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
+                    sectionTitle = R.string.recommended,
+                    buttonText = R.string.seeAll,
+                    buttonOnClick = { onSeeAllButtonClicked(AnimeSortType.RECOMMENDED) }
+                ) {
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(AnimeTheme.space.space12dp),
+                        contentPadding = PaddingValues(horizontal = AnimeTheme.space.space20dp)
+                    ) {
+                        items(recommendedAnimeUiStates.recommended) { anime ->
+                            VerticalAnimeComponent(
+                                onClick = { onAnimeClicked(anime.id) },
+                                coverImageUrl = anime.coverImage,
+                                animeTitle = anime.title?.english ?: anime.title?.romaji
+                                    ?: anime.title?.native ?: ""
+                            )
+                        }
+                    }
+                }
+            }
+
+            is RecommendedAnimesUiStates.Error -> {
+                // TODO Create an error banner
+                Text(
+                    text = (recommendedAnimeUiStates as RecommendedAnimesUiStates.Error).errorMessage,
+                    modifier = Modifier.clickable {
+                    }
+                )
+            }
+
+            RecommendedAnimesUiStates.Loading -> {
+                // TODO Create a loading skeleton
+                Text(
+                    text = "This is the loading state",
+                    modifier = Modifier.clickable {
+                    }
+                )
+            }
+        }
+
+        // Popular section
+        when (popularAnimeUiStates) {
+            is PopularAnimeStates.PopularAnimes -> {
+                AnimeSection(
+                    modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
+                    sectionTitle = R.string.popular,
+                    buttonText = R.string.seeAll,
+                    buttonOnClick = { onSeeAllButtonClicked(AnimeSortType.POPULAR) }
+                ) {
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(AnimeTheme.space.space12dp),
+                        contentPadding = PaddingValues(horizontal = AnimeTheme.space.space20dp)
+                    ) {
+                        items(popularAnimeUiStates.popular) { anime ->
+                            VerticalAnimeComponent(
+                                onClick = { onAnimeClicked(anime.id) },
+                                coverImageUrl = anime.coverImage,
+                                animeTitle = anime.title?.english ?: anime.title?.romaji
+                                    ?: anime.title?.native ?: ""
+                            )
+                        }
+                    }
+                }
+            }
+
+            is PopularAnimeStates.Error -> {
+                // TODO Create an error banner
+                Text(
+                    text = popularAnimeUiStates.errorMessage,
+                    modifier = Modifier.clickable {
+                    }
+                )
+            }
+
+            PopularAnimeStates.Loading -> {
+                // TODO Create a loading skeleton
+                Text(
+                    text = "This is the loading state for popular",
+                    modifier = Modifier.clickable {
                     }
                 )
             }

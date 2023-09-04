@@ -57,7 +57,7 @@ fun HorizontalAnimeComponent(
             Image(
                 modifier = Modifier.clip(shape = AnimeTheme.shapes.mediumShape),
                 coverImageUrl = coverImageUrl,
-                contentScale = ContentScale.FillHeight
+                contentScale = ContentScale.Crop
             )
             Spacer(modifier = Modifier.width(AnimeTheme.space.space16dp))
 
@@ -78,7 +78,7 @@ fun HorizontalAnimeComponent(
                 Text(
                     text = animeDescription,
                     color = AnimeTheme.colors.textWeak,
-                    style = AnimeTheme.typography.bodyExtraSmall,
+                    style = AnimeTheme.typography.bodySmall,
                     textAlign = TextAlign.Start,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis

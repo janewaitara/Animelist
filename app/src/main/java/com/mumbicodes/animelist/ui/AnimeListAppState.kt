@@ -17,7 +17,7 @@ import com.mumbicodes.animelist.com.mumbicodes.animelist.navigation.MainAppDesti
 import com.mumbicodes.animelist.com.mumbicodes.animelist.navigation.MainAppDestinations.SEARCH
 import com.mumbicodes.animelist.com.mumbicodes.animelist.navigation.MainAppDestinations.YOUR_LIST
 import com.mumbicodes.home.navigation.HOME_SCREEN_ROUTE
-import com.mumbicodes.home.navigation.navigateToHomeScreen
+import com.mumbicodes.home.navigation.navigateToHomeGraph
 import com.mumbicodes.search.navigation.SEARCH_SCREEN_ROUTE
 import com.mumbicodes.search.navigation.navigateToSearchScreen
 import com.mumbicodes.yourlist.navigation.YOUR_LIST_SCREEN_ROUTE
@@ -66,7 +66,7 @@ class AnimeListAppState(
         }
 
         when (mainAppDestinations) {
-            HOME -> navController.navigateToHomeScreen(topLevelNavOptions)
+            HOME -> navController.navigateToHomeGraph(topLevelNavOptions)
             SEARCH -> navController.navigateToSearchScreen(topLevelNavOptions)
             YOUR_LIST -> navController.navigateToYourListScreen(topLevelNavOptions)
         }

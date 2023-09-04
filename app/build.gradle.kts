@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.mumbicodes.animelist"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.mumbicodes.animelist"

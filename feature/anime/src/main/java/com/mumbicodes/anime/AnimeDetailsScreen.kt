@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowColumn
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,6 +33,7 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mumbicodes.designsystem.R
+import com.mumbicodes.designsystem.atoms.Badge
 import com.mumbicodes.designsystem.atoms.CircleDecoration
 import com.mumbicodes.designsystem.atoms.Image
 import com.mumbicodes.designsystem.atoms.PrimaryButton
@@ -127,6 +129,7 @@ fun AnimeDetailsContent(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun AnimeDetailsHeader(
     modifier: Modifier = Modifier,
@@ -260,7 +263,20 @@ fun AnimeDetailsHeader(
                     overflow = TextOverflow.Ellipsis
                 )
             }
-            // TODO add anime genre with Flow row
+
+            FlowRow(
+                modifier = Modifier,
+                horizontalArrangement = Arrangement.spacedBy(AnimeTheme.space.space8dp),
+                verticalArrangement = Arrangement.spacedBy(AnimeTheme.space.space8dp)
+            ) {
+                anime.genres?.let { genres ->
+                    genres.forEach {
+                        it?.let { genre ->
+                            Badge(text = genre)
+                        }
+                    }
+                }
+            }
         }
     }
 }

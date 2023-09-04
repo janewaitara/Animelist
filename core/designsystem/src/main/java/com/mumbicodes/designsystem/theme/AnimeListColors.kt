@@ -57,8 +57,8 @@ fun lightAnimeListColors(
     surfaceBorderSuccess: Color = DarkPastel_300,
     info: Color = Azure_400,
     onInfo: Color = Azure_100,
-    darkInfoText: Color = Azure_600,
-    surfaceBorderInfo: Color = Azure_300,
+    darkInfoText: Color = Azure_500,
+    surfaceBorderInfo: Color = Azure_200,
     bottomNavBackground: Color = Background_white,
     bottomNavContentColor: Color = Grey_600
 ) = AnimeListColors(

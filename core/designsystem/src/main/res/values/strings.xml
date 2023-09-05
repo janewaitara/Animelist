@@ -4,4 +4,7 @@
     <string name="animeSection">Anime Section</string>
     <string name="numberOfEpisodes"> episodes</string>
     <string name="episodesDuration"> min</string>
+    <string name="age">%1$s yrs</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
 </resources>

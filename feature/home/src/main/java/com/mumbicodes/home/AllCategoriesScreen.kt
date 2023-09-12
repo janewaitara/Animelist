@@ -1,5 +1,6 @@
 package com.mumbicodes.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -63,7 +64,9 @@ fun AllCategoriesScreen(
                 is RecommendedAnimesUiStates.Loading -> TODO()
                 is RecommendedAnimesUiStates.RecommendedAnimes -> {
                     LazyColumn(
-                        modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
+                        modifier = Modifier
+                            .background(color = AnimeTheme.colors.background)
+                            .padding(horizontal = AnimeTheme.space.space20dp),
                         verticalArrangement = Arrangement.spacedBy(AnimeTheme.space.space16dp)
                     ) {
                         items(recommendedAnimeUiStates.recommended) { anime ->
@@ -87,7 +90,9 @@ fun AllCategoriesScreen(
                 TrendingAnimeStates.Loading -> TODO()
                 is TrendingAnimeStates.TrendingAnimes -> {
                     LazyColumn(
-                        modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
+                        modifier = Modifier
+                            .background(color = AnimeTheme.colors.background)
+                            .padding(horizontal = AnimeTheme.space.space20dp),
                         verticalArrangement = Arrangement.spacedBy(AnimeTheme.space.space16dp)
                     ) {
                         items(trendingAnimeUiStates.trending) { anime ->
@@ -111,7 +116,9 @@ fun AllCategoriesScreen(
                 PopularAnimeStates.Loading -> TODO()
                 is PopularAnimeStates.PopularAnimes -> {
                     LazyColumn(
-                        modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
+                        modifier = Modifier
+                            .background(color = AnimeTheme.colors.background)
+                            .padding(horizontal = AnimeTheme.space.space20dp),
                         verticalArrangement = Arrangement.spacedBy(AnimeTheme.space.space16dp)
                     ) {
                         items(popularAnimeUiStates.popular) { anime ->

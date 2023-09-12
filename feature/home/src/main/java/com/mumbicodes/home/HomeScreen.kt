@@ -1,5 +1,6 @@
 package com.mumbicodes.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -58,7 +59,9 @@ fun HomeScreen(
     onSeeAllButtonClicked: (AnimeSortType) -> Unit
 ) {
     Column(
-        modifier = modifier.verticalScroll(rememberScrollState()),
+        modifier = modifier
+            .verticalScroll(rememberScrollState())
+            .background(color = AnimeTheme.colors.background),
         verticalArrangement = Arrangement.spacedBy(AnimeTheme.space.space32dp)
     ) {
         // TODO which image is this coming from:

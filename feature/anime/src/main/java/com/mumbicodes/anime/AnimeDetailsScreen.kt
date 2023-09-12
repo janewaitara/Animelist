@@ -1,5 +1,7 @@
 package com.mumbicodes.anime
 
+import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -40,6 +42,7 @@ import com.mumbicodes.designsystem.atoms.Badge
 import com.mumbicodes.designsystem.atoms.CircleDecoration
 import com.mumbicodes.designsystem.atoms.Image
 import com.mumbicodes.designsystem.atoms.PrimaryButton
+import com.mumbicodes.designsystem.atoms.Surface
 import com.mumbicodes.designsystem.atoms.Text
 import com.mumbicodes.designsystem.components.HorizontalAnimeComponent
 import com.mumbicodes.designsystem.components.VerticalCharacterComponent
@@ -116,6 +119,7 @@ fun AnimeDetailsContent(
 ) {
     Column(
         modifier = Modifier
+            .background(color = AnimeTheme.colors.background)
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .padding(bottom = AnimeTheme.space.space48dp),
@@ -405,14 +409,20 @@ fun AnimeCharacters(
 }
 
 @Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun AnimeDetailsHeaderPreview() {
     AnimeListTheme {
-        AnimeDetailsHeader(
-            anime = Anime(
-                id = 1,
-                title = AnimeTitle(english = "Anime Title", native = null, romaji = null)
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            backgroundColor = AnimeTheme.colors.background
+        ) {
+            AnimeDetailsHeader(
+                anime = Anime(
+                    id = 1,
+                    title = AnimeTitle(english = "Anime Title", native = null, romaji = null)
+                )
             )
-        )
+        }
     }
 }

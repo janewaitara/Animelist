@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mumbicodes.designsystem.components.HorizontalAnimeComponent
+import com.mumbicodes.designsystem.components.ListLoadingComponent
 import com.mumbicodes.designsystem.theme.AnimeTheme
 
 @Composable
@@ -61,7 +62,10 @@ fun AllCategoriesScreen(
         AnimeSortType.RECOMMENDED -> {
             when (recommendedAnimeUiStates) {
                 is RecommendedAnimesUiStates.Error -> TODO()
-                is RecommendedAnimesUiStates.Loading -> TODO()
+                is RecommendedAnimesUiStates.Loading -> {
+                    ListLoadingComponent()
+                }
+
                 is RecommendedAnimesUiStates.RecommendedAnimes -> {
                     LazyColumn(
                         modifier = Modifier
@@ -84,10 +88,13 @@ fun AllCategoriesScreen(
                 }
             }
         }
+
         AnimeSortType.TRENDING -> {
             when (trendingAnimeUiStates) {
                 is TrendingAnimeStates.Error -> TODO()
-                TrendingAnimeStates.Loading -> TODO()
+                TrendingAnimeStates.Loading -> {
+                    ListLoadingComponent()
+                }
                 is TrendingAnimeStates.TrendingAnimes -> {
                     LazyColumn(
                         modifier = Modifier
@@ -110,10 +117,13 @@ fun AllCategoriesScreen(
                 }
             }
         }
+
         AnimeSortType.POPULAR -> {
             when (popularAnimeUiStates) {
                 is PopularAnimeStates.Error -> TODO()
-                PopularAnimeStates.Loading -> TODO()
+                PopularAnimeStates.Loading -> {
+                    ListLoadingComponent()
+                }
                 is PopularAnimeStates.PopularAnimes -> {
                     LazyColumn(
                         modifier = Modifier

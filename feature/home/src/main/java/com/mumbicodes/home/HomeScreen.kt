@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mumbicodes.designsystem.atoms.Image
+import com.mumbicodes.designsystem.components.HorizontalListLoading
 import com.mumbicodes.designsystem.molecules.AnimeSection
 import com.mumbicodes.designsystem.theme.AnimeTheme
 import com.mumbicodes.home.components.VerticalAnimeComponent
@@ -107,12 +108,7 @@ fun HomeScreen(
             }
 
             TrendingAnimeStates.Loading -> {
-                // TODO Create a loading skeleton
-                Text(
-                    text = "This is the loading state",
-                    modifier = Modifier.clickable {
-                    }
-                )
+                HorizontalListLoading()
             }
         }
 
@@ -151,12 +147,7 @@ fun HomeScreen(
             }
 
             RecommendedAnimesUiStates.Loading -> {
-                // TODO Create a loading skeleton
-                Text(
-                    text = "This is the loading state",
-                    modifier = Modifier.clickable {
-                    }
-                )
+                HorizontalListLoading()
             }
         }
 
@@ -195,12 +186,7 @@ fun HomeScreen(
             }
 
             PopularAnimeStates.Loading -> {
-                // TODO Create a loading skeleton
-                Text(
-                    text = "This is the loading state for popular",
-                    modifier = Modifier.clickable {
-                    }
-                )
+                HorizontalListLoading()
             }
         }
     }

@@ -2,7 +2,6 @@ package com.mumbicodes.anime
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -98,12 +97,7 @@ fun AnimeDetailsScreen(
         }
 
         is AnimeDetailsScreenUiState.Loading -> {
-            Text(
-                text = "Loading",
-                modifier = modifier.clickable {
-                    onCharacterClicked(1)
-                }
-            )
+            AnimeDetailsScreenLoadingComponent()
         }
     }
 }

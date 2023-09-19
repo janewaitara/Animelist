@@ -45,6 +45,7 @@ fun HorizontalAnimeComponent(
     Card(
         onClick = onClick,
         modifier = modifier
+            .clip(shape = AnimeTheme.shapes.mediumShape)
             .background(color = AnimeTheme.colors.cardColors)
             .height(120.dp),
         shape = AnimeTheme.shapes.mediumShape

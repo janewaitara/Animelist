@@ -1,10 +1,13 @@
 package com.mumbicodes.anime
 
-import androidx.compose.foundation.clickable
+import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowColumn
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +15,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -32,16 +37,20 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mumbicodes.designsystem.R
+import com.mumbicodes.designsystem.atoms.Badge
 import com.mumbicodes.designsystem.atoms.CircleDecoration
 import com.mumbicodes.designsystem.atoms.Image
 import com.mumbicodes.designsystem.atoms.PrimaryButton
+import com.mumbicodes.designsystem.atoms.Surface
 import com.mumbicodes.designsystem.atoms.Text
 import com.mumbicodes.designsystem.components.HorizontalAnimeComponent
+import com.mumbicodes.designsystem.components.VerticalCharacterComponent
 import com.mumbicodes.designsystem.molecules.AnimeSection
 import com.mumbicodes.designsystem.theme.AnimeListTheme
 import com.mumbicodes.designsystem.theme.AnimeTheme
 import com.mumbicodes.model.data.Anime
 import com.mumbicodes.model.data.AnimeTitle
+import com.mumbicodes.model.data.Character
 
 @Composable
 fun AnimeDetailsRoute(
@@ -55,9 +64,10 @@ fun AnimeDetailsRoute(
     AnimeDetailsScreen(
         modifier = modifier,
         animeDetailsState = animeDetailsState,
-        onCharacterClicked = onCharacterClicked,
+        onCharacterClicked = { },
         onSaveButtonClicked = {},
-        onAnimeClicked = { }
+        onAnimeClicked = { },
+        onCharactersSeeAllClicked = {}
     )
 }
 
@@ -65,9 +75,10 @@ fun AnimeDetailsRoute(
 fun AnimeDetailsScreen(
     modifier: Modifier = Modifier,
     animeDetailsState: AnimeDetailsScreenUiState,
-    onCharacterClicked: () -> Unit,
+    onCharacterClicked: (Int) -> Unit,
     onSaveButtonClicked: () -> Unit,
-    onAnimeClicked: (Int) -> Unit
+    onAnimeClicked: (Int) -> Unit,
+    onCharactersSeeAllClicked: () -> Unit
 ) {
     when (animeDetailsState) {
         is AnimeDetailsScreenUiState.AnimeDetails -> {
@@ -76,7 +87,8 @@ fun AnimeDetailsScreen(
                 anime = animeDetailsState.animeDetails,
                 onCharacterClicked = onCharacterClicked,
                 onSaveButtonClicked = onSaveButtonClicked,
-                onAnimeClicked = onAnimeClicked
+                onAnimeClicked = onAnimeClicked,
+                onCharactersSeeAllClicked = onCharactersSeeAllClicked
             )
         }
 
@@ -85,12 +97,7 @@ fun AnimeDetailsScreen(
         }
 
         is AnimeDetailsScreenUiState.Loading -> {
-            Text(
-                text = "Loading",
-                modifier = modifier.clickable {
-                    onCharacterClicked()
-                }
-            )
+            AnimeDetailsScreenLoadingComponent()
         }
     }
 }
@@ -99,12 +106,14 @@ fun AnimeDetailsScreen(
 fun AnimeDetailsContent(
     modifier: Modifier,
     anime: Anime,
-    onCharacterClicked: () -> Unit,
+    onCharacterClicked: (Int) -> Unit,
     onSaveButtonClicked: () -> Unit,
-    onAnimeClicked: (Int) -> Unit
+    onAnimeClicked: (Int) -> Unit,
+    onCharactersSeeAllClicked: () -> Unit
 ) {
     Column(
         modifier = Modifier
+            .background(color = AnimeTheme.colors.background)
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .padding(bottom = AnimeTheme.space.space48dp),
@@ -119,6 +128,12 @@ fun AnimeDetailsContent(
             animeDesc = anime.description,
             onSaveButtonClicked = onSaveButtonClicked
         )
+        AnimeCharacters(
+            modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
+            onCharacterClicked = onCharacterClicked,
+            passedCharacters = anime.characters,
+            onCharactersSeeAllClicked = onCharactersSeeAllClicked
+        )
         AnimeRecommendations(
             modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
             recommendedAnimes = anime.recommendations,
@@ -127,6 +142,7 @@ fun AnimeDetailsContent(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun AnimeDetailsHeader(
     modifier: Modifier = Modifier,
@@ -260,7 +276,20 @@ fun AnimeDetailsHeader(
                     overflow = TextOverflow.Ellipsis
                 )
             }
-            // TODO add anime genre with Flow row
+
+            FlowRow(
+                modifier = Modifier,
+                horizontalArrangement = Arrangement.spacedBy(AnimeTheme.space.space8dp),
+                verticalArrangement = Arrangement.spacedBy(AnimeTheme.space.space8dp)
+            ) {
+                anime.genres?.let { genres ->
+                    genres.forEach {
+                        it?.let { genre ->
+                            Badge(text = genre)
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -337,15 +366,57 @@ fun AnimeRecommendations(
     }
 }
 
+@Composable
+fun AnimeCharacters(
+    modifier: Modifier,
+    passedCharacters: List<Character?>?,
+    onCharacterClicked: (Int) -> Unit,
+    onCharactersSeeAllClicked: () -> Unit
+) {
+    passedCharacters?.let { characters ->
+
+        AnimeSection(
+            modifier = modifier,
+            sectionTitle = com.mumbicodes.anime.R.string.animeCharacters,
+            buttonText = com.mumbicodes.anime.R.string.seeAll,
+            buttonOnClick = onCharactersSeeAllClicked
+        ) {
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(AnimeTheme.space.space8dp),
+                contentPadding = PaddingValues(horizontal = AnimeTheme.space.space20dp)
+            ) {
+                items(characters) {
+                    it?.let { character ->
+                        VerticalCharacterComponent(
+                            onClick = {
+                                onCharacterClicked(character.id)
+                            },
+                            coverImageUrl = character.image,
+                            characterName = character.name?.full ?: character.name?.native
+                                ?: "No name"
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
 @Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun AnimeDetailsHeaderPreview() {
     AnimeListTheme {
-        AnimeDetailsHeader(
-            anime = Anime(
-                id = 1,
-                title = AnimeTitle(english = "Anime Title", native = null, romaji = null)
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            backgroundColor = AnimeTheme.colors.background
+        ) {
+            AnimeDetailsHeader(
+                anime = Anime(
+                    id = 1,
+                    title = AnimeTitle(english = "Anime Title", native = null, romaji = null)
+                )
             )
-        )
+        }
     }
 }

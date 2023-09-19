@@ -1,5 +1,6 @@
 package com.mumbicodes.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mumbicodes.designsystem.components.HorizontalAnimeComponent
+import com.mumbicodes.designsystem.components.ListLoadingComponent
 import com.mumbicodes.designsystem.theme.AnimeTheme
 
 @Composable
@@ -60,10 +62,15 @@ fun AllCategoriesScreen(
         AnimeSortType.RECOMMENDED -> {
             when (recommendedAnimeUiStates) {
                 is RecommendedAnimesUiStates.Error -> TODO()
-                is RecommendedAnimesUiStates.Loading -> TODO()
+                is RecommendedAnimesUiStates.Loading -> {
+                    ListLoadingComponent()
+                }
+
                 is RecommendedAnimesUiStates.RecommendedAnimes -> {
                     LazyColumn(
-                        modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
+                        modifier = Modifier
+                            .background(color = AnimeTheme.colors.background)
+                            .padding(horizontal = AnimeTheme.space.space20dp),
                         verticalArrangement = Arrangement.spacedBy(AnimeTheme.space.space16dp)
                     ) {
                         items(recommendedAnimeUiStates.recommended) { anime ->
@@ -81,13 +88,18 @@ fun AllCategoriesScreen(
                 }
             }
         }
+
         AnimeSortType.TRENDING -> {
             when (trendingAnimeUiStates) {
                 is TrendingAnimeStates.Error -> TODO()
-                TrendingAnimeStates.Loading -> TODO()
+                TrendingAnimeStates.Loading -> {
+                    ListLoadingComponent()
+                }
                 is TrendingAnimeStates.TrendingAnimes -> {
                     LazyColumn(
-                        modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
+                        modifier = Modifier
+                            .background(color = AnimeTheme.colors.background)
+                            .padding(horizontal = AnimeTheme.space.space20dp),
                         verticalArrangement = Arrangement.spacedBy(AnimeTheme.space.space16dp)
                     ) {
                         items(trendingAnimeUiStates.trending) { anime ->
@@ -105,13 +117,18 @@ fun AllCategoriesScreen(
                 }
             }
         }
+
         AnimeSortType.POPULAR -> {
             when (popularAnimeUiStates) {
                 is PopularAnimeStates.Error -> TODO()
-                PopularAnimeStates.Loading -> TODO()
+                PopularAnimeStates.Loading -> {
+                    ListLoadingComponent()
+                }
                 is PopularAnimeStates.PopularAnimes -> {
                     LazyColumn(
-                        modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
+                        modifier = Modifier
+                            .background(color = AnimeTheme.colors.background)
+                            .padding(horizontal = AnimeTheme.space.space20dp),
                         verticalArrangement = Arrangement.spacedBy(AnimeTheme.space.space16dp)
                     ) {
                         items(popularAnimeUiStates.popular) { anime ->

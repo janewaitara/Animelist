@@ -28,6 +28,8 @@ dependencies {
     implementation(libs.androidx.appCompat)
     implementation("io.coil-kt:coil-compose:2.4.0")
 
+    implementation(libs.androidx.constraintlayout)
+
     // Enables formatting rule set in detekt
     detektPlugins(libs.detekt.formatting)
 }

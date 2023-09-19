@@ -1,11 +1,11 @@
 [versions]
-androidApplication = "8.0.1"
+androidApplication = "8.0.2"
 kotlin = "1.8.10"
 ktx = "1.10.0"
 androidxAppCompat = "1.6.1"
 androidxLifecycle = "2.6.0"
 androidxActivityCompose = "1.7.2"
-androidxComposeBom = "2023.06.01"
+androidxComposeBom = "2023.08.00"
 androidxComposeNavigation = "2.6.0"
 junit4 = "4.13.2"
 androidxJunit = "1.1.5"
@@ -16,7 +16,7 @@ hilt = "2.45"
 hiltWithOtherLibs = "1.0.0"
 apollographql = "3.8.2"
 coroutines = "1.5.0"
-accompanist = "0.30.0"
+accompanist = "0.32.0"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "ktx" }

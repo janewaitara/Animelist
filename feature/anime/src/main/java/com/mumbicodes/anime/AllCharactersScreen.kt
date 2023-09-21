@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mumbicodes.designsystem.components.ListLoadingComponent
 
 @Composable
 fun AllCharactersRoute(
@@ -34,6 +35,8 @@ fun AllCharactersScreen(
         is AnimeDetailsScreenUiState.AnimeDetails -> {
         }
         is AnimeDetailsScreenUiState.Error -> TODO()
-        is AnimeDetailsScreenUiState.Loading -> TODO()
+        is AnimeDetailsScreenUiState.Loading -> {
+            ListLoadingComponent()
+        }
     }
 }

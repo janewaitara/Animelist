@@ -56,7 +56,9 @@ import com.mumbicodes.model.data.Character
 fun AnimeDetailsRoute(
     modifier: Modifier = Modifier,
     animeViewModel: AnimeViewModel = hiltViewModel(),
-    onCharacterClicked: () -> Unit
+    onCharacterClicked: (Int) -> Unit,
+    onAnimeClicked: (Int) -> Unit,
+    onCharactersSeeAllClicked: () -> Unit
 ) {
     val animeDetailsState: AnimeDetailsScreenUiState
         by animeViewModel.animeDetails.collectAsStateWithLifecycle()
@@ -64,10 +66,10 @@ fun AnimeDetailsRoute(
     AnimeDetailsScreen(
         modifier = modifier,
         animeDetailsState = animeDetailsState,
-        onCharacterClicked = { },
+        onCharacterClicked = onCharacterClicked,
         onSaveButtonClicked = {},
-        onAnimeClicked = { },
-        onCharactersSeeAllClicked = {}
+        onAnimeClicked = onAnimeClicked,
+        onCharactersSeeAllClicked = onCharactersSeeAllClicked
     )
 }
 

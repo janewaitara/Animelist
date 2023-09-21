@@ -10,7 +10,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 fun AllCharactersRoute(
     modifier: Modifier = Modifier,
     animeDetailsViewModel: AnimeViewModel = hiltViewModel(),
-    onAnimeClicked: (Int) -> Unit = {},
+    onCharacterClicked: (Int) -> Unit = {},
     onBackButtonClicked: () -> Unit = {}
 ) {
     val animeDetailsUiState by animeDetailsViewModel.animeDetails.collectAsStateWithLifecycle()
@@ -18,7 +18,7 @@ fun AllCharactersRoute(
     AllCharactersScreen(
         modifier = modifier,
         animeDetails = animeDetailsUiState,
-        onAnimeClicked = onAnimeClicked,
+        onCharacterClicked = onCharacterClicked,
         onBackButtonClicked = onBackButtonClicked
     )
 }
@@ -27,7 +27,7 @@ fun AllCharactersRoute(
 fun AllCharactersScreen(
     modifier: Modifier = Modifier,
     animeDetails: AnimeDetailsScreenUiState,
-    onAnimeClicked: (Int) -> Unit = {},
+    onCharacterClicked: (Int) -> Unit = {},
     onBackButtonClicked: () -> Unit = {}
 ) {
     when (animeDetails) {

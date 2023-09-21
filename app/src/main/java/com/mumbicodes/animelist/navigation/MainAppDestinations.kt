@@ -16,19 +16,19 @@ enum class MainAppDestinations(
 ) {
     HOME(
         selectedIcon = AnimeListIcons.homeFilled,
-        unselectedIcon = AnimeListIcons.homeFilled,
+        unselectedIcon = AnimeListIcons.homeOutlined,
         iconLabel = home.string.home,
         titleTextId = home.string.home
     ),
     SEARCH(
-        selectedIcon = AnimeListIcons.homeFilled,
-        unselectedIcon = AnimeListIcons.homeFilled,
+        selectedIcon = AnimeListIcons.searchFilled,
+        unselectedIcon = AnimeListIcons.searchOutlined,
         iconLabel = search.string.search,
         titleTextId = search.string.search
     ),
     YOUR_LIST(
-        selectedIcon = AnimeListIcons.homeFilled,
-        unselectedIcon = AnimeListIcons.homeFilled,
+        selectedIcon = AnimeListIcons.bookmark_filled,
+        unselectedIcon = AnimeListIcons.bookmark_outlined,
         iconLabel = yourList.string.yourList,
         titleTextId = yourList.string.yourList
     )

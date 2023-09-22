@@ -56,6 +56,7 @@ private fun SearchCharacterQuery.Name.toCharacterName() = CharacterName(
     full = this.full,
     native = this.native
 )
+
 private fun CharacterQuery.Name.toCharacterName() = CharacterName(
     full = this.full,
     native = this.native
@@ -67,12 +68,16 @@ private fun CharacterQuery.DateOfBirth.toDateOfBirth() = DateOfBirth(
     day = this.day
 
 )
+
 internal fun AnimeQuery.Node.toCharacter() = Character(
     id = this.id,
     name = this.name?.toCharacterName(),
-    image = this.image?.medium
+    image = this.image?.medium,
+    gender = this.gender,
+    age = this.age
 )
+
 private fun AnimeQuery.Name.toCharacterName() = CharacterName(
     full = this.full,
-    native = ""
+    native = this.native
 )

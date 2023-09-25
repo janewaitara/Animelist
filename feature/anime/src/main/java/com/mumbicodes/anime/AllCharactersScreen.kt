@@ -53,8 +53,8 @@ fun AllCharactersScreen(
                             characterImageUrl = character.image,
                             characterEnglishName = character.name?.full ?: "",
                             characterNativeName = character.name?.native ?: "",
-                            age = character.age ?: "",
-                            gender = character.gender ?: "",
+                            age = character.age,
+                            gender = character.gender,
                             onClick = { onCharacterClicked(character.id) }
                         )
                     }

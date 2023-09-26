@@ -338,29 +338,30 @@ fun AnimeRecommendations(
 ) {
     recommendedAnimes?.let {
         val animes = it.toSet()
-        // TODO hide the see all button if the list is short and
-        // do not show section if the animes are the same as the anime in view
-        AnimeSection(
-            modifier = modifier,
-            sectionTitle = com.mumbicodes.anime.R.string.recommendationsSectionTitle,
-            buttonText = com.mumbicodes.anime.R.string.seeAll,
-            buttonOnClick = { /*TODO*/ }
-        ) {
-            FlowColumn(
-                modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
-                verticalArrangement = Arrangement.spacedBy(AnimeTheme.space.space16dp)
+        if (animes.isNotEmpty()) {
+            // TODO hide the see all button if the list is short and
+            AnimeSection(
+                modifier = modifier,
+                sectionTitle = com.mumbicodes.anime.R.string.recommendationsSectionTitle,
+                buttonText = com.mumbicodes.anime.R.string.seeAll,
+                buttonOnClick = { /*TODO*/ }
             ) {
-                animes.take(3).forEach { recommendedAnime ->
-                    recommendedAnime?.let { anime ->
-                        HorizontalAnimeComponent(
-                            onClick = { onAnimeClicked(anime.id) },
-                            coverImageUrl = anime.coverImage,
-                            animeTitle = anime.title?.english ?: anime.title?.romaji
-                                ?: anime.title?.native ?: "",
-                            animeDescription = anime.description ?: "",
-                            numberOfEpisodes = anime.episodes ?: 0,
-                            episodeDuration = anime.duration ?: 0
-                        )
+                FlowColumn(
+                    modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
+                    verticalArrangement = Arrangement.spacedBy(AnimeTheme.space.space16dp)
+                ) {
+                    animes.take(3).forEach { recommendedAnime ->
+                        recommendedAnime?.let { anime ->
+                            HorizontalAnimeComponent(
+                                onClick = { onAnimeClicked(anime.id) },
+                                coverImageUrl = anime.coverImage,
+                                animeTitle = anime.title?.english ?: anime.title?.romaji
+                                    ?: anime.title?.native ?: "",
+                                animeDescription = anime.description ?: "",
+                                numberOfEpisodes = anime.episodes ?: 0,
+                                episodeDuration = anime.duration ?: 0
+                            )
+                        }
                     }
                 }
             }

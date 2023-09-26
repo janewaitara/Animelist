@@ -95,12 +95,11 @@ fun HorizontalCharacterComponent(
                 ) {
                     age?.let {
                         Text(
+                            modifier = Modifier.weight(1f),
                             text = stringResource(id = R.string.age, age),
                             color = AnimeTheme.colors.textStrong,
                             style = AnimeTheme.typography.bodySmall,
-                            textAlign = TextAlign.Start,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
+                            textAlign = TextAlign.Start
                         )
                     }
 

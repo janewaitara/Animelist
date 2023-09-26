@@ -40,7 +40,13 @@ class AnimeViewModel @Inject constructor(
 
             is Result.Success -> {
                 AnimeDetailsScreenUiState.AnimeDetails(
-                    animeDetails = animeDetailsResult.data
+                    animeDetails = animeDetailsResult.data.copy(
+                        recommendations = animeDetailsResult.data.recommendations?.let { recommendedAnimes ->
+                            recommendedAnimes.filterNot {
+                                it?.id == animeDetailsResult.data.id
+                            }
+                        }
+                    )
                 )
             }
         }

@@ -36,6 +36,9 @@ dependencies {
     // Accompanist
     implementation(libs.accompanist)
 
+    // lifecycle
+    implementation(libs.bundles.lifecycle)
+
     // Enables formatting rule set in detekt
     detektPlugins(libs.detekt.formatting)
 }

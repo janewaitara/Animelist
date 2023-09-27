@@ -46,7 +46,7 @@ fun AnimeListNavHost(
             animeDetailsGraph(
                 navController = navController,
                 onCharacterClicked = { characterId ->
-                    navController.navigateToCharacterBottomSheet()
+                    navController.navigateToCharacterBottomSheet(characterId = characterId)
                 },
                 onCharactersSeeAllClicked = {
                     navController.navigate(ALL_CHARACTERS_ROUTE)

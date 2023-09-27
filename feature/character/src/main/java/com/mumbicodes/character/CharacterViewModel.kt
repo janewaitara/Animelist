@@ -1,7 +1,9 @@
 package com.mumbicodes.character
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mumbicodes.character.constants.CHARACTERID
 import com.mumbicodes.common.result.Result
 import com.mumbicodes.domain.repository.CharacterRepository
 import com.mumbicodes.model.data.Character
@@ -15,12 +17,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CharacterViewModel @Inject constructor(
-    private val characterRepository: CharacterRepository
+    private val characterRepository: CharacterRepository,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     // TODO update the id to get from savedState after it's passed from otehr screens
     val characterUiState: StateFlow<CharacterScreenUiState> =
-        getCharacterById(characterId = 0).map { characterDetails ->
+        getCharacterById(
+            characterId = savedStateHandle.get<Int>(CHARACTERID) ?: 0
+        ).map { characterDetails ->
             when (characterDetails) {
                 is Result.ApplicationError -> {
                     CharacterScreenUiState.Error(characterDetails.errors.joinToString())

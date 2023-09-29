@@ -5,7 +5,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
-import com.mumbicodes.anime.navigation.animeDetailsScreen
+import com.mumbicodes.anime.navigation.ALL_CHARACTERS_ROUTE
+import com.mumbicodes.anime.navigation.animeDetailsGraph
 import com.mumbicodes.anime.navigation.navigateToAnimeScreen
 import com.mumbicodes.animelist.com.mumbicodes.animelist.ui.AnimeListAppState
 import com.mumbicodes.character.navigation.characterBottomSheet
@@ -42,9 +43,13 @@ fun AnimeListNavHost(
             )
             searchScreen()
             yourListScreen()
-            animeDetailsScreen(
-                onCharacterClicked = {
-                    navController.navigateToCharacterBottomSheet()
+            animeDetailsGraph(
+                navController = navController,
+                onCharacterClicked = { characterId ->
+                    navController.navigateToCharacterBottomSheet(characterId = characterId)
+                },
+                onCharactersSeeAllClicked = {
+                    navController.navigate(ALL_CHARACTERS_ROUTE)
                 }
             )
             characterBottomSheet()

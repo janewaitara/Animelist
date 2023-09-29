@@ -37,13 +37,14 @@ fun HorizontalCharacterComponent(
     characterEnglishName: String,
     characterNativeName: String,
     characterImageUrl: String?,
-    age: String,
-    gender: String,
+    age: String?,
+    gender: String?,
     onClick: () -> Unit
 ) {
     Card(
         onClick = onClick,
         modifier = modifier
+            .clip(AnimeTheme.shapes.mediumShape)
             .background(color = AnimeTheme.colors.cardColors)
             .height(120.dp),
         shape = AnimeTheme.shapes.mediumShape
@@ -86,26 +87,32 @@ fun HorizontalCharacterComponent(
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                    horizontalArrangement = when (age != null) {
+                        true -> Arrangement.SpaceBetween
+                        false -> Arrangement.End
+                    },
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        text = stringResource(id = R.string.age, age),
-                        color = AnimeTheme.colors.textStrong,
-                        style = AnimeTheme.typography.bodySmall,
-                        textAlign = TextAlign.Start,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
+                    age?.let {
+                        Text(
+                            modifier = Modifier.weight(1f),
+                            text = stringResource(id = R.string.age, age),
+                            color = AnimeTheme.colors.textStrong,
+                            style = AnimeTheme.typography.bodySmall,
+                            textAlign = TextAlign.Start
+                        )
+                    }
 
-                    Badge(
-                        text = gender,
-                        badgeColor = when (gender) {
-                            "Male" -> BadgeColor.Info
-                            "Female" -> BadgeColor.Primary
-                            else -> BadgeColor.Info
-                        }
-                    )
+                    gender?.let {
+                        Badge(
+                            text = gender,
+                            badgeColor = when (gender) {
+                                "Male" -> BadgeColor.Info
+                                "Female" -> BadgeColor.Primary
+                                else -> BadgeColor.Info
+                            }
+                        )
+                    }
                 }
             }
         }

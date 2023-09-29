@@ -30,11 +30,15 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:common"))
     implementation(project(":core:model"))
+    implementation(project(":core:designsystem"))
 
     implementation(libs.androidx.appCompat)
 
     // Accompanist
     implementation(libs.accompanist)
+
+    // lifecycle
+    implementation(libs.bundles.lifecycle)
 
     // Enables formatting rule set in detekt
     detektPlugins(libs.detekt.formatting)

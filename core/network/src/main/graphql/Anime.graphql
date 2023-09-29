@@ -29,10 +29,13 @@ query Anime($mediaId: Int, $page: Int, $perPage: Int) {
                 id
                 name {
                     full
+                    native
                 }
                 image {
                     medium
                 }
+                age
+                gender
             }
         }
         recommendations {

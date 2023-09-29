@@ -54,7 +54,7 @@ class AnimeRepositoryImpl(private val apolloClient: ApolloClient) : AnimeReposit
             .asResult {
                 it.Page?.recommendations?.filterNotNull().orEmpty().map { recommendationsQuery ->
                     recommendationsQuery.media!!.toModelAnime()
-                }
+                }.distinct()
             }
     }
 

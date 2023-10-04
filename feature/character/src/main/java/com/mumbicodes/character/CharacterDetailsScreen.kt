@@ -37,20 +37,7 @@ fun CharacterDetailsScreenRoute(
 ) {
     val characterDetails by characterViewModel.characterUiState.collectAsStateWithLifecycle()
 
-    when (characterDetails) {
-        is CharacterScreenUiState.CharacterDetails -> {
-            CharacterDetailsScreen(
-                characterDetailsState = characterDetails
-            )
-        }
-
-        is CharacterScreenUiState.Error -> {
-        }
-
-        CharacterScreenUiState.Loading -> {
-            Text("Loading")
-        }
-    }
+    CharacterDetailsScreen(characterDetailsState = characterDetails)
 }
 
 @Composable
@@ -70,7 +57,7 @@ fun CharacterDetailsScreen(
         }
 
         CharacterScreenUiState.Loading -> {
-            Text("Loading")
+            CharacterDetailsLoadingComponent()
         }
     }
 }

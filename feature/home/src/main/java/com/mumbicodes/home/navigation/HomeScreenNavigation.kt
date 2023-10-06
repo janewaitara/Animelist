@@ -44,7 +44,8 @@ fun NavGraphBuilder.homeGraph(
         composable(route = ALL_CATEGORIES_ROUTE) {
             AllCategoriesScreenRoute(
                 onAnimeClicked = onAnimeClicked,
-                homeScreenViewModel = it.sharedViewModel<HomeScreenViewModel>(navController = navController)
+                homeScreenViewModel = it.sharedViewModel<HomeScreenViewModel>(navController = navController),
+                onBackButtonClicked = { navController.navigateUp() }
             )
         }
     }

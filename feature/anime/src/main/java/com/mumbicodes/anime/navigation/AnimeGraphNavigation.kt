@@ -71,7 +71,8 @@ fun NavGraphBuilder.animeDetailsGraph(
             AllCharactersRoute(
                 modifier = Modifier,
                 onCharacterClicked = onCharacterClicked,
-                animeDetailsViewModel = it.sharedViewModel(navController = navController)
+                animeDetailsViewModel = it.sharedViewModel(navController = navController),
+                onBackButtonClicked = { navController.navigateUp() }
             )
         }
     }

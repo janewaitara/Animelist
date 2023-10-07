@@ -62,7 +62,8 @@ fun NavGraphBuilder.animeDetailsGraph(
                 onCharacterClicked = onCharacterClicked,
                 animeViewModel = it.sharedViewModel(navController = navController),
                 onAnimeClicked = {},
-                onCharactersSeeAllClicked = onCharactersSeeAllClicked
+                onCharactersSeeAllClicked = onCharactersSeeAllClicked,
+                onBackButtonClicked = { navController.navigateUp() }
             )
         }
         composable(

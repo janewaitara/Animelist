@@ -83,7 +83,7 @@ fun TextTopBarComponent(
             ) {
                 Icon(
                     painter = painterResource(id = AnimeListIcons.list_layout),
-                    contentDescription = stringResource(R.string.back_button)
+                    contentDescription = stringResource(R.string.list_layout)
                 )
             }
 
@@ -96,7 +96,7 @@ fun TextTopBarComponent(
             ) {
                 Icon(
                     painter = painterResource(id = AnimeListIcons.grid_layout),
-                    contentDescription = stringResource(R.string.back_button)
+                    contentDescription = stringResource(R.string.grid_layout)
                 )
             }
         }

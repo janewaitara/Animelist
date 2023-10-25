@@ -1,5 +1,6 @@
 package com.mumbicodes.home
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
@@ -12,7 +13,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mumbicodes.designsystem.components.HorizontalAnimeComponent
 import com.mumbicodes.designsystem.components.ListLoadingComponent
+import com.mumbicodes.designsystem.components.TextTopBarComponent
 import com.mumbicodes.designsystem.theme.AnimeTheme
+import java.util.Locale
 
 @Composable
 fun AllCategoriesScreenRoute(
@@ -36,7 +39,7 @@ fun AllCategoriesScreenRoute(
         popularAnimeUiStates = popularAnimeUiStates,
         trendingAnimeUiStates = trendingAnimeUiStates,
         onAnimeClicked = onAnimeClicked,
-        onBackButtonClicked = {}
+        onBackButtonClicked = onBackButtonClicked
     )
 
     /*//TODO Add a top bar
@@ -48,6 +51,7 @@ fun AllCategoriesScreenRoute(
     )*/
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AllCategoriesScreen(
     modifier: Modifier = Modifier,
@@ -73,6 +77,14 @@ fun AllCategoriesScreen(
                             .padding(horizontal = AnimeTheme.space.space20dp),
                         verticalArrangement = Arrangement.spacedBy(AnimeTheme.space.space16dp)
                     ) {
+                        stickyHeader {
+                            TextTopBarComponent(
+                                onBackButtonClicked = {
+                                    onBackButtonClicked()
+                                },
+                                headingText = animeSortType.name.lowercase(Locale.ROOT)
+                            )
+                        }
                         items(recommendedAnimeUiStates.recommended) { anime ->
                             HorizontalAnimeComponent(
                                 onClick = { onAnimeClicked(anime.id) },
@@ -95,6 +107,7 @@ fun AllCategoriesScreen(
                 TrendingAnimeStates.Loading -> {
                     ListLoadingComponent()
                 }
+
                 is TrendingAnimeStates.TrendingAnimes -> {
                     LazyColumn(
                         modifier = Modifier
@@ -102,6 +115,14 @@ fun AllCategoriesScreen(
                             .padding(horizontal = AnimeTheme.space.space20dp),
                         verticalArrangement = Arrangement.spacedBy(AnimeTheme.space.space16dp)
                     ) {
+                        stickyHeader {
+                            TextTopBarComponent(
+                                onBackButtonClicked = {
+                                    onBackButtonClicked()
+                                },
+                                headingText = animeSortType.name.lowercase(Locale.ROOT)
+                            )
+                        }
                         items(trendingAnimeUiStates.trending) { anime ->
                             HorizontalAnimeComponent(
                                 onClick = { onAnimeClicked(anime.id) },
@@ -124,6 +145,7 @@ fun AllCategoriesScreen(
                 PopularAnimeStates.Loading -> {
                     ListLoadingComponent()
                 }
+
                 is PopularAnimeStates.PopularAnimes -> {
                     LazyColumn(
                         modifier = Modifier
@@ -131,6 +153,14 @@ fun AllCategoriesScreen(
                             .padding(horizontal = AnimeTheme.space.space20dp),
                         verticalArrangement = Arrangement.spacedBy(AnimeTheme.space.space16dp)
                     ) {
+                        stickyHeader {
+                            TextTopBarComponent(
+                                onBackButtonClicked = {
+                                    onBackButtonClicked()
+                                },
+                                headingText = animeSortType.name.lowercase(Locale.ROOT)
+                            )
+                        }
                         items(popularAnimeUiStates.popular) { anime ->
                             HorizontalAnimeComponent(
                                 onClick = { onAnimeClicked(anime.id) },

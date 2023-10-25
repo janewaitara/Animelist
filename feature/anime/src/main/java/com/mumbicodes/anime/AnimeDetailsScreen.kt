@@ -3,6 +3,7 @@ package com.mumbicodes.anime
 import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowColumn
@@ -44,6 +45,7 @@ import com.mumbicodes.designsystem.atoms.PrimaryButton
 import com.mumbicodes.designsystem.atoms.Surface
 import com.mumbicodes.designsystem.atoms.Text
 import com.mumbicodes.designsystem.components.HorizontalAnimeComponent
+import com.mumbicodes.designsystem.components.IconTopBarComponent
 import com.mumbicodes.designsystem.components.VerticalCharacterComponent
 import com.mumbicodes.designsystem.molecules.AnimeSection
 import com.mumbicodes.designsystem.theme.AnimeListTheme
@@ -58,7 +60,8 @@ fun AnimeDetailsRoute(
     animeViewModel: AnimeViewModel = hiltViewModel(),
     onCharacterClicked: (Int) -> Unit,
     onAnimeClicked: (Int) -> Unit,
-    onCharactersSeeAllClicked: () -> Unit
+    onCharactersSeeAllClicked: () -> Unit,
+    onBackButtonClicked: () -> Unit
 ) {
     val animeDetailsState: AnimeDetailsScreenUiState
         by animeViewModel.animeDetails.collectAsStateWithLifecycle()
@@ -69,7 +72,8 @@ fun AnimeDetailsRoute(
         onCharacterClicked = onCharacterClicked,
         onSaveButtonClicked = {},
         onAnimeClicked = onAnimeClicked,
-        onCharactersSeeAllClicked = onCharactersSeeAllClicked
+        onCharactersSeeAllClicked = onCharactersSeeAllClicked,
+        onBackButtonClicked = onBackButtonClicked
     )
 }
 
@@ -80,7 +84,8 @@ fun AnimeDetailsScreen(
     onCharacterClicked: (Int) -> Unit,
     onSaveButtonClicked: () -> Unit,
     onAnimeClicked: (Int) -> Unit,
-    onCharactersSeeAllClicked: () -> Unit
+    onCharactersSeeAllClicked: () -> Unit,
+    onBackButtonClicked: () -> Unit
 ) {
     when (animeDetailsState) {
         is AnimeDetailsScreenUiState.AnimeDetails -> {
@@ -90,7 +95,8 @@ fun AnimeDetailsScreen(
                 onCharacterClicked = onCharacterClicked,
                 onSaveButtonClicked = onSaveButtonClicked,
                 onAnimeClicked = onAnimeClicked,
-                onCharactersSeeAllClicked = onCharactersSeeAllClicked
+                onCharactersSeeAllClicked = onCharactersSeeAllClicked,
+                onBackButtonClicked = onBackButtonClicked
             )
         }
 
@@ -111,35 +117,43 @@ fun AnimeDetailsContent(
     onCharacterClicked: (Int) -> Unit,
     onSaveButtonClicked: () -> Unit,
     onAnimeClicked: (Int) -> Unit,
-    onCharactersSeeAllClicked: () -> Unit
+    onCharactersSeeAllClicked: () -> Unit,
+    onBackButtonClicked: () -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .background(color = AnimeTheme.colors.background)
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(bottom = AnimeTheme.space.space48dp),
-        verticalArrangement = Arrangement.spacedBy(AnimeTheme.space.space24dp)
-    ) {
-        AnimeDetailsHeader(
-            modifier = Modifier,
-            anime = anime
-        )
-        AnimeDescAndCTA(
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .background(color = AnimeTheme.colors.background)
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(bottom = AnimeTheme.space.space48dp),
+            verticalArrangement = Arrangement.spacedBy(AnimeTheme.space.space24dp)
+        ) {
+            AnimeDetailsHeader(
+                modifier = Modifier,
+                anime = anime
+            )
+            AnimeDescAndCTA(
+                modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
+                animeDesc = anime.description,
+                onSaveButtonClicked = onSaveButtonClicked
+            )
+            AnimeCharacters(
+                modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
+                onCharacterClicked = onCharacterClicked,
+                passedCharacters = anime.characters,
+                onCharactersSeeAllClicked = onCharactersSeeAllClicked
+            )
+            AnimeRecommendations(
+                modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
+                recommendedAnimes = anime.recommendations,
+                onAnimeClicked = onAnimeClicked
+            )
+        }
+
+        IconTopBarComponent(
             modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
-            animeDesc = anime.description,
-            onSaveButtonClicked = onSaveButtonClicked
-        )
-        AnimeCharacters(
-            modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
-            onCharacterClicked = onCharacterClicked,
-            passedCharacters = anime.characters,
-            onCharactersSeeAllClicked = onCharactersSeeAllClicked
-        )
-        AnimeRecommendations(
-            modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
-            recommendedAnimes = anime.recommendations,
-            onAnimeClicked = onAnimeClicked
+            onBackButtonClicked = onBackButtonClicked
         )
     }
 }

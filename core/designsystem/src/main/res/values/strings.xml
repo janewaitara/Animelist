@@ -7,4 +7,7 @@
     <string name="age">%1$s yrs</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
+    <string name="back_button">Back button</string>
+    <string name="grid_layout">Change layout to Grid</string>
+    <string name="list_layout">Change layout to List</string>
 </resources>

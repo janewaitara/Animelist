@@ -1,5 +1,6 @@
 package com.mumbicodes.designsystem.atoms
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -48,7 +49,7 @@ fun IconButton(
             .background(color = colors.containerColor(enabled).value)
             .clickable(
                 onClick = onClick,
-                enabled = enabled,
+                enabled = true,
                 role = Role.Button,
                 interactionSource = interactionSource,
                 indication = null
@@ -87,6 +88,7 @@ data class IconButtonColors(
 }
 
 @Preview()
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun TestPreview() {
     AnimeListTheme {

@@ -83,6 +83,9 @@ fun AllCategoriesScreen(
                                     onBackButtonClicked()
                                 },
                                 headingText = animeSortType.name.lowercase(Locale.ROOT)
+                                    .replaceFirstChar {
+                                        if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString()
+                                    }
                             )
                         }
                         items(recommendedAnimeUiStates.recommended) { anime ->
@@ -121,6 +124,9 @@ fun AllCategoriesScreen(
                                     onBackButtonClicked()
                                 },
                                 headingText = animeSortType.name.lowercase(Locale.ROOT)
+                                    .replaceFirstChar {
+                                        if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString()
+                                    }
                             )
                         }
                         items(trendingAnimeUiStates.trending) { anime ->
@@ -159,6 +165,9 @@ fun AllCategoriesScreen(
                                     onBackButtonClicked()
                                 },
                                 headingText = animeSortType.name.lowercase(Locale.ROOT)
+                                    .replaceFirstChar {
+                                        if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+                                    }
                             )
                         }
                         items(popularAnimeUiStates.popular) { anime ->

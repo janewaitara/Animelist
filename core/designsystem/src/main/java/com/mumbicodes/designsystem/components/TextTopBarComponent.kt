@@ -8,10 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -31,15 +27,10 @@ fun TextTopBarComponent(
     modifier: Modifier = Modifier,
     headingText: String,
     hasButtonIcon: Boolean = true,
+    selectedLayoutType: SelectedButton? = null,
     onBackButtonClicked: () -> Unit = {},
-    onListIconButtonClicked: () -> Unit = {},
-    onGridIconButtonClicked: () -> Unit = {}
+    onLayoutButtonClicked: (SelectedButton) -> Unit = {}
 ) {
-    /**
-     * TODO maintain this state even when a user navigates back - do we want to??*/
-    var selectedIconButton by rememberSaveable {
-        mutableStateOf(SelectedButton.LIST)
-    }
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -76,10 +67,9 @@ fun TextTopBarComponent(
         if (hasButtonIcon) {
             IconButton(
                 onClick = {
-                    selectedIconButton = SelectedButton.LIST
-                    onListIconButtonClicked()
+                    onLayoutButtonClicked(SelectedButton.LIST)
                 },
-                enabled = selectedIconButton == SelectedButton.LIST
+                enabled = selectedLayoutType == SelectedButton.LIST
             ) {
                 Icon(
                     painter = painterResource(id = AnimeListIcons.list_layout),
@@ -89,10 +79,9 @@ fun TextTopBarComponent(
 
             IconButton(
                 onClick = {
-                    selectedIconButton = SelectedButton.GRID
-                    onGridIconButtonClicked()
+                    onLayoutButtonClicked(SelectedButton.GRID)
                 },
-                enabled = selectedIconButton == SelectedButton.GRID
+                enabled = selectedLayoutType == SelectedButton.GRID
             ) {
                 Icon(
                     painter = painterResource(id = AnimeListIcons.grid_layout),
@@ -112,6 +101,9 @@ enum class SelectedButton {
 @Composable
 fun TestPreview() {
     AnimeListTheme {
-        TextTopBarComponent(headingText = stringResource(id = R.string.back_button))
+        TextTopBarComponent(
+            headingText = stringResource(id = R.string.back_button),
+            selectedLayoutType = SelectedButton.LIST
+        )
     }
 }

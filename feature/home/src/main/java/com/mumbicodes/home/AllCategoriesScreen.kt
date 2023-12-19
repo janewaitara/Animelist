@@ -13,6 +13,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mumbicodes.designsystem.components.HorizontalAnimeComponent
 import com.mumbicodes.designsystem.components.ListLoadingComponent
+import com.mumbicodes.designsystem.components.SelectedButton
 import com.mumbicodes.designsystem.components.TextTopBarComponent
 import com.mumbicodes.designsystem.theme.AnimeTheme
 import com.mumbicodes.model.data.Anime
@@ -26,6 +27,7 @@ fun AllCategoriesScreenRoute(
     onBackButtonClicked: () -> Unit = {}
 ) {
     val animeSortType by homeScreenViewModel.animeSortType.collectAsStateWithLifecycle()
+    val selectedLayoutType by homeScreenViewModel.selectedLayout.collectAsStateWithLifecycle()
 
     // TODO - research whether to collect all flows
     val recommendedAnimeUiStates: RecommendedAnimesUiStates
@@ -36,11 +38,15 @@ fun AllCategoriesScreenRoute(
     AllCategoriesScreen(
         modifier = modifier,
         animeSortType = animeSortType,
+        selectedLayoutType = selectedLayoutType,
         recommendedAnimeUiStates = recommendedAnimeUiStates,
         popularAnimeUiStates = popularAnimeUiStates,
         trendingAnimeUiStates = trendingAnimeUiStates,
         onAnimeClicked = onAnimeClicked,
-        onBackButtonClicked = onBackButtonClicked
+        onBackButtonClicked = onBackButtonClicked,
+        onLayoutButtonClicked = {
+            homeScreenViewModel.updateSelectedLayoutType(it)
+        }
     )
 }
 
@@ -48,11 +54,13 @@ fun AllCategoriesScreenRoute(
 fun AllCategoriesScreen(
     modifier: Modifier = Modifier,
     animeSortType: AnimeSortType,
+    selectedLayoutType: SelectedLayoutType,
     recommendedAnimeUiStates: RecommendedAnimesUiStates,
     popularAnimeUiStates: PopularAnimeStates,
     trendingAnimeUiStates: TrendingAnimeStates,
     onAnimeClicked: (Int) -> Unit,
-    onBackButtonClicked: () -> Unit
+    onBackButtonClicked: () -> Unit,
+    onLayoutButtonClicked: (SelectedLayoutType) -> Unit = {}
 ) {
     when (animeSortType) {
         AnimeSortType.RECOMMENDED -> {
@@ -67,8 +75,10 @@ fun AllCategoriesScreen(
                         modifier = modifier,
                         animeList = recommendedAnimeUiStates.recommended,
                         animeSortType = animeSortType,
+                        selectedLayoutType = selectedLayoutType,
                         onAnimeClicked = onAnimeClicked,
-                        onBackButtonClicked = onBackButtonClicked
+                        onBackButtonClicked = onBackButtonClicked,
+                        onLayoutButtonClicked = onLayoutButtonClicked
                     )
                 }
             }
@@ -86,8 +96,10 @@ fun AllCategoriesScreen(
                         modifier = modifier,
                         animeList = trendingAnimeUiStates.trending,
                         animeSortType = animeSortType,
+                        selectedLayoutType = selectedLayoutType,
                         onAnimeClicked = onAnimeClicked,
-                        onBackButtonClicked = onBackButtonClicked
+                        onBackButtonClicked = onBackButtonClicked,
+                        onLayoutButtonClicked = onLayoutButtonClicked
                     )
                 }
             }
@@ -105,8 +117,10 @@ fun AllCategoriesScreen(
                         modifier = modifier,
                         animeList = popularAnimeUiStates.popular,
                         animeSortType = animeSortType,
+                        selectedLayoutType = selectedLayoutType,
                         onAnimeClicked = onAnimeClicked,
-                        onBackButtonClicked = onBackButtonClicked
+                        onBackButtonClicked = onBackButtonClicked,
+                        onLayoutButtonClicked = onLayoutButtonClicked
                     )
                 }
             }
@@ -120,8 +134,10 @@ fun CategorizedAnimeContent(
     modifier: Modifier = Modifier,
     animeList: List<Anime>,
     animeSortType: AnimeSortType,
+    selectedLayoutType: SelectedLayoutType,
     onAnimeClicked: (Int) -> Unit,
-    onBackButtonClicked: () -> Unit
+    onBackButtonClicked: () -> Unit,
+    onLayoutButtonClicked: (SelectedLayoutType) -> Unit = {}
 ) {
     LazyColumn(
         modifier = modifier
@@ -137,7 +153,19 @@ fun CategorizedAnimeContent(
                 headingText = animeSortType.name.lowercase(Locale.ROOT)
                     .replaceFirstChar {
                         if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
-                    }
+                    },
+                selectedLayoutType = when (selectedLayoutType) {
+                    SelectedLayoutType.LIST -> SelectedButton.LIST
+                    SelectedLayoutType.GRID -> SelectedButton.GRID
+                },
+                onLayoutButtonClicked = { selectedButton ->
+                    onLayoutButtonClicked(
+                        when (selectedButton) {
+                            SelectedButton.LIST -> SelectedLayoutType.LIST
+                            SelectedButton.GRID -> SelectedLayoutType.GRID
+                        }
+                    )
+                }
             )
         }
         items(animeList) { anime ->

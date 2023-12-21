@@ -10,4 +10,5 @@
     <string name="back_button">Back button</string>
     <string name="grid_layout">Change layout to Grid</string>
     <string name="list_layout">Change layout to List</string>
+    <string name="error_icon">Error icon</string>
 </resources>

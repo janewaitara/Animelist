@@ -44,6 +44,7 @@ import com.mumbicodes.designsystem.atoms.Image
 import com.mumbicodes.designsystem.atoms.PrimaryButton
 import com.mumbicodes.designsystem.atoms.Surface
 import com.mumbicodes.designsystem.atoms.Text
+import com.mumbicodes.designsystem.components.ErrorBannerComponent
 import com.mumbicodes.designsystem.components.HorizontalAnimeComponent
 import com.mumbicodes.designsystem.components.IconTopBarComponent
 import com.mumbicodes.designsystem.components.VerticalCharacterComponent
@@ -101,7 +102,7 @@ fun AnimeDetailsScreen(
         }
 
         is AnimeDetailsScreenUiState.Error -> {
-            TODO()
+            ErrorBannerComponent(errorMessage = animeDetailsState.errorMessage)
         }
 
         is AnimeDetailsScreenUiState.Loading -> {

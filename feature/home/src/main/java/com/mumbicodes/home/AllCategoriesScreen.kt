@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.util.lerp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mumbicodes.designsystem.components.ErrorBannerComponent
 import com.mumbicodes.designsystem.components.HorizontalAnimeComponent
 import com.mumbicodes.designsystem.components.ListLoadingComponent
 import com.mumbicodes.designsystem.components.PagedAnimeComponent
@@ -73,7 +74,9 @@ fun AllCategoriesScreen(
     when (animeSortType) {
         AnimeSortType.RECOMMENDED -> {
             when (recommendedAnimeUiStates) {
-                is RecommendedAnimesUiStates.Error -> TODO()
+                is RecommendedAnimesUiStates.Error -> {
+                    ErrorBannerComponent(errorMessage = recommendedAnimeUiStates.errorMessage)
+                }
                 is RecommendedAnimesUiStates.Loading -> {
                     ListLoadingComponent()
                 }
@@ -94,7 +97,9 @@ fun AllCategoriesScreen(
 
         AnimeSortType.TRENDING -> {
             when (trendingAnimeUiStates) {
-                is TrendingAnimeStates.Error -> TODO()
+                is TrendingAnimeStates.Error -> {
+                    ErrorBannerComponent(errorMessage = trendingAnimeUiStates.errorMessage)
+                }
                 TrendingAnimeStates.Loading -> {
                     ListLoadingComponent()
                 }
@@ -115,7 +120,9 @@ fun AllCategoriesScreen(
 
         AnimeSortType.POPULAR -> {
             when (popularAnimeUiStates) {
-                is PopularAnimeStates.Error -> TODO()
+                is PopularAnimeStates.Error -> {
+                    ErrorBannerComponent(errorMessage = popularAnimeUiStates.errorMessage)
+                }
                 PopularAnimeStates.Loading -> {
                     ListLoadingComponent()
                 }

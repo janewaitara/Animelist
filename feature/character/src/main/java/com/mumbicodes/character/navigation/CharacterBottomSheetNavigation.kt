@@ -17,7 +17,9 @@ fun NavController.navigateToCharacterBottomSheet(navOptions: NavOptions? = null,
 }
 
 @OptIn(ExperimentalMaterialNavigationApi::class)
-fun NavGraphBuilder.characterBottomSheet() {
+fun NavGraphBuilder.characterBottomSheet(
+    onAnimeClicked: (Int) -> Unit = {}
+) {
     bottomSheet(
         route = "$CHARACTER_BOTTOM_SHEET_ROUTE/{$CHARACTERID}",
         arguments = listOf(
@@ -29,6 +31,8 @@ fun NavGraphBuilder.characterBottomSheet() {
             }
         )
     ) {
-        CharacterDetailsScreenRoute()
+        CharacterDetailsScreenRoute(
+            onAnimeClicked = onAnimeClicked
+        )
     }
 }

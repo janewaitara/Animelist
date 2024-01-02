@@ -158,7 +158,7 @@ fun AnimeDetailsContent(
                     Column {
                         Text(
                             modifier = Modifier,
-                            text = stringResource(id = R.string.otherAnimes),
+                            text = stringResource(id = R.string.allAnimes),
                             style = AnimeTheme.typography.bodyLargeBold,
                             color = AnimeTheme.colors.textStrong
                         )

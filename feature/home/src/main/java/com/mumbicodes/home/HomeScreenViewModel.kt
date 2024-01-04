@@ -148,8 +148,23 @@ class HomeScreenViewModel @Inject constructor
     fun updateAnimeSortType(selectedAnimeSortType: AnimeSortType) {
         _animeSortType.value = selectedAnimeSortType
     }
+
+    private val _selectedLayoutType: MutableStateFlow<SelectedLayoutType> =
+        MutableStateFlow(SelectedLayoutType.LIST)
+    val selectedLayout = _selectedLayoutType.asStateFlow()
+
+    /**
+     * Updated when a user toggles the layout type in the all categories screen
+     * */
+    fun updateSelectedLayoutType(selectedLayoutType: SelectedLayoutType) {
+        _selectedLayoutType.value = selectedLayoutType
+    }
 }
 
 enum class AnimeSortType {
     RECOMMENDED, TRENDING, POPULAR
+}
+
+enum class SelectedLayoutType {
+    LIST, GRID
 }

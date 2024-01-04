@@ -26,6 +26,7 @@ compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = 
 compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
 compose-activity = { module = "androidx.activity:activity-compose", version.ref = "androidxActivityCompose" }
 compose-ui = { module = "androidx.compose.ui:ui" }
+compose-ui-util = { module = "androidx.compose.ui:ui-util" }
 compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling-preview" }
@@ -63,7 +64,7 @@ android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", ver
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 
 [bundles]
-compose = ["compose-foundation","compose-activity", "compose-ui", "compose-material3", "compose-ui-graphics", "compose-ui-tooling", "compose-navigation"]
+compose = ["compose-foundation","compose-activity", "compose-ui","compose-ui-util", "compose-material3", "compose-ui-graphics", "compose-ui-tooling", "compose-navigation"]
 lifecycle = ["androidx-lifecycle","androidx-lifecycle-viewModel", "androidx-lifecycle-compose"]
 
 [plugins]

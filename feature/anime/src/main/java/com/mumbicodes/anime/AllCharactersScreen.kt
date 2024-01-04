@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mumbicodes.designsystem.components.ErrorBannerComponent
 import com.mumbicodes.designsystem.components.HorizontalCharacterComponent
 import com.mumbicodes.designsystem.components.ListLoadingComponent
 import com.mumbicodes.designsystem.components.TextTopBarComponent
@@ -76,7 +77,9 @@ fun AllCharactersScreen(
                 }
             }
         }
-        is AnimeDetailsScreenUiState.Error -> TODO()
+        is AnimeDetailsScreenUiState.Error -> {
+            ErrorBannerComponent(errorMessage = animeDetailsUiState.errorMessage)
+        }
         is AnimeDetailsScreenUiState.Loading -> {
             ListLoadingComponent()
         }

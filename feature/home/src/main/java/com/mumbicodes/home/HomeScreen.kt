@@ -1,7 +1,6 @@
 package com.mumbicodes.home
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,7 +11,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -20,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mumbicodes.designsystem.atoms.Image
+import com.mumbicodes.designsystem.components.ErrorBannerComponent
 import com.mumbicodes.designsystem.components.HorizontalListLoading
 import com.mumbicodes.designsystem.molecules.AnimeSection
 import com.mumbicodes.designsystem.theme.AnimeTheme
@@ -99,12 +98,7 @@ fun HomeScreen(
             }
 
             is TrendingAnimeStates.Error -> {
-                // TODO Create an error banner
-                Text(
-                    text = trendingAnimeUiStates.errorMessage,
-                    modifier = Modifier.clickable {
-                    }
-                )
+                ErrorBannerComponent(errorMessage = trendingAnimeUiStates.errorMessage)
             }
 
             TrendingAnimeStates.Loading -> {
@@ -138,12 +132,7 @@ fun HomeScreen(
             }
 
             is RecommendedAnimesUiStates.Error -> {
-                // TODO Create an error banner
-                Text(
-                    text = (recommendedAnimeUiStates as RecommendedAnimesUiStates.Error).errorMessage,
-                    modifier = Modifier.clickable {
-                    }
-                )
+                ErrorBannerComponent(errorMessage = recommendedAnimeUiStates.errorMessage)
             }
 
             RecommendedAnimesUiStates.Loading -> {
@@ -177,12 +166,7 @@ fun HomeScreen(
             }
 
             is PopularAnimeStates.Error -> {
-                // TODO Create an error banner
-                Text(
-                    text = popularAnimeUiStates.errorMessage,
-                    modifier = Modifier.clickable {
-                    }
-                )
+                ErrorBannerComponent(errorMessage = popularAnimeUiStates.errorMessage)
             }
 
             PopularAnimeStates.Loading -> {

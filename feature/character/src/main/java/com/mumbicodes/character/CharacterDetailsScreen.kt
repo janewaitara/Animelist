@@ -33,23 +33,29 @@ import com.mumbicodes.model.data.Character
 @Composable
 fun CharacterDetailsScreenRoute(
     modifier: Modifier = Modifier,
-    characterViewModel: CharacterViewModel = hiltViewModel()
+    characterViewModel: CharacterViewModel = hiltViewModel(),
+    onAnimeClicked: (Int) -> Unit = {}
 ) {
     val characterDetails by characterViewModel.characterUiState.collectAsStateWithLifecycle()
 
-    CharacterDetailsScreen(characterDetailsState = characterDetails)
+    CharacterDetailsScreen(
+        characterDetailsState = characterDetails,
+        onAnimeClicked = onAnimeClicked
+    )
 }
 
 @Composable
 fun CharacterDetailsScreen(
     modifier: Modifier = Modifier,
-    characterDetailsState: CharacterScreenUiState
+    characterDetailsState: CharacterScreenUiState,
+    onAnimeClicked: (Int) -> Unit
 ) {
     when (characterDetailsState) {
         is CharacterScreenUiState.CharacterDetails -> {
             AnimeDetailsContent(
                 modifier = modifier,
-                characterDetails = characterDetailsState.data
+                characterDetails = characterDetailsState.data,
+                onAnimeClicked = onAnimeClicked
             )
         }
 
@@ -65,7 +71,8 @@ fun CharacterDetailsScreen(
 @Composable
 fun AnimeDetailsContent(
     modifier: Modifier = Modifier,
-    characterDetails: Character
+    characterDetails: Character,
+    onAnimeClicked: (Int) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -151,7 +158,7 @@ fun AnimeDetailsContent(
                     Column {
                         Text(
                             modifier = Modifier,
-                            text = stringResource(id = R.string.otherAnimes),
+                            text = stringResource(id = R.string.allAnimes),
                             style = AnimeTheme.typography.bodyLargeBold,
                             color = AnimeTheme.colors.textStrong
                         )
@@ -160,7 +167,9 @@ fun AnimeDetailsContent(
                         animes.forEach {
                             it?.let {
                                 HorizontalAnimeComponent(
-                                    onClick = { },
+                                    onClick = {
+                                        onAnimeClicked(it.id)
+                                    },
                                     coverImageUrl = it.coverImage,
                                     animeTitle = it.title?.english ?: it.title?.romaji
                                         ?: it.title?.native ?: "",

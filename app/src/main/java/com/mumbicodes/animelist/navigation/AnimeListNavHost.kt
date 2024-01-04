@@ -52,7 +52,11 @@ fun AnimeListNavHost(
                     navController.navigate(ALL_CHARACTERS_ROUTE)
                 }
             )
-            characterBottomSheet()
+            characterBottomSheet(
+                onAnimeClicked = { animeId ->
+                    navController.navigateToAnimeScreen(animeId = animeId)
+                }
+            )
         }
     }
 }

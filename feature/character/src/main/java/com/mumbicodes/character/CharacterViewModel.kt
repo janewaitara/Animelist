@@ -40,7 +40,14 @@ class CharacterViewModel @Inject constructor(
                 }
 
                 is Result.Success -> {
-                    CharacterScreenUiState.CharacterDetails(data = characterDetails.data)
+                    CharacterScreenUiState.CharacterDetails(
+                        data = characterDetails.data.copy(
+                            animes = characterDetails.data.animes?.distinctBy {
+                                it?.id
+                                it?.title
+                            }
+                        )
+                    )
                 }
             }
         }.stateIn(

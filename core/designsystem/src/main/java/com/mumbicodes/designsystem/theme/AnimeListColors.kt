@@ -34,7 +34,9 @@ data class AnimeListColors(
     val surfaceBorderInfo: Color,
     val bottomNavBackground: Color,
     val bottomNavContentColor: Color,
-    val shimmerEffectColor: Color
+    val shimmerEffectColor: Color,
+    val searchBarBackground: Color,
+    val searchBarPlaceHolderText: Color
 )
 
 fun lightAnimeListColors(
@@ -62,7 +64,9 @@ fun lightAnimeListColors(
     surfaceBorderInfo: Color = Azure_200,
     bottomNavBackground: Color = Background_white,
     bottomNavContentColor: Color = Grey_600,
-    shimmerEffectColor: Color = Grey_300
+    shimmerEffectColor: Color = Grey_300,
+    searchBarBackground: Color = Grey_50,
+    searchBarPlaceHolderText: Color = Grey_400
 ) = AnimeListColors(
     background = background,
     cardColors = cardColors,
@@ -88,7 +92,9 @@ fun lightAnimeListColors(
     surfaceBorderInfo = surfaceBorderInfo,
     bottomNavBackground = bottomNavBackground,
     bottomNavContentColor = bottomNavContentColor,
-    shimmerEffectColor = shimmerEffectColor
+    shimmerEffectColor = shimmerEffectColor,
+    searchBarBackground = searchBarBackground,
+    searchBarPlaceHolderText = searchBarPlaceHolderText
 )
 
 fun darkAnimeListColors(
@@ -116,7 +122,9 @@ fun darkAnimeListColors(
     surfaceBorderInfo: Color = Azure_300,
     bottomNavBackground: Color = Background_dark.copy(alpha = 0.95f),
     bottomNavContentColor: Color = Grey_400,
-    shimmerEffectColor: Color = Grey_700
+    shimmerEffectColor: Color = Grey_700,
+    searchBarBackground: Color = Grey_700,
+    searchBarPlaceHolderText: Color = Grey_500
 ) = AnimeListColors(
     background = background,
     cardColors = cardColors,
@@ -142,7 +150,9 @@ fun darkAnimeListColors(
     surfaceBorderInfo = surfaceBorderInfo,
     bottomNavBackground = bottomNavBackground,
     bottomNavContentColor = bottomNavContentColor,
-    shimmerEffectColor = shimmerEffectColor
+    shimmerEffectColor = shimmerEffectColor,
+    searchBarBackground = searchBarBackground,
+    searchBarPlaceHolderText = searchBarPlaceHolderText
 )
 
 val LocalAnimeListColors = staticCompositionLocalOf<AnimeListColors> {
@@ -225,6 +235,7 @@ val Grey_400 = Color(0xFFBFBCCD)
 val Grey_300 = Color(0xFFD7D7E5)
 val Grey_200 = Color(0xFFEDEBF3)
 val Grey_100 = Color(0xFFF4F2FC)
+val Grey_50 = Color(0xFFFAF9FE)
 
 // Backgrounds
 

@@ -36,7 +36,9 @@ data class AnimeListColors(
     val bottomNavContentColor: Color,
     val shimmerEffectColor: Color,
     val searchBarBackground: Color,
-    val searchBarPlaceHolderText: Color
+    val searchBarPlaceHolderText: Color,
+    val notSelectedFilterChipContentColor: Color,
+    val notSelectedFilterChipBorderColor: Color
 )
 
 fun lightAnimeListColors(
@@ -66,7 +68,9 @@ fun lightAnimeListColors(
     bottomNavContentColor: Color = Grey_600,
     shimmerEffectColor: Color = Grey_300,
     searchBarBackground: Color = Grey_50,
-    searchBarPlaceHolderText: Color = Grey_400
+    searchBarPlaceHolderText: Color = Grey_400,
+    notSelectedFilterChipContentColor: Color = Grey_600,
+    notSelectedFilterChipBorderColor: Color = Grey_300
 ) = AnimeListColors(
     background = background,
     cardColors = cardColors,
@@ -94,7 +98,9 @@ fun lightAnimeListColors(
     bottomNavContentColor = bottomNavContentColor,
     shimmerEffectColor = shimmerEffectColor,
     searchBarBackground = searchBarBackground,
-    searchBarPlaceHolderText = searchBarPlaceHolderText
+    searchBarPlaceHolderText = searchBarPlaceHolderText,
+    notSelectedFilterChipContentColor = notSelectedFilterChipContentColor,
+    notSelectedFilterChipBorderColor = notSelectedFilterChipBorderColor
 )
 
 fun darkAnimeListColors(
@@ -124,7 +130,9 @@ fun darkAnimeListColors(
     bottomNavContentColor: Color = Grey_400,
     shimmerEffectColor: Color = Grey_700,
     searchBarBackground: Color = Grey_700,
-    searchBarPlaceHolderText: Color = Grey_500
+    searchBarPlaceHolderText: Color = Grey_500,
+    notSelectedFilterChipContentColor: Color = Grey_400,
+    notSelectedFilterChipBorderColor: Color = Grey_500
 ) = AnimeListColors(
     background = background,
     cardColors = cardColors,
@@ -152,7 +160,9 @@ fun darkAnimeListColors(
     bottomNavContentColor = bottomNavContentColor,
     shimmerEffectColor = shimmerEffectColor,
     searchBarBackground = searchBarBackground,
-    searchBarPlaceHolderText = searchBarPlaceHolderText
+    searchBarPlaceHolderText = searchBarPlaceHolderText,
+    notSelectedFilterChipContentColor = notSelectedFilterChipContentColor,
+    notSelectedFilterChipBorderColor = notSelectedFilterChipBorderColor
 )
 
 val LocalAnimeListColors = staticCompositionLocalOf<AnimeListColors> {

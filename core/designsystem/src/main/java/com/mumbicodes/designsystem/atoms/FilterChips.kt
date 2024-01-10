@@ -20,7 +20,7 @@ import com.mumbicodes.designsystem.theme.AnimeTheme
 import com.mumbicodes.designsystem.theme.LocalContentColor
 
 @Composable
-fun FilterChips(
+fun FilterChip(
     modifier: Modifier = Modifier,
     text: String,
     selected: Boolean,
@@ -78,8 +78,8 @@ fun FilterChipsPreview() {
                 .padding(48.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            FilterChips(text = "Badge", selected = true)
-            FilterChips(
+            FilterChip(text = "Badge", selected = true)
+            FilterChip(
                 text = "Badge",
                 selected = false
             )

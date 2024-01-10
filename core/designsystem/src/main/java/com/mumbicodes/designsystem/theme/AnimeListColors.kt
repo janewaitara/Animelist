@@ -38,7 +38,8 @@ data class AnimeListColors(
     val searchBarBackground: Color,
     val searchBarPlaceHolderText: Color,
     val notSelectedFilterChipContentColor: Color,
-    val notSelectedFilterChipBorderColor: Color
+    val notSelectedFilterChipBorderColor: Color,
+    val searchSectionBorderColor: Color
 )
 
 fun lightAnimeListColors(
@@ -70,7 +71,8 @@ fun lightAnimeListColors(
     searchBarBackground: Color = Grey_50,
     searchBarPlaceHolderText: Color = Grey_400,
     notSelectedFilterChipContentColor: Color = Grey_600,
-    notSelectedFilterChipBorderColor: Color = Grey_300
+    notSelectedFilterChipBorderColor: Color = Grey_300,
+    searchSectionBorderColor: Color = Grey_100
 ) = AnimeListColors(
     background = background,
     cardColors = cardColors,
@@ -100,7 +102,8 @@ fun lightAnimeListColors(
     searchBarBackground = searchBarBackground,
     searchBarPlaceHolderText = searchBarPlaceHolderText,
     notSelectedFilterChipContentColor = notSelectedFilterChipContentColor,
-    notSelectedFilterChipBorderColor = notSelectedFilterChipBorderColor
+    notSelectedFilterChipBorderColor = notSelectedFilterChipBorderColor,
+    searchSectionBorderColor = searchSectionBorderColor
 )
 
 fun darkAnimeListColors(
@@ -132,7 +135,8 @@ fun darkAnimeListColors(
     searchBarBackground: Color = Grey_700,
     searchBarPlaceHolderText: Color = Grey_500,
     notSelectedFilterChipContentColor: Color = Grey_400,
-    notSelectedFilterChipBorderColor: Color = Grey_500
+    notSelectedFilterChipBorderColor: Color = Grey_500,
+    searchSectionBorderColor: Color = Grey_700
 ) = AnimeListColors(
     background = background,
     cardColors = cardColors,
@@ -162,7 +166,8 @@ fun darkAnimeListColors(
     searchBarBackground = searchBarBackground,
     searchBarPlaceHolderText = searchBarPlaceHolderText,
     notSelectedFilterChipContentColor = notSelectedFilterChipContentColor,
-    notSelectedFilterChipBorderColor = notSelectedFilterChipBorderColor
+    notSelectedFilterChipBorderColor = notSelectedFilterChipBorderColor,
+    searchSectionBorderColor = searchSectionBorderColor
 )
 
 val LocalAnimeListColors = staticCompositionLocalOf<AnimeListColors> {

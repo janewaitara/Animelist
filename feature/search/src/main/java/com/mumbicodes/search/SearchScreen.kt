@@ -10,11 +10,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mumbicodes.common.result.toCamelCase
 import com.mumbicodes.designsystem.atoms.FilterChip
 import com.mumbicodes.designsystem.components.SearchFieldComponent
@@ -22,13 +25,19 @@ import com.mumbicodes.designsystem.theme.AnimeListTheme
 import com.mumbicodes.designsystem.theme.AnimeTheme
 
 @Composable
-fun SearchScreen(modifier: Modifier = Modifier) {
+fun SearchScreen(
+    modifier: Modifier = Modifier,
+    searchViewModel: SearchViewModel = hiltViewModel()
+) {
+    val searchFilterState by searchViewModel.searchMainFilterUiState.collectAsStateWithLifecycle()
+    val searchParam by searchViewModel.searchParam.collectAsStateWithLifecycle()
+
     SearchScreenContent(
         modifier = modifier,
-        searchParam = "",
-        searchFilter = SearchType.ANIME,
-        onFilterChipClicked = {},
-        onSearchValueChanged = {}
+        searchParam = searchParam,
+        searchFilter = searchFilterState,
+        onFilterChipClicked = searchViewModel::updateSearchFilter,
+        onSearchValueChanged = searchViewModel::onSearchParameterChanged
     )
 }
 
@@ -92,13 +101,15 @@ fun SearchAndFilterSection(
         ) {
             FilterChip(
                 text = stringResource(id = R.string.anime),
-                selected = searchFilter.name.lowercase().toCamelCase() == stringResource(id = R.string.anime),
+                selected = searchFilter.name.lowercase()
+                    .toCamelCase() == stringResource(id = R.string.anime),
                 onClick = { onFilterChipClicked(SearchType.ANIME) }
             )
 
             FilterChip(
                 text = stringResource(id = R.string.character),
-                selected = searchFilter.name.lowercase().toCamelCase() == stringResource(id = R.string.character),
+                selected = searchFilter.name.lowercase()
+                    .toCamelCase() == stringResource(id = R.string.character),
                 onClick = { onFilterChipClicked(SearchType.CHARACTER) }
             )
         }

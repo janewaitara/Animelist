@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -40,20 +41,23 @@ fun SearchFieldComponent(
     modifier: Modifier = Modifier,
     placeholder: String,
     searchParam: String,
-    onValueChanged: (String) -> Unit
+    onValueChanged: (String) -> Unit,
+    onSearchClicked: () -> Unit = {}
 ) {
     var isFocused by rememberSaveable {
         mutableStateOf(false)
     }
     // TODO add the different states
     BasicTextField(
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier
+            .fillMaxWidth()
             .onFocusChanged { focusState ->
                 isFocused = focusState.isFocused
             },
         value = searchParam,
         onValueChange = onValueChanged,
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+        keyboardActions = KeyboardActions(onSearch = { onSearchClicked() }),
         cursorBrush = SolidColor(AnimeTheme.colors.textNeutral),
         textStyle = AnimeTheme.typography.bodyMedium.copy(color = AnimeTheme.colors.textNeutral),
         decorationBox = { innerTextField ->

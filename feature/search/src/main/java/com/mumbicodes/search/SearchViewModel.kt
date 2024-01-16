@@ -12,11 +12,9 @@ import com.mumbicodes.model.data.LocalMediaType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,61 +29,67 @@ class SearchViewModel @Inject constructor(
         MutableStateFlow(SearchType.ANIME)
     val searchMainFilterUiState = _searchMainFilterUiState.asStateFlow()
 
-    val characterSearchResultsState: StateFlow<CharacterSearchUiState> = searchCharacter(
-        searchParam = searchParam.value ?: ""
-    ).map {
-        when (it) {
-            is Result.ApplicationError -> {
-                CharacterSearchUiState.Error(it.errors.joinToString())
-            }
+    private val _characterSearchResultsState: MutableStateFlow<CharacterSearchUiState> =
+        MutableStateFlow(CharacterSearchUiState.Loading)
+    val characterSearchResultsState = _characterSearchResultsState.asStateFlow()
 
-            is Result.Failure -> {
-                CharacterSearchUiState.Error(it.exception.message.toString())
-            }
+    private val _animeSearchResultsState: MutableStateFlow<AnimeSearchUiState> =
+        MutableStateFlow(AnimeSearchUiState.Loading)
+    val animeSearchResultsState = _animeSearchResultsState.asStateFlow()
 
-            Result.Loading -> {
-                CharacterSearchUiState.Loading
-            }
+    fun onSearchClicked() {
+        viewModelScope.launch {
+            when (searchMainFilterUiState.value) {
+                SearchType.ANIME -> {
+                    searchAnime(searchParam.value).collectLatest {
+                        _animeSearchResultsState.value = when (it) {
+                            is Result.ApplicationError -> {
+                                AnimeSearchUiState.Error(it.errors.joinToString())
+                            }
 
-            is Result.Success -> {
-                CharacterSearchUiState.CharacterResults(
-                    data = it.data
-                )
+                            is Result.Failure -> {
+                                AnimeSearchUiState.Error(it.exception.message.toString())
+                            }
+
+                            Result.Loading -> {
+                                AnimeSearchUiState.Loading
+                            }
+
+                            is Result.Success -> {
+                                AnimeSearchUiState.AnimeResults(
+                                    data = it.data
+                                )
+                            }
+                        }
+                    }
+                }
+
+                SearchType.CHARACTER -> {
+                    searchCharacter(searchParam.value).collectLatest {
+                        _characterSearchResultsState.value = when (it) {
+                            is Result.ApplicationError -> {
+                                CharacterSearchUiState.Error(it.errors.joinToString())
+                            }
+
+                            is Result.Failure -> {
+                                CharacterSearchUiState.Error(it.exception.message.toString())
+                            }
+
+                            Result.Loading -> {
+                                CharacterSearchUiState.Loading
+                            }
+
+                            is Result.Success -> {
+                                CharacterSearchUiState.CharacterResults(
+                                    data = it.data
+                                )
+                            }
+                        }
+                    }
+                }
             }
         }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = CharacterSearchUiState.Loading
-    )
-
-    val animeSearchResultsState: StateFlow<AnimeSearchUiState> = searchAnime(
-        searchParam = searchParam.value ?: ""
-    ).map {
-        when (it) {
-            is Result.ApplicationError -> {
-                AnimeSearchUiState.Error(it.errors.joinToString())
-            }
-
-            is Result.Failure -> {
-                AnimeSearchUiState.Error(it.exception.message.toString())
-            }
-
-            Result.Loading -> {
-                AnimeSearchUiState.Loading
-            }
-
-            is Result.Success -> {
-                AnimeSearchUiState.AnimeResults(
-                    data = it.data
-                )
-            }
-        }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = AnimeSearchUiState.Loading
-    )
+    }
 
     /**
      * Updates the main search item user is searching for

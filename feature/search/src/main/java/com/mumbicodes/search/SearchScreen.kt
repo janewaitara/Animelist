@@ -31,13 +31,16 @@ fun SearchScreen(
 ) {
     val searchFilterState by searchViewModel.searchMainFilterUiState.collectAsStateWithLifecycle()
     val searchParam by searchViewModel.searchParam.collectAsStateWithLifecycle()
+    val characterSearchResults by searchViewModel.characterSearchResultsState.collectAsStateWithLifecycle()
+    val animeSearchResults by searchViewModel.animeSearchResultsState.collectAsStateWithLifecycle()
 
     SearchScreenContent(
         modifier = modifier,
         searchParam = searchParam,
         searchFilter = searchFilterState,
         onFilterChipClicked = searchViewModel::updateSearchFilter,
-        onSearchValueChanged = searchViewModel::onSearchParameterChanged
+        onSearchValueChanged = searchViewModel::onSearchParameterChanged,
+        onSearchClicked = searchViewModel::onSearchClicked
     )
 }
 
@@ -47,7 +50,8 @@ fun SearchScreenContent(
     searchParam: String,
     searchFilter: SearchType,
     onSearchValueChanged: (String) -> Unit,
-    onFilterChipClicked: (SearchType) -> Unit
+    onFilterChipClicked: (SearchType) -> Unit,
+    onSearchClicked: () -> Unit = {}
 ) {
     Box(
         modifier = modifier
@@ -60,7 +64,8 @@ fun SearchScreenContent(
             searchParam = searchParam,
             searchFilter = searchFilter,
             onSearchValueChanged = onSearchValueChanged,
-            onFilterChipClicked = onFilterChipClicked
+            onFilterChipClicked = onFilterChipClicked,
+            onSearchClicked = onSearchClicked
         )
     }
 }
@@ -71,7 +76,8 @@ fun SearchAndFilterSection(
     searchParam: String,
     searchFilter: SearchType,
     onSearchValueChanged: (String) -> Unit,
-    onFilterChipClicked: (SearchType) -> Unit
+    onFilterChipClicked: (SearchType) -> Unit,
+    onSearchClicked: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -93,7 +99,8 @@ fun SearchAndFilterSection(
                 SearchType.CHARACTER -> "a character"
             },
             searchParam = searchParam,
-            onValueChanged = onSearchValueChanged
+            onValueChanged = onSearchValueChanged,
+            onSearchClicked = onSearchClicked
         )
 
         Row(

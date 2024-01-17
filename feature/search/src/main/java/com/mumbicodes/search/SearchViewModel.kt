@@ -22,69 +22,62 @@ class SearchViewModel @Inject constructor(
     private val searchRepository: SearchRepository
 ) : ViewModel() {
 
-    private val _searchParam: MutableStateFlow<String> = MutableStateFlow("")
-    val searchParam = _searchParam.asStateFlow()
-
-    private val _searchMainFilterUiState: MutableStateFlow<SearchType> =
-        MutableStateFlow(SearchType.ANIME)
-    val searchMainFilterUiState = _searchMainFilterUiState.asStateFlow()
-
-    private val _characterSearchResultsState: MutableStateFlow<CharacterSearchUiState> =
-        MutableStateFlow(CharacterSearchUiState.Loading)
-    val characterSearchResultsState = _characterSearchResultsState.asStateFlow()
-
-    private val _animeSearchResultsState: MutableStateFlow<AnimeSearchUiState> =
-        MutableStateFlow(AnimeSearchUiState.Loading)
-    val animeSearchResultsState = _animeSearchResultsState.asStateFlow()
+    private val _searchScreenState: MutableStateFlow<SearchScreenState> =
+        MutableStateFlow(SearchScreenState())
+    val searchScreenState = _searchScreenState.asStateFlow()
 
     fun onSearchClicked() {
         viewModelScope.launch {
-            when (searchMainFilterUiState.value) {
+            when (searchScreenState.value.searchMainFilter) {
                 SearchType.ANIME -> {
-                    searchAnime(searchParam.value).collectLatest {
-                        _animeSearchResultsState.value = when (it) {
-                            is Result.ApplicationError -> {
-                                AnimeSearchUiState.Error(it.errors.joinToString())
-                            }
+                    searchAnime(searchScreenState.value.searchParam).collectLatest {
+                        _searchScreenState.value = searchScreenState.value.copy(
+                            animeSearchResultsState = when (it) {
+                                is Result.ApplicationError -> {
+                                    AnimeSearchUiState.Error(it.errors.joinToString())
+                                }
 
-                            is Result.Failure -> {
-                                AnimeSearchUiState.Error(it.exception.message.toString())
-                            }
+                                is Result.Failure -> {
+                                    AnimeSearchUiState.Error(it.exception.message.toString())
+                                }
 
-                            Result.Loading -> {
-                                AnimeSearchUiState.Loading
-                            }
+                                Result.Loading -> {
+                                    AnimeSearchUiState.Loading
+                                }
 
-                            is Result.Success -> {
-                                AnimeSearchUiState.AnimeResults(
-                                    data = it.data
-                                )
+                                is Result.Success -> {
+                                    AnimeSearchUiState.AnimeResults(
+                                        data = it.data
+                                    )
+                                }
                             }
-                        }
+                        )
                     }
                 }
 
                 SearchType.CHARACTER -> {
-                    searchCharacter(searchParam.value).collectLatest {
-                        _characterSearchResultsState.value = when (it) {
-                            is Result.ApplicationError -> {
-                                CharacterSearchUiState.Error(it.errors.joinToString())
-                            }
+                    searchCharacter(searchScreenState.value.searchParam).collectLatest {
+                        _searchScreenState.value = searchScreenState.value.copy(
+                            characterSearchResultsState = when (it) {
+                                is Result.ApplicationError -> {
+                                    CharacterSearchUiState.Error(it.errors.joinToString())
+                                }
 
-                            is Result.Failure -> {
-                                CharacterSearchUiState.Error(it.exception.message.toString())
-                            }
+                                is Result.Failure -> {
+                                    CharacterSearchUiState.Error(it.exception.message.toString())
+                                }
 
-                            Result.Loading -> {
-                                CharacterSearchUiState.Loading
-                            }
+                                Result.Loading -> {
+                                    CharacterSearchUiState.Loading
+                                }
 
-                            is Result.Success -> {
-                                CharacterSearchUiState.CharacterResults(
-                                    data = it.data
-                                )
+                                is Result.Success -> {
+                                    CharacterSearchUiState.CharacterResults(
+                                        data = it.data
+                                    )
+                                }
                             }
-                        }
+                        )
                     }
                 }
             }
@@ -95,13 +88,14 @@ class SearchViewModel @Inject constructor(
      * Updates the main search item user is searching for
      * */
     fun updateSearchFilter(userSearchMainFilter: SearchType) {
-        _searchMainFilterUiState.value = userSearchMainFilter
+        _searchScreenState.value =
+            searchScreenState.value.copy(searchMainFilter = userSearchMainFilter)
     }
 
     /**
      * Called everytime the user types on the search input field*/
     fun onSearchParameterChanged(searchParam: String) {
-        _searchParam.value = searchParam
+        _searchScreenState.value = searchScreenState.value.copy(searchParam = searchParam)
     }
 
     private fun searchCharacter(searchParam: String): Flow<Result<List<Character>>> =

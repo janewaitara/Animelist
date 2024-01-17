@@ -22,3 +22,10 @@ sealed interface CharacterSearchUiState {
 
     data class Error(val errorMessage: String) : CharacterSearchUiState
 }
+
+data class SearchScreenState(
+    val searchParam: String = "",
+    val searchMainFilter: SearchType = SearchType.ANIME,
+    val characterSearchResultsState: CharacterSearchUiState = CharacterSearchUiState.Loading,
+    val animeSearchResultsState: AnimeSearchUiState = AnimeSearchUiState.Loading
+)

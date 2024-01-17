@@ -29,15 +29,11 @@ fun SearchScreen(
     modifier: Modifier = Modifier,
     searchViewModel: SearchViewModel = hiltViewModel()
 ) {
-    val searchFilterState by searchViewModel.searchMainFilterUiState.collectAsStateWithLifecycle()
-    val searchParam by searchViewModel.searchParam.collectAsStateWithLifecycle()
-    val characterSearchResults by searchViewModel.characterSearchResultsState.collectAsStateWithLifecycle()
-    val animeSearchResults by searchViewModel.animeSearchResultsState.collectAsStateWithLifecycle()
+    val searchScreenState by searchViewModel.searchScreenState.collectAsStateWithLifecycle()
 
     SearchScreenContent(
         modifier = modifier,
-        searchParam = searchParam,
-        searchFilter = searchFilterState,
+        searchScreenState = searchScreenState,
         onFilterChipClicked = searchViewModel::updateSearchFilter,
         onSearchValueChanged = searchViewModel::onSearchParameterChanged,
         onSearchClicked = searchViewModel::onSearchClicked
@@ -47,8 +43,7 @@ fun SearchScreen(
 @Composable
 fun SearchScreenContent(
     modifier: Modifier = Modifier,
-    searchParam: String,
-    searchFilter: SearchType,
+    searchScreenState: SearchScreenState,
     onSearchValueChanged: (String) -> Unit,
     onFilterChipClicked: (SearchType) -> Unit,
     onSearchClicked: () -> Unit = {}
@@ -61,8 +56,8 @@ fun SearchScreenContent(
     ) {
         SearchAndFilterSection(
             modifier = Modifier.align(Alignment.BottomCenter),
-            searchParam = searchParam,
-            searchFilter = searchFilter,
+            searchParam = searchScreenState.searchParam,
+            searchFilter = searchScreenState.searchMainFilter,
             onSearchValueChanged = onSearchValueChanged,
             onFilterChipClicked = onFilterChipClicked,
             onSearchClicked = onSearchClicked
@@ -129,8 +124,7 @@ fun SearchAndFilterSection(
 fun SearchScreenPreview() {
     AnimeListTheme {
         SearchScreenContent(
-            searchParam = "",
-            searchFilter = SearchType.ANIME,
+            searchScreenState = SearchScreenState(),
             onFilterChipClicked = {},
             onSearchValueChanged = {}
         )

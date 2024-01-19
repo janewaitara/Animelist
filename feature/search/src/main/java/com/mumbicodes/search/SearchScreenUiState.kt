@@ -11,6 +11,8 @@ sealed interface AnimeSearchUiState {
     ) : AnimeSearchUiState
 
     data class Error(val errorMessage: String) : AnimeSearchUiState
+
+    object EmptyList : AnimeSearchUiState
 }
 
 sealed interface CharacterSearchUiState {
@@ -21,6 +23,8 @@ sealed interface CharacterSearchUiState {
     ) : CharacterSearchUiState
 
     data class Error(val errorMessage: String) : CharacterSearchUiState
+
+    object EmptyList : CharacterSearchUiState
 }
 
 data class SearchScreenState(

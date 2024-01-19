@@ -46,9 +46,13 @@ class SearchViewModel @Inject constructor(
                                 }
 
                                 is Result.Success -> {
-                                    AnimeSearchUiState.AnimeResults(
-                                        data = it.data
-                                    )
+                                    if (it.data.isNotEmpty()) {
+                                        AnimeSearchUiState.AnimeResults(
+                                            data = it.data
+                                        )
+                                    } else {
+                                        AnimeSearchUiState.EmptyList
+                                    }
                                 }
                             }
                         )
@@ -72,9 +76,13 @@ class SearchViewModel @Inject constructor(
                                 }
 
                                 is Result.Success -> {
-                                    CharacterSearchUiState.CharacterResults(
-                                        data = it.data
-                                    )
+                                    if (it.data.isNotEmpty()) {
+                                        CharacterSearchUiState.CharacterResults(
+                                            data = it.data
+                                        )
+                                    } else {
+                                        CharacterSearchUiState.EmptyList
+                                    }
                                 }
                             }
                         )

@@ -15,6 +15,7 @@ sealed interface AnimeSearchUiState {
     object EmptyList : AnimeSearchUiState
 }
 
+// TODO think of combining this into one interface and use T
 sealed interface CharacterSearchUiState {
     object Loading : CharacterSearchUiState
 
@@ -30,6 +31,6 @@ sealed interface CharacterSearchUiState {
 data class SearchScreenState(
     val searchParam: String = "",
     val searchMainFilter: SearchType = SearchType.ANIME,
-    val characterSearchResultsState: CharacterSearchUiState = CharacterSearchUiState.Loading,
-    val animeSearchResultsState: AnimeSearchUiState = AnimeSearchUiState.Loading
+    val characterSearchResultsState: CharacterSearchUiState = CharacterSearchUiState.EmptyList,
+    val animeSearchResultsState: AnimeSearchUiState = AnimeSearchUiState.EmptyList
 )

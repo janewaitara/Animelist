@@ -5,21 +5,30 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mumbicodes.common.result.toCamelCase
 import com.mumbicodes.designsystem.atoms.FilterChip
+import com.mumbicodes.designsystem.atoms.Text
+import com.mumbicodes.designsystem.components.ErrorBannerComponent
+import com.mumbicodes.designsystem.components.ListLoadingComponent
+import com.mumbicodes.designsystem.components.SearchAnimeComponent
+import com.mumbicodes.designsystem.components.SearchCharacterComponent
 import com.mumbicodes.designsystem.components.SearchFieldComponent
 import com.mumbicodes.designsystem.theme.AnimeListTheme
 import com.mumbicodes.designsystem.theme.AnimeTheme
@@ -27,7 +36,9 @@ import com.mumbicodes.designsystem.theme.AnimeTheme
 @Composable
 fun SearchScreen(
     modifier: Modifier = Modifier,
-    searchViewModel: SearchViewModel = hiltViewModel()
+    searchViewModel: SearchViewModel = hiltViewModel(),
+    onAnimeClicked: (Int) -> Unit = {},
+    onCharacterClicked: (Int) -> Unit = {}
 ) {
     val searchScreenState by searchViewModel.searchScreenState.collectAsStateWithLifecycle()
 
@@ -36,7 +47,9 @@ fun SearchScreen(
         searchScreenState = searchScreenState,
         onFilterChipClicked = searchViewModel::updateSearchFilter,
         onSearchValueChanged = searchViewModel::onSearchParameterChanged,
-        onSearchClicked = searchViewModel::onSearchClicked
+        onSearchClicked = searchViewModel::onSearchClicked,
+        onAnimeClicked = onAnimeClicked,
+        onCharacterClicked = onCharacterClicked
     )
 }
 
@@ -46,7 +59,9 @@ fun SearchScreenContent(
     searchScreenState: SearchScreenState,
     onSearchValueChanged: (String) -> Unit,
     onFilterChipClicked: (SearchType) -> Unit,
-    onSearchClicked: () -> Unit = {}
+    onSearchClicked: () -> Unit = {},
+    onAnimeClicked: (Int) -> Unit = {},
+    onCharacterClicked: (Int) -> Unit = {}
 ) {
     Box(
         modifier = modifier
@@ -54,6 +69,73 @@ fun SearchScreenContent(
             .background(color = AnimeTheme.colors.background)
             .padding(bottom = 72.dp)
     ) {
+        when (searchScreenState.searchMainFilter) {
+            SearchType.ANIME -> {
+                when (searchScreenState.animeSearchResultsState) {
+                    is AnimeSearchUiState.AnimeResults -> {
+                        LazyColumn(
+                            modifier = Modifier
+                                .background(color = AnimeTheme.colors.background)
+                                .padding(horizontal = AnimeTheme.space.space20dp),
+                            contentPadding = PaddingValues(bottom = AnimeTheme.space.space20dp),
+                            verticalArrangement = Arrangement.spacedBy(AnimeTheme.space.space16dp)
+                        ) {
+                            items(searchScreenState.animeSearchResultsState.data) { anime ->
+                                SearchAnimeComponent(
+                                    coverImageUrl = anime.coverImage,
+                                    animeEnglishTitle = anime.title?.english ?: "",
+                                    animeNativeTitle = anime.title?.native ?: "",
+                                    numberOfEpisodes = anime.episodes ?: 0,
+                                    episodeDuration = anime.duration ?: 0,
+                                    onClick = { onAnimeClicked(anime.id) }
+                                )
+                            }
+                        }
+                    }
+
+                    AnimeSearchUiState.EmptyList ->
+                        EmptyStateSection(searchFilter = "Search Anime")
+
+                    is AnimeSearchUiState.Error ->
+                        ErrorBannerComponent(errorMessage = searchScreenState.animeSearchResultsState.errorMessage)
+
+                    AnimeSearchUiState.Loading -> ListLoadingComponent()
+                }
+            }
+
+            SearchType.CHARACTER -> {
+                when (searchScreenState.characterSearchResultsState) {
+                    is CharacterSearchUiState.CharacterResults -> {
+                        LazyColumn(
+                            modifier = Modifier
+                                .background(color = AnimeTheme.colors.background)
+                                .padding(horizontal = AnimeTheme.space.space20dp),
+                            contentPadding = PaddingValues(bottom = AnimeTheme.space.space20dp),
+                            verticalArrangement = Arrangement.spacedBy(AnimeTheme.space.space16dp)
+                        ) {
+                            items(searchScreenState.characterSearchResultsState.data) { character ->
+                                SearchCharacterComponent(
+                                    characterEnglishName = character.name?.full ?: "",
+                                    characterNativeName = character.name?.native ?: "",
+                                    characterImageUrl = character.image,
+                                    age = character.age,
+                                    gender = character.gender,
+                                    onClick = { onCharacterClicked(character.id) }
+                                )
+                            }
+                        }
+                    }
+
+                    CharacterSearchUiState.EmptyList ->
+                        EmptyStateSection(searchFilter = "Search Character")
+
+                    is CharacterSearchUiState.Error ->
+                        ErrorBannerComponent(errorMessage = searchScreenState.characterSearchResultsState.errorMessage)
+
+                    CharacterSearchUiState.Loading -> ListLoadingComponent()
+                }
+            }
+        }
         SearchAndFilterSection(
             modifier = Modifier.align(Alignment.BottomCenter),
             searchParam = searchScreenState.searchParam,
@@ -63,6 +145,20 @@ fun SearchScreenContent(
             onSearchClicked = onSearchClicked
         )
     }
+}
+
+@Composable
+fun EmptyStateSection(
+    modifier: Modifier = Modifier,
+    searchFilter: String
+) {
+    Text(
+        modifier = Modifier.fillMaxWidth(),
+        text = searchFilter,
+        color = AnimeTheme.colors.textNeutral,
+        style = AnimeTheme.typography.bodyMediumBold,
+        textAlign = TextAlign.Start
+    )
 }
 
 @Composable

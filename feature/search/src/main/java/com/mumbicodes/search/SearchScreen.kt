@@ -1,15 +1,21 @@
 package com.mumbicodes.search
 
 import android.content.res.Configuration
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -53,6 +59,7 @@ fun SearchScreen(
     )
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun SearchScreenContent(
     modifier: Modifier = Modifier,
@@ -136,14 +143,23 @@ fun SearchScreenContent(
                 }
             }
         }
-        SearchAndFilterSection(
-            modifier = Modifier.align(Alignment.BottomCenter),
-            searchParam = searchScreenState.searchParam,
-            searchFilter = searchScreenState.searchMainFilter,
-            onSearchValueChanged = onSearchValueChanged,
-            onFilterChipClicked = onFilterChipClicked,
-            onSearchClicked = onSearchClicked
-        )
+
+        Column(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+        ) {
+            SearchAndFilterSection(
+                modifier = Modifier,
+                searchParam = searchScreenState.searchParam,
+                searchFilter = searchScreenState.searchMainFilter,
+                onSearchValueChanged = onSearchValueChanged,
+                onFilterChipClicked = onFilterChipClicked,
+                onSearchClicked = onSearchClicked
+            )
+            AnimatedVisibility(visible = WindowInsets.isImeVisible) {
+                Spacer(Modifier.windowInsetsBottomHeight(WindowInsets(bottom = 60.dp)))
+            }
+        }
     }
 }
 
@@ -185,6 +201,7 @@ fun SearchAndFilterSection(
          * Todo research why the text lineheight isn't the overall height of the atom.
          * */
         SearchFieldComponent(
+            modifier = Modifier,
             placeholder = when (searchFilter) {
                 SearchType.ANIME -> "an anime"
                 SearchType.CHARACTER -> "a character"

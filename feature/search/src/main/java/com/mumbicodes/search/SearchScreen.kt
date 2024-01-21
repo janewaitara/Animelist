@@ -2,7 +2,10 @@ package com.mumbicodes.search
 
 import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -59,7 +63,7 @@ fun SearchScreen(
     )
 }
 
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun SearchScreenContent(
     modifier: Modifier = Modifier,
@@ -84,9 +88,23 @@ fun SearchScreenContent(
                             modifier = Modifier
                                 .background(color = AnimeTheme.colors.background)
                                 .padding(horizontal = AnimeTheme.space.space20dp),
-                            contentPadding = PaddingValues(bottom = AnimeTheme.space.space20dp),
+                            contentPadding = PaddingValues(bottom = 116.dp),
                             verticalArrangement = Arrangement.spacedBy(AnimeTheme.space.space16dp)
                         ) {
+                            stickyHeader {
+                                Text(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .background(color = AnimeTheme.colors.background)
+                                        .padding(
+                                            vertical = AnimeTheme.space.space8dp
+                                        ),
+                                    text = stringResource(id = R.string.search_results),
+                                    color = AnimeTheme.colors.textNeutral,
+                                    style = AnimeTheme.typography.titleSmall,
+                                    textAlign = TextAlign.Start
+                                )
+                            }
                             items(searchScreenState.animeSearchResultsState.data) { anime ->
                                 SearchAnimeComponent(
                                     coverImageUrl = anime.coverImage,
@@ -101,7 +119,7 @@ fun SearchScreenContent(
                     }
 
                     AnimeSearchUiState.EmptyList ->
-                        EmptyStateSection(searchFilter = "Search Anime")
+                        EmptyStateSection()
 
                     is AnimeSearchUiState.Error ->
                         ErrorBannerComponent(errorMessage = searchScreenState.animeSearchResultsState.errorMessage)
@@ -117,9 +135,23 @@ fun SearchScreenContent(
                             modifier = Modifier
                                 .background(color = AnimeTheme.colors.background)
                                 .padding(horizontal = AnimeTheme.space.space20dp),
-                            contentPadding = PaddingValues(bottom = AnimeTheme.space.space20dp),
+                            contentPadding = PaddingValues(bottom = 116.dp),
                             verticalArrangement = Arrangement.spacedBy(AnimeTheme.space.space16dp)
                         ) {
+                            stickyHeader {
+                                Text(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .background(color = AnimeTheme.colors.background)
+                                        .padding(
+                                            vertical = AnimeTheme.space.space8dp
+                                        ),
+                                    text = stringResource(id = R.string.search_results),
+                                    color = AnimeTheme.colors.textNeutral,
+                                    style = AnimeTheme.typography.titleSmall,
+                                    textAlign = TextAlign.Start
+                                )
+                            }
                             items(searchScreenState.characterSearchResultsState.data) { character ->
                                 SearchCharacterComponent(
                                     characterEnglishName = character.name?.full ?: "",
@@ -134,7 +166,7 @@ fun SearchScreenContent(
                     }
 
                     CharacterSearchUiState.EmptyList ->
-                        EmptyStateSection(searchFilter = "Search Character")
+                        EmptyStateSection()
 
                     is CharacterSearchUiState.Error ->
                         ErrorBannerComponent(errorMessage = searchScreenState.characterSearchResultsState.errorMessage)
@@ -165,16 +197,34 @@ fun SearchScreenContent(
 
 @Composable
 fun EmptyStateSection(
-    modifier: Modifier = Modifier,
-    searchFilter: String
+    modifier: Modifier = Modifier
 ) {
-    Text(
-        modifier = Modifier.fillMaxWidth(),
-        text = searchFilter,
-        color = AnimeTheme.colors.textNeutral,
-        style = AnimeTheme.typography.bodyMediumBold,
-        textAlign = TextAlign.Start
-    )
+    val searchIllustration = when (isSystemInDarkTheme()) {
+        true -> R.drawable.search_dark_mode
+        false -> R.drawable.search_light_mode
+    }
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(
+                start = AnimeTheme.space.space20dp,
+                end = AnimeTheme.space.space20dp,
+                top = 96.dp
+            )
+    ) {
+        Text(
+            modifier = Modifier.fillMaxWidth(),
+            text = stringResource(id = R.string.search_empty_state),
+            color = AnimeTheme.colors.textNeutral,
+            style = AnimeTheme.typography.titleMedium,
+            textAlign = TextAlign.Center
+        )
+        Image(
+            modifier = Modifier.align(Alignment.Center),
+            painter = painterResource(id = searchIllustration),
+            contentDescription = "Search illustration"
+        )
+    }
 }
 
 @Composable

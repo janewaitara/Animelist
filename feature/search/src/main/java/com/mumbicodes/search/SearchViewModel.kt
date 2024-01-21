@@ -98,12 +98,14 @@ class SearchViewModel @Inject constructor(
     fun updateSearchFilter(userSearchMainFilter: SearchType) {
         _searchScreenState.value =
             searchScreenState.value.copy(searchMainFilter = userSearchMainFilter)
+        onSearchClicked()
     }
 
     /**
      * Called everytime the user types on the search input field*/
     fun onSearchParameterChanged(searchParam: String) {
         _searchScreenState.value = searchScreenState.value.copy(searchParam = searchParam)
+        onSearchClicked()
     }
 
     private fun searchCharacter(searchParam: String): Flow<Result<List<Character>>> =

@@ -3,4 +3,6 @@
     <string name="search">Search</string>
     <string name="anime">Anime</string>
     <string name="character">Character</string>
+    <string name="search_empty_state">What are you \n looking for?</string>
+    <string name="search_results">Search results</string>
 </resources>

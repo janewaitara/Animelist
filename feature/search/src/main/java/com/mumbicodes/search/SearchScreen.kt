@@ -119,12 +119,13 @@ fun SearchScreenContent(
                     }
 
                     AnimeSearchUiState.EmptyList ->
-                        EmptyStateSection()
+                        EmptyListSection(searchParam = searchScreenState.searchParam)
 
                     is AnimeSearchUiState.Error ->
                         ErrorBannerComponent(errorMessage = searchScreenState.animeSearchResultsState.errorMessage)
 
                     AnimeSearchUiState.Loading -> ListLoadingComponent()
+                    AnimeSearchUiState.EmptyState -> EmptyStateSection()
                 }
             }
 
@@ -166,12 +167,13 @@ fun SearchScreenContent(
                     }
 
                     CharacterSearchUiState.EmptyList ->
-                        EmptyStateSection()
+                        EmptyListSection(searchParam = searchScreenState.searchParam)
 
                     is CharacterSearchUiState.Error ->
                         ErrorBannerComponent(errorMessage = searchScreenState.characterSearchResultsState.errorMessage)
 
                     CharacterSearchUiState.Loading -> ListLoadingComponent()
+                    CharacterSearchUiState.EmptyState -> EmptyStateSection()
                 }
             }
         }
@@ -223,6 +225,41 @@ fun EmptyStateSection(
             modifier = Modifier.align(Alignment.Center),
             painter = painterResource(id = searchIllustration),
             contentDescription = "Search illustration"
+        )
+    }
+}
+
+@Composable
+fun EmptyListSection(
+    modifier: Modifier = Modifier,
+    searchParam: String
+) {
+    val noResultIllustration = when (isSystemInDarkTheme()) {
+        true -> R.drawable.no_search_results_dark
+        false -> R.drawable.no_search_results_light
+    }
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(
+                start = AnimeTheme.space.space20dp,
+                end = AnimeTheme.space.space20dp,
+                top = 96.dp
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(AnimeTheme.space.space48dp)
+    ) {
+        Image(
+            modifier = Modifier,
+            painter = painterResource(id = noResultIllustration),
+            contentDescription = "No results found illustration"
+        )
+        Text(
+            modifier = Modifier.fillMaxWidth(),
+            text = stringResource(id = R.string.no_search_results, searchParam),
+            color = AnimeTheme.colors.textNeutral,
+            style = AnimeTheme.typography.bodyLargeBold,
+            textAlign = TextAlign.Center
         )
     }
 }

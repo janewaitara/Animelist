@@ -13,6 +13,8 @@ sealed interface AnimeSearchUiState {
     data class Error(val errorMessage: String) : AnimeSearchUiState
 
     object EmptyList : AnimeSearchUiState
+
+    object EmptyState : AnimeSearchUiState
 }
 
 // TODO think of combining this into one interface and use T
@@ -26,11 +28,13 @@ sealed interface CharacterSearchUiState {
     data class Error(val errorMessage: String) : CharacterSearchUiState
 
     object EmptyList : CharacterSearchUiState
+
+    object EmptyState : CharacterSearchUiState
 }
 
 data class SearchScreenState(
     val searchParam: String = "",
     val searchMainFilter: SearchType = SearchType.ANIME,
-    val characterSearchResultsState: CharacterSearchUiState = CharacterSearchUiState.EmptyList,
-    val animeSearchResultsState: AnimeSearchUiState = AnimeSearchUiState.EmptyList
+    val characterSearchResultsState: CharacterSearchUiState = CharacterSearchUiState.EmptyState,
+    val animeSearchResultsState: AnimeSearchUiState = AnimeSearchUiState.EmptyState
 )

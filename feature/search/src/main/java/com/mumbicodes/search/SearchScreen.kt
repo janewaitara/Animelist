@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
@@ -25,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -78,8 +80,9 @@ fun SearchScreenContent(
         modifier = modifier
             .fillMaxSize()
             .background(color = AnimeTheme.colors.background)
-            .padding(bottom = 72.dp)
+        // .padding(bottom = 72.dp)
     ) {
+        // the contentPadding: 112 + 4 + 60
         when (searchScreenState.searchMainFilter) {
             SearchType.ANIME -> {
                 when (searchScreenState.animeSearchResultsState) {
@@ -88,7 +91,7 @@ fun SearchScreenContent(
                             modifier = Modifier
                                 .background(color = AnimeTheme.colors.background)
                                 .padding(horizontal = AnimeTheme.space.space20dp),
-                            contentPadding = PaddingValues(bottom = 116.dp),
+                            contentPadding = PaddingValues(bottom = 176.dp),
                             verticalArrangement = Arrangement.spacedBy(AnimeTheme.space.space16dp)
                         ) {
                             stickyHeader {
@@ -136,7 +139,7 @@ fun SearchScreenContent(
                             modifier = Modifier
                                 .background(color = AnimeTheme.colors.background)
                                 .padding(horizontal = AnimeTheme.space.space20dp),
-                            contentPadding = PaddingValues(bottom = 116.dp),
+                            contentPadding = PaddingValues(bottom = 176.dp),
                             verticalArrangement = Arrangement.spacedBy(AnimeTheme.space.space16dp)
                         ) {
                             stickyHeader {
@@ -193,6 +196,14 @@ fun SearchScreenContent(
             AnimatedVisibility(visible = WindowInsets.isImeVisible) {
                 Spacer(Modifier.windowInsetsBottomHeight(WindowInsets(bottom = 60.dp)))
             }
+
+            // This is the space after all content has been scrolled that accounts for the bottom Bar
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(67.dp)
+                    .background(color = Color.Transparent)
+            )
         }
     }
 }
@@ -275,9 +286,7 @@ fun SearchAndFilterSection(
 ) {
     Column(
         modifier = modifier
-            .background(
-                color = AnimeTheme.colors.searchSectionBorderColor
-            )
+            .background(color = AnimeTheme.colors.searchSectionBorderColor)
             .padding(vertical = 1.dp)
             .background(color = AnimeTheme.colors.bottomNavBackground)
             .fillMaxWidth()

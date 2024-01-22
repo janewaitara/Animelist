@@ -92,6 +92,15 @@ fun SearchFieldComponent(
                 if (isFocused) {
                     innerTextField()
                 }
+
+                if (searchParam.isNotEmpty()) {
+                    Icon(
+                        modifier = Modifier.size(AnimeTheme.space.space16dp),
+                        painter = painterResource(AnimeListIcons.close),
+                        contentDescription = stringResource(R.string.clear),
+                        tint = AnimeTheme.colors.textWeak
+                    )
+                }
                 // TODO add a trailing icon to clear search param
             }
         }

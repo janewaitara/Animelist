@@ -12,5 +12,6 @@
     <string name="list_layout">Change layout to List</string>
     <string name="error_icon">Error icon</string>
     <string name="search">Search icon</string>
+    <string name="clear">Clear search field</string>
     <string name="search_placeholder">Search for %1$s </string>
 </resources>

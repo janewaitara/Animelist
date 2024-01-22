@@ -13,4 +13,5 @@ object AnimeListIcons {
     val list_layout = R.drawable.list
     val grid_layout = R.drawable.grid
     val warning = R.drawable.info_circle
+    val close = R.drawable.close
 }

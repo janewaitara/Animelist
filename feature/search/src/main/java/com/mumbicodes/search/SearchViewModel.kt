@@ -92,20 +92,40 @@ class SearchViewModel @Inject constructor(
         }
     }
 
+    fun clearSearchParam() {
+        _searchScreenState.value =
+            searchScreenState.value.copy(
+                searchParam = "",
+                characterSearchResultsState = CharacterSearchUiState.EmptyState,
+                animeSearchResultsState = AnimeSearchUiState.EmptyState
+            )
+    }
+
     /**
      * Updates the main search item user is searching for
      * */
     fun updateSearchFilter(userSearchMainFilter: SearchType) {
         _searchScreenState.value =
             searchScreenState.value.copy(searchMainFilter = userSearchMainFilter)
-        onSearchClicked()
+        if (searchScreenState.value.searchParam.isNotEmpty()) {
+            onSearchClicked()
+        }
     }
 
     /**
      * Called everytime the user types on the search input field*/
     fun onSearchParameterChanged(searchParam: String) {
         _searchScreenState.value = searchScreenState.value.copy(searchParam = searchParam)
-        onSearchClicked()
+
+        if (searchParam.isEmpty()) {
+            _searchScreenState.value =
+                searchScreenState.value.copy(
+                    characterSearchResultsState = CharacterSearchUiState.EmptyState,
+                    animeSearchResultsState = AnimeSearchUiState.EmptyState
+                )
+        } else {
+            onSearchClicked()
+        }
     }
 
     private fun searchCharacter(searchParam: String): Flow<Result<List<Character>>> =

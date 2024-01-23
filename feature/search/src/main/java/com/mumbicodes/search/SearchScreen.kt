@@ -61,7 +61,8 @@ fun SearchScreen(
         onSearchValueChanged = searchViewModel::onSearchParameterChanged,
         onSearchClicked = searchViewModel::onSearchClicked,
         onAnimeClicked = onAnimeClicked,
-        onCharacterClicked = onCharacterClicked
+        onCharacterClicked = onCharacterClicked,
+        onClearSearchField = searchViewModel::clearSearchParam
     )
 }
 
@@ -74,7 +75,8 @@ fun SearchScreenContent(
     onFilterChipClicked: (SearchType) -> Unit,
     onSearchClicked: () -> Unit = {},
     onAnimeClicked: (Int) -> Unit = {},
-    onCharacterClicked: (Int) -> Unit = {}
+    onCharacterClicked: (Int) -> Unit = {},
+    onClearSearchField: () -> Unit = {}
 ) {
     Box(
         modifier = modifier
@@ -191,7 +193,8 @@ fun SearchScreenContent(
                 searchFilter = searchScreenState.searchMainFilter,
                 onSearchValueChanged = onSearchValueChanged,
                 onFilterChipClicked = onFilterChipClicked,
-                onSearchClicked = onSearchClicked
+                onSearchClicked = onSearchClicked,
+                onClearSearchField = onClearSearchField
             )
             AnimatedVisibility(visible = WindowInsets.isImeVisible) {
                 Spacer(Modifier.windowInsetsBottomHeight(WindowInsets(bottom = 60.dp)))
@@ -282,7 +285,8 @@ fun SearchAndFilterSection(
     searchFilter: SearchType,
     onSearchValueChanged: (String) -> Unit,
     onFilterChipClicked: (SearchType) -> Unit,
-    onSearchClicked: () -> Unit
+    onSearchClicked: () -> Unit,
+    onClearSearchField: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -304,7 +308,8 @@ fun SearchAndFilterSection(
             },
             searchParam = searchParam,
             onValueChanged = onSearchValueChanged,
-            onSearchClicked = onSearchClicked
+            onSearchClicked = onSearchClicked,
+            onClearSearchField = onClearSearchField
         )
 
         Row(

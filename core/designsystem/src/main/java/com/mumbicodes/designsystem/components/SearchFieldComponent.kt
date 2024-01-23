@@ -2,7 +2,9 @@ package com.mumbicodes.designsystem.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -42,7 +44,8 @@ fun SearchFieldComponent(
     placeholder: String,
     searchParam: String,
     onValueChanged: (String) -> Unit,
-    onSearchClicked: () -> Unit = {}
+    onSearchClicked: () -> Unit = {},
+    onClearSearchField: () -> Unit = {}
 ) {
     var isFocused by rememberSaveable {
         mutableStateOf(false)
@@ -59,6 +62,7 @@ fun SearchFieldComponent(
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
         keyboardActions = KeyboardActions(onSearch = { onSearchClicked() }),
         cursorBrush = SolidColor(AnimeTheme.colors.textNeutral),
+        maxLines = 1,
         textStyle = AnimeTheme.typography.bodyMedium.copy(color = AnimeTheme.colors.textNeutral),
         decorationBox = { innerTextField ->
 
@@ -80,7 +84,7 @@ fun SearchFieldComponent(
                     tint = AnimeTheme.colors.textWeak
                 )
 
-                if (!isFocused) {
+                if (!isFocused && searchParam.isEmpty()) {
                     Text(
                         modifier = Modifier,
                         text = stringResource(R.string.search_placeholder, placeholder),
@@ -89,13 +93,18 @@ fun SearchFieldComponent(
                         textAlign = TextAlign.Start
                     )
                 }
-                if (isFocused) {
-                    innerTextField()
+                if (isFocused || searchParam.isNotEmpty()) {
+                    Box(modifier = Modifier.weight(1f)) {
+                        innerTextField()
+                    }
                 }
 
                 if (searchParam.isNotEmpty()) {
                     Icon(
-                        modifier = Modifier.size(AnimeTheme.space.space16dp),
+                        modifier = Modifier.size(AnimeTheme.space.space24dp)
+                            .clickable {
+                                onClearSearchField()
+                            },
                         painter = painterResource(AnimeListIcons.close),
                         contentDescription = stringResource(R.string.clear),
                         tint = AnimeTheme.colors.textWeak

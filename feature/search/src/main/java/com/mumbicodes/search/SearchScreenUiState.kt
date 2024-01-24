@@ -3,6 +3,20 @@ package com.mumbicodes.search
 import com.mumbicodes.model.data.Anime
 import com.mumbicodes.model.data.Character
 
+sealed interface SearchUiState<T> {
+    object Loading : SearchUiState<Nothing>
+
+    data class Results<T>(
+        val data: T
+    ) : SearchUiState<T>
+
+    data class Error(val errorMessage: String) : SearchUiState<Nothing>
+
+    object EmptyList : SearchUiState<Nothing>
+
+    object EmptyState : SearchUiState<Nothing>
+}
+
 sealed interface AnimeSearchUiState {
     object Loading : AnimeSearchUiState
 

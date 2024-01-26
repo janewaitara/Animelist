@@ -41,7 +41,14 @@ fun AnimeListNavHost(
                     navController.navigate(ALL_CATEGORIES_ROUTE)
                 }
             )
-            searchScreen()
+            searchScreen(
+                onAnimeClicked = { animeId ->
+                    navController.navigateToAnimeScreen(animeId = animeId)
+                },
+                onCharacterClicked = { characterId ->
+                    navController.navigateToCharacterBottomSheet(characterId = characterId)
+                }
+            )
             yourListScreen()
             animeDetailsGraph(
                 navController = navController,

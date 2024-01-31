@@ -13,8 +13,15 @@ fun NavController.navigateToSearchScreen(navOptions: NavOptions? = null) {
     this.navigate(route = SEARCH_SCREEN_ROUTE, navOptions = navOptions)
 }
 
-fun NavGraphBuilder.searchScreen() {
+fun NavGraphBuilder.searchScreen(
+    onAnimeClicked: (Int) -> Unit,
+    onCharacterClicked: (Int) -> Unit
+) {
     composable(route = SEARCH_SCREEN_ROUTE) {
-        SearchScreen(modifier = Modifier)
+        SearchScreen(
+            modifier = Modifier,
+            onAnimeClicked = onAnimeClicked,
+            onCharacterClicked = onCharacterClicked
+        )
     }
 }

@@ -1,6 +1,5 @@
 package com.mumbicodes.search
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mumbicodes.common.result.Result
@@ -13,92 +12,120 @@ import com.mumbicodes.model.data.LocalMediaType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val searchRepository: SearchRepository,
-    private val savedStateHandle: SavedStateHandle
+    private val searchRepository: SearchRepository
 ) : ViewModel() {
 
-    private val searchParameter = savedStateHandle.get<String>(SEARCH_QUERY)
+    private val _searchScreenState: MutableStateFlow<SearchScreenState> =
+        MutableStateFlow(SearchScreenState())
+    val searchScreenState = _searchScreenState.asStateFlow()
 
-    private val _searchMainFilterUiState: MutableStateFlow<SearchType> =
-        MutableStateFlow(SearchType.ANIME)
-    val searchMainFilterUiState = _searchMainFilterUiState.asStateFlow()
+    fun onSearchClicked() {
+        viewModelScope.launch {
+            when (searchScreenState.value.searchMainFilter) {
+                SearchType.ANIME -> {
+                    searchAnime(searchScreenState.value.searchParam).collectLatest {
+                        _searchScreenState.value = searchScreenState.value.copy(
+                            animeSearchResultsState = when (it) {
+                                is Result.ApplicationError -> {
+                                    AnimeSearchUiState.Error(it.errors.joinToString())
+                                }
 
-    val characterSearchResultsState: StateFlow<CharacterSearchUiState> = searchCharacter(
-        searchParam = searchParameter ?: ""
-    ).map {
-        when (it) {
-            is Result.ApplicationError -> {
-                CharacterSearchUiState.Error(it.errors.joinToString())
-            }
+                                is Result.Failure -> {
+                                    AnimeSearchUiState.Error(it.exception.message.toString())
+                                }
 
-            is Result.Failure -> {
-                CharacterSearchUiState.Error(it.exception.message.toString())
-            }
+                                Result.Loading -> {
+                                    AnimeSearchUiState.Loading
+                                }
 
-            Result.Loading -> {
-                CharacterSearchUiState.Loading
-            }
+                                is Result.Success -> {
+                                    if (it.data.isNotEmpty()) {
+                                        AnimeSearchUiState.AnimeResults(
+                                            data = it.data
+                                        )
+                                    } else {
+                                        AnimeSearchUiState.EmptyList
+                                    }
+                                }
+                            }
+                        )
+                    }
+                }
 
-            is Result.Success -> {
-                CharacterSearchUiState.CharacterResults(
-                    data = it.data
-                )
+                SearchType.CHARACTER -> {
+                    searchCharacter(searchScreenState.value.searchParam).collectLatest {
+                        _searchScreenState.value = searchScreenState.value.copy(
+                            characterSearchResultsState = when (it) {
+                                is Result.ApplicationError -> {
+                                    CharacterSearchUiState.Error(it.errors.joinToString())
+                                }
+
+                                is Result.Failure -> {
+                                    CharacterSearchUiState.Error(it.exception.message.toString())
+                                }
+
+                                Result.Loading -> {
+                                    CharacterSearchUiState.Loading
+                                }
+
+                                is Result.Success -> {
+                                    if (it.data.isNotEmpty()) {
+                                        CharacterSearchUiState.CharacterResults(
+                                            data = it.data
+                                        )
+                                    } else {
+                                        CharacterSearchUiState.EmptyList
+                                    }
+                                }
+                            }
+                        )
+                    }
+                }
             }
         }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = CharacterSearchUiState.Loading
-    )
+    }
 
-    val animeSearchResultsState: StateFlow<AnimeSearchUiState> = searchAnime(
-        searchParam = searchParameter ?: ""
-    ).map {
-        when (it) {
-            is Result.ApplicationError -> {
-                AnimeSearchUiState.Error(it.errors.joinToString())
-            }
-
-            is Result.Failure -> {
-                AnimeSearchUiState.Error(it.exception.message.toString())
-            }
-
-            Result.Loading -> {
-                AnimeSearchUiState.Loading
-            }
-
-            is Result.Success -> {
-                AnimeSearchUiState.AnimeResults(
-                    data = it.data
-                )
-            }
-        }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = AnimeSearchUiState.Loading
-    )
+    fun clearSearchParam() {
+        _searchScreenState.value =
+            searchScreenState.value.copy(
+                searchParam = "",
+                characterSearchResultsState = CharacterSearchUiState.EmptyState,
+                animeSearchResultsState = AnimeSearchUiState.EmptyState
+            )
+    }
 
     /**
      * Updates the main search item user is searching for
      * */
     fun updateSearchFilter(userSearchMainFilter: SearchType) {
-        _searchMainFilterUiState.value = userSearchMainFilter
+        _searchScreenState.value =
+            searchScreenState.value.copy(searchMainFilter = userSearchMainFilter)
+        if (searchScreenState.value.searchParam.isNotEmpty()) {
+            onSearchClicked()
+        }
     }
 
     /**
      * Called everytime the user types on the search input field*/
     fun onSearchParameterChanged(searchParam: String) {
-        savedStateHandle[SEARCH_QUERY] = searchParam
+        _searchScreenState.value = searchScreenState.value.copy(searchParam = searchParam)
+
+        if (searchParam.isEmpty()) {
+            _searchScreenState.value =
+                searchScreenState.value.copy(
+                    characterSearchResultsState = CharacterSearchUiState.EmptyState,
+                    animeSearchResultsState = AnimeSearchUiState.EmptyState
+                )
+        } else {
+            onSearchClicked()
+        }
     }
 
     private fun searchCharacter(searchParam: String): Flow<Result<List<Character>>> =
@@ -127,5 +154,3 @@ class SearchViewModel @Inject constructor(
 enum class SearchType {
     ANIME, CHARACTER
 }
-
-private const val SEARCH_QUERY = "searchQuery"

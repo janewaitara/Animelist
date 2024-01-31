@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="search">Search</string>
+    <string name="anime">Anime</string>
+    <string name="character">Character</string>
+    <string name="search_empty_state">What are you \n looking for?</string>
+    <string name="no_search_results">No results found for \n “%1$s”</string>
+    <string name="search_results">Search results</string>
 </resources>

@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.view.WindowCompat
 import com.mumbicodes.animelist.com.mumbicodes.animelist.ui.AnimeListApp
 import com.mumbicodes.designsystem.atoms.Text
 import com.mumbicodes.designsystem.theme.AnimeListTheme
@@ -15,16 +16,11 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
         setContent {
             AnimeListTheme {
-                // A surface container using the 'background' color from the theme
-              /*  Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }*/
-
                 AnimeListApp()
             }
         }

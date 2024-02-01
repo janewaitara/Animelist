@@ -38,6 +38,9 @@ dependencies {
     implementation(libs.bundles.lifecycle)
     implementation(libs.androidx.constraintlayout)
 
+    // Media3
+    implementation(libs.bundles.media3)
+
     // Enables formatting rule set in detekt
     detektPlugins(libs.detekt.formatting)
 }

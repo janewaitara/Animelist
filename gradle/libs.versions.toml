@@ -17,6 +17,7 @@ hiltWithOtherLibs = "1.0.0"
 apollographql = "3.8.2"
 coroutines = "1.5.0"
 accompanist = "0.32.0"
+media3 = "1.2.1"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "ktx" }
@@ -30,8 +31,8 @@ compose-ui-util = { module = "androidx.compose.ui:ui-util" }
 compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling-preview" }
-compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "androidxComposeNavigation"}
-accompanist = { module = "com.google.accompanist:accompanist-navigation-material", version.ref = "accompanist"}
+compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "androidxComposeNavigation" }
+accompanist = { module = "com.google.accompanist:accompanist-navigation-material", version.ref = "accompanist" }
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout-compose", version = "1.0.1" }
 
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
@@ -50,7 +51,7 @@ coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version
 coroutinesAndroid = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 
 androidx-lifecycle-viewModel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
-androidx-lifecycle-compose = {module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxLifecycle"}
+androidx-lifecycle-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
 
 junit4 = { module = "junit:junit", version.ref = "junit4" }
 androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidxJunit" }
@@ -59,13 +60,19 @@ androidx-compose-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 androidx-compose-ui-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 
+#Media 3
+androidx-media3-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "media3" }
+androidx-media3-ui = { module = "androidx.media3:media3-ui", version.ref = "media3" }
+androidx-media3-common = { module = "androidx.media3:media3-common", version.ref = "media3" }
+
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidApplication" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 
 [bundles]
-compose = ["compose-foundation","compose-activity", "compose-ui","compose-ui-util", "compose-material3", "compose-ui-graphics", "compose-ui-tooling", "compose-navigation"]
-lifecycle = ["androidx-lifecycle","androidx-lifecycle-viewModel", "androidx-lifecycle-compose"]
+compose = ["compose-foundation", "compose-activity", "compose-ui", "compose-ui-util", "compose-material3", "compose-ui-graphics", "compose-ui-tooling", "compose-navigation"]
+lifecycle = ["androidx-lifecycle", "androidx-lifecycle-viewModel", "androidx-lifecycle-compose"]
+media3 = ["androidx-media3-exoplayer","androidx-media3-ui","androidx-media3-common"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidApplication" }

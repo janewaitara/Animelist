@@ -1,5 +1,6 @@
 package com.mumbicodes.home
 
+import androidx.media3.common.Player
 import com.mumbicodes.model.data.Anime
 
 // TODO create a model class and mapper for the different classes to remove the network from the features
@@ -32,3 +33,13 @@ sealed interface TrendingAnimeStates {
 
     data class Error(val errorMessage: String) : TrendingAnimeStates
 }
+
+enum class PlayerState {
+    LOADING, BUFFERING, READY_TO_PLAY, ENDEND
+}
+
+data class HomeScreenState(
+    val isVideoPlaying: Boolean = false,
+    val player: Player,
+    val playerState: PlayerState = PlayerState.LOADING
+)

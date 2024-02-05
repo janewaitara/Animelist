@@ -119,7 +119,14 @@ fun AnimeListQuery.Medium.toModelAnime() = Anime(
     coverImage = this.coverImage?.medium,
     type = this.type?.toLocalMediaType(),
     duration = this.duration,
-    episodes = this.episodes
+    episodes = this.episodes,
+    trailer = this.trailer?.toMediaTrailer()
+)
+
+private fun AnimeListQuery.Trailer?.toMediaTrailer(): MediaTrailer = MediaTrailer(
+    id = this?.id,
+    site = this?.site,
+    thumbnail = this?.thumbnail
 )
 
 fun LocalMediaType.toNetworkMediaType(): MediaType = when (this) {

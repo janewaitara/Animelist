@@ -10,7 +10,7 @@ import org.gradle.kotlin.dsl.withType
 /**
  * Configure base Kotlin with Android options
  */
-fun Project.configureKotlinAndroid(commonExtension: CommonExtension<*, *, *, *>,) {
+fun Project.configureKotlinAndroid(commonExtension: CommonExtension<*, *, *, *, *>,) {
     commonExtension.apply {
         compileSdk = 34
 

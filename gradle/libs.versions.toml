@@ -1,5 +1,5 @@
 [versions]
-androidApplication = "8.0.2"
+androidApplication = "8.2.2"
 kotlin = "1.8.10"
 ktx = "1.10.0"
 androidxAppCompat = "1.6.1"
@@ -18,6 +18,7 @@ apollographql = "3.8.2"
 coroutines = "1.5.0"
 accompanist = "0.32.0"
 media3 = "1.2.1"
+maxraveYoutubeExtractor = "0.0.7"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "ktx" }
@@ -64,6 +65,9 @@ androidx-compose-ui-manifest = { module = "androidx.compose.ui:ui-test-manifest"
 androidx-media3-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "media3" }
 androidx-media3-ui = { module = "androidx.media3:media3-ui", version.ref = "media3" }
 androidx-media3-common = { module = "androidx.media3:media3-common", version.ref = "media3" }
+
+#Youtube extractor
+maxrave-youtube-extractor = {module = "com.github.maxrave-dev:kotlin-youtubeExtractor", version.ref = "maxraveYoutubeExtractor"}
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidApplication" }

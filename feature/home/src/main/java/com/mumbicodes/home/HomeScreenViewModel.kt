@@ -117,8 +117,14 @@ class HomeScreenViewModel @Inject constructor(
     }
 
     fun toggleAudioStateVideo() = if (player.volume == 0f) {
+        _homeState.value = homeState.value.copy(
+            isVolumeOn = true
+        )
         player.volume = 1f
     } else {
+        _homeState.value = homeState.value.copy(
+            isVolumeOn = false
+        )
         player.volume = 0f
     }
 

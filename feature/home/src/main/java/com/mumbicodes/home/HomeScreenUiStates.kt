@@ -40,6 +40,7 @@ enum class PlayerState {
 
 data class HomeScreenState(
     val isVideoPlaying: Boolean = false,
+    val isVolumeOn: Boolean = true,
     val player: Player,
     val playerState: PlayerState = PlayerState.LOADING
 )

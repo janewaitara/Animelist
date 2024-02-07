@@ -16,15 +16,22 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.ui.PlayerView
@@ -263,6 +270,27 @@ fun TrailerComponent(
 ) {
     // TODO update the icon if to replay player is ended
     // TODO show video when it's fully loaded
+    // When buffering show the play icon as loading
+
+    /**
+     * This is needed to pause the video when the activity is in the background
+     * */
+    var lifecycle by remember {
+        mutableStateOf(Lifecycle.Event.ON_CREATE)
+    }
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    DisposableEffect(key1 = lifecycleOwner) {
+        val lifecycleObserver = LifecycleEventObserver { _, event ->
+            lifecycle = event
+        }
+
+        lifecycleOwner.lifecycle.addObserver(lifecycleObserver)
+
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(lifecycleObserver)
+        }
+    }
 
     Box(
         modifier = modifier
@@ -274,6 +302,20 @@ fun TrailerComponent(
                 .fillMaxWidth()
                 .aspectRatio(16 / 9f),
             // .height(214.dp),
+            update = { playerView ->
+                when (lifecycle) {
+                    Lifecycle.Event.ON_RESUME -> {
+                        playerView.onResume()
+                    }
+
+                    Lifecycle.Event.ON_PAUSE -> {
+                        playerView.onPause()
+                        playerView.player?.pause()
+                    }
+
+                    else -> {}
+                }
+            },
             factory = { context ->
                 PlayerView(context).apply {
                     player = homeScreenState.player

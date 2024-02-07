@@ -1,7 +1,9 @@
 package com.mumbicodes.home
 
 import androidx.annotation.OptIn
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +15,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.VerticalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -23,7 +27,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -47,6 +53,7 @@ import com.mumbicodes.designsystem.theme.AnimeTheme
 import com.mumbicodes.designsystem.theme.Background_dark
 import com.mumbicodes.designsystem.theme.Background_light
 import com.mumbicodes.home.components.VerticalAnimeComponent
+import com.mumbicodes.model.data.Anime
 
 @Composable
 fun HomeScreenRoute(
@@ -102,14 +109,7 @@ fun HomeScreen(
         // These states are for testing
         // TODO which image is this coming from:
         // TODO update the media item when a an anime comes in view in the ViewPager
-        /*  var firstTrendingAnime by rememberSaveable{
-              mutableStateOf("")
-          }
-          var firstTrendingAnimeImage by rememberSaveable{
-              mutableStateOf("")
-          }
 
-          if (firstTrendingAnime.isNotEmpty()) {*/
         TrailerComponent(
             homeScreenState = homeScreenState,
             onToggleAudioClicked = onToggleAudioClicked,
@@ -129,27 +129,20 @@ fun HomeScreen(
                   }
               })*/
         // }
-        Image(
+        /*Image(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(16 / 9f),
             // .height(214.dp),
             coverImageUrl = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx153518-7FNR7zCxO2X5.jpg"
         )
-
+*/
         // Trending section
         when (trendingAnimeUiStates) {
             is TrendingAnimeStates.TrendingAnimes -> {
-                /*  //This is for testing
-                  trendingAnimeUiStates.trending.first().let {
-                      Log.d("Media trailer 3", it.trailer?.id ?: "No trailer")
-                      Log.d("Media trailer 3", it.coverImage ?: "No image")
-
-                      //it.trailer?.id?.let { it1 -> updatePlayerMediaItem(it1) }
-                  }
-                  firstTrendingAnime = trendingAnimeUiStates.trending.first().trailer?.id ?: ""
-                  firstTrendingAnimeImage = trendingAnimeUiStates.trending.first().coverImage ?: ""
-  */
+                TrendingViewPager(
+                    trending = trendingAnimeUiStates.trending
+                )
                 AnimeSection(
                     modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
                     sectionTitle = R.string.trending,
@@ -254,6 +247,40 @@ fun HomeScreen(
                 .fillMaxWidth()
                 .height(60.dp)
                 .background(color = Color.Transparent)
+        )
+    }
+}
+
+@kotlin.OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun TrendingViewPager(
+    trending: List<Anime>
+) {
+    val pagerState = rememberPagerState(pageCount = { 3 }, initialPageOffsetFraction = 0.5f)
+
+    // TODO update the view to let the last item appear first
+    VerticalPager(
+        modifier = Modifier
+            .height(300.dp)
+            .padding(horizontal = AnimeTheme.space.space20dp),
+        state = pagerState,
+        pageSpacing = (-200).dp,
+        reverseLayout = true
+    ) { page ->
+
+        Image(
+            modifier = Modifier
+                .border(
+                    width = 5.dp,
+                    shape = AnimeTheme.shapes.mediumShape,
+                    color = AnimeTheme.colors.primary.copy(0.3f)
+                )
+                .clip(shape = AnimeTheme.shapes.mediumShape)
+                .fillMaxWidth((1 - (page * 0.15)).toFloat())
+                .aspectRatio(16 / 9f),
+            contentScale = ContentScale.FillBounds,
+            // .height(214.dp),
+            coverImageUrl = trending[page].coverImage
         )
     }
 }

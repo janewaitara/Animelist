@@ -1,6 +1,8 @@
 package com.mumbicodes.home
 
 import androidx.annotation.OptIn
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -11,17 +13,17 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.pager.VerticalPager
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -29,10 +31,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -141,7 +145,7 @@ fun HomeScreen(
         when (trendingAnimeUiStates) {
             is TrendingAnimeStates.TrendingAnimes -> {
                 TrendingViewPager(
-                    trending = trendingAnimeUiStates.trending
+                    trending = trendingAnimeUiStates.trending.take(3)
                 )
                 AnimeSection(
                     modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
@@ -254,34 +258,51 @@ fun HomeScreen(
 @kotlin.OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TrendingViewPager(
+    modifier: Modifier = Modifier,
     trending: List<Anime>
 ) {
-    val pagerState = rememberPagerState(pageCount = { 3 }, initialPageOffsetFraction = 0.5f)
-
-    // TODO update the view to let the last item appear first
-    VerticalPager(
-        modifier = Modifier
-            .height(300.dp)
-            .padding(horizontal = AnimeTheme.space.space20dp),
-        state = pagerState,
-        pageSpacing = (-200).dp,
-        reverseLayout = true
-    ) { page ->
-
-        Image(
-            modifier = Modifier
-                .border(
-                    width = 5.dp,
-                    shape = AnimeTheme.shapes.mediumShape,
-                    color = AnimeTheme.colors.primary.copy(0.3f)
+    Box(
+        modifier = modifier
+            .height(300.dp),
+        contentAlignment = Alignment.BottomCenter
+    ) {
+        trending.reversed().forEachIndexed { index, anime ->
+            key(anime) {
+                val animatedScaleX by animateFloatAsState(
+                    targetValue = 1f - (trending.size - index) * 0.15f,
+                    label = ""
                 )
-                .clip(shape = AnimeTheme.shapes.mediumShape)
-                .fillMaxWidth((1 - (page * 0.15)).toFloat())
-                .aspectRatio(16 / 9f),
-            contentScale = ContentScale.FillBounds,
-            // .height(214.dp),
-            coverImageUrl = trending[page].coverImage
-        )
+                val animatedScaleY by animateFloatAsState(
+                    targetValue = 1f - (trending.size - index) * 0.05f,
+                    label = ""
+                )
+                val animatedYOffset by animateDpAsState(
+                    targetValue = ((trending.size - index) * -32).dp,
+                    label = ""
+                )
+                Image(
+                    modifier = Modifier
+                        .offset {
+                            IntOffset(x = 0, y = animatedYOffset.roundToPx())
+                        }
+                        .graphicsLayer {
+                            scaleX = animatedScaleX
+                            scaleY = animatedScaleY
+                        }
+                        .border(
+                            width = 5.dp,
+                            shape = AnimeTheme.shapes.mediumShape,
+                            color = AnimeTheme.colors.primary.copy(0.3f)
+                        )
+                        .clip(shape = AnimeTheme.shapes.mediumShape)
+                        .fillMaxWidth()
+                        .aspectRatio(16 / 9f),
+                    contentScale = ContentScale.FillBounds,
+                    // .height(214.dp),
+                    coverImageUrl = anime.coverImage
+                )
+            }
+        }
     }
 }
 

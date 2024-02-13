@@ -42,5 +42,7 @@ data class HomeScreenState(
     val isVideoPlaying: Boolean = false,
     val isVolumeOn: Boolean = true,
     val player: Player,
-    val playerState: PlayerState = PlayerState.LOADING
+    val playerState: PlayerState = PlayerState.LOADING,
+    val trendingAnimes: List<Anime> = mutableListOf(),
+    val trendingUiState: TrendingAnimeStates = TrendingAnimeStates.Loading
 )

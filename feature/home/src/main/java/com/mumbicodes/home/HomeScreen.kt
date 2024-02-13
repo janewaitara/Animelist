@@ -1,9 +1,9 @@
 package com.mumbicodes.home
 
+import android.util.Log
 import androidx.annotation.OptIn
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -22,10 +22,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,6 +53,7 @@ import com.mumbicodes.designsystem.atoms.IconButtonColors
 import com.mumbicodes.designsystem.atoms.Image
 import com.mumbicodes.designsystem.components.ErrorBannerComponent
 import com.mumbicodes.designsystem.components.HorizontalListLoading
+import com.mumbicodes.designsystem.components.swipeToDismiss
 import com.mumbicodes.designsystem.icons.AnimeListIcons
 import com.mumbicodes.designsystem.molecules.AnimeSection
 import com.mumbicodes.designsystem.theme.AnimeTheme
@@ -86,7 +89,8 @@ fun HomeScreenRoute(
         updatePlayerMediaItem = {},
         onToggleAudioClicked = homeScreenViewModel::toggleAudioStateVideo,
         onPlayPauseClicked = homeScreenViewModel::onPlayPauseClicked,
-        onReplayVideoClicked = homeScreenViewModel::replayVideo
+        onReplayVideoClicked = homeScreenViewModel::replayVideo,
+        onTrendingAnimeSwiped = homeScreenViewModel::updateTrendingListOnSwipe
     )
 }
 
@@ -102,7 +106,8 @@ fun HomeScreen(
     updatePlayerMediaItem: (String) -> Unit,
     onToggleAudioClicked: () -> Unit,
     onPlayPauseClicked: () -> Unit,
-    onReplayVideoClicked: () -> Unit
+    onReplayVideoClicked: () -> Unit,
+    onTrendingAnimeSwiped: (Int) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -140,12 +145,13 @@ fun HomeScreen(
             // .height(214.dp),
             coverImageUrl = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx153518-7FNR7zCxO2X5.jpg"
         )
-*/
+        */
         // Trending section
         when (trendingAnimeUiStates) {
             is TrendingAnimeStates.TrendingAnimes -> {
                 TrendingViewPager(
-                    trending = trendingAnimeUiStates.trending.take(3)
+                    trending = homeScreenState.trendingAnimes.take(3),
+                    onTrendingAnimeSwiped = onTrendingAnimeSwiped
                 )
                 AnimeSection(
                     modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
@@ -255,18 +261,28 @@ fun HomeScreen(
     }
 }
 
-@kotlin.OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TrendingViewPager(
     modifier: Modifier = Modifier,
-    trending: List<Anime>
+    trending: List<Anime>,
+    onTrendingAnimeSwiped: (Int) -> Unit
 ) {
+    Log.d("ANIME Swiped 3", "trending")
+
+    var trendingAnimes = rememberSaveable {
+        mutableStateOf<List<Anime>>(listOf())
+    }
+    LaunchedEffect(trending) {
+        trendingAnimes.value = trending
+
+        Log.d("ANIME Swiped 3", "launched")
+    }
     Box(
         modifier = modifier
             .height(300.dp),
         contentAlignment = Alignment.BottomCenter
     ) {
-        trending.reversed().forEachIndexed { index, anime ->
+        trendingAnimes.value.reversed().forEachIndexed { index, anime ->
             key(anime) {
                 val animatedScaleX by animateFloatAsState(
                     targetValue = 1f - (trending.size - index) * 0.15f,
@@ -288,6 +304,9 @@ fun TrendingViewPager(
                         .graphicsLayer {
                             scaleX = animatedScaleX
                             scaleY = animatedScaleY
+                        }
+                        .swipeToDismiss {
+                            onTrendingAnimeSwiped(anime.id)
                         }
                         .border(
                             width = 5.dp,

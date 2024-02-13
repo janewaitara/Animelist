@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -94,6 +95,7 @@ class HomeScreenViewModel @Inject constructor(
                 player.addMediaItem(
                     MediaItem.fromUri(it)
                 )
+                player.volume = 0f
                 player.prepare()
                 player.play()
                 player.apply {
@@ -242,6 +244,46 @@ class HomeScreenViewModel @Inject constructor(
 
     val trendingUiState: StateFlow<TrendingAnimeStates> = _trendingUiState
 
+    init {
+        observeTrendingAnimes()
+    }
+
+    private fun observeTrendingAnimes() {
+        viewModelScope.launch {
+            trendingAnimes.collectLatest {
+                when (it) {
+                    is Result.ApplicationError -> {
+                        _homeState.value = homeState.value.copy(
+                            trendingUiState =
+                            TrendingAnimeStates.Error(it.errors.joinToString())
+                        )
+                    }
+
+                    is Result.Failure -> {
+                        _homeState.value = homeState.value.copy(
+                            trendingUiState =
+                            TrendingAnimeStates.Error(it.toString())
+                        )
+                    }
+
+                    Result.Loading -> {
+                        _homeState.value = homeState.value.copy(
+                            trendingUiState =
+                            TrendingAnimeStates.Loading
+                        )
+                    }
+
+                    is Result.Success -> {
+                        _homeState.value = homeState.value.copy(
+                            trendingUiState = TrendingAnimeStates.TrendingAnimes(trending = it.data),
+                            trendingAnimes = it.data.toMutableList()
+                        )
+                    }
+                }
+            }
+        }
+    }
+
     private val _animeSortType: MutableStateFlow<AnimeSortType> =
         MutableStateFlow(AnimeSortType.RECOMMENDED)
     val animeSortType = _animeSortType.asStateFlow()
@@ -263,6 +305,26 @@ class HomeScreenViewModel @Inject constructor(
      * */
     fun updateSelectedLayoutType(selectedLayoutType: SelectedLayoutType) {
         _selectedLayoutType.value = selectedLayoutType
+    }
+
+    fun updateTrendingListOnSwipe(swipedAnimeId: Int) {
+        val anime = homeState.value.trendingAnimes.find {
+            it.id == swipedAnimeId
+        } ?: return
+
+        Log.d("ANIME Swiped", homeState.value.trendingAnimes.first().id.toString())
+
+        val list = homeState.value.trendingAnimes.toMutableList()
+        list.remove(anime)
+        list.add(anime)
+        list.toList()
+
+        _homeState.value = homeState.value.copy(
+            trendingAnimes = list
+        )
+
+        Log.d("ANIME Swiped 2", homeState.value.trendingAnimes.first().id.toString())
+        Log.d("ANIME Swiped 3", "viewmodel")
     }
 }
 

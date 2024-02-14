@@ -1,7 +1,7 @@
 package com.mumbicodes.home
 
-import android.util.Log
 import androidx.annotation.OptIn
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
@@ -27,7 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -61,6 +61,8 @@ import com.mumbicodes.designsystem.theme.Background_dark
 import com.mumbicodes.designsystem.theme.Background_light
 import com.mumbicodes.home.components.VerticalAnimeComponent
 import com.mumbicodes.model.data.Anime
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreenRoute(
@@ -151,7 +153,11 @@ fun HomeScreen(
             is TrendingAnimeStates.TrendingAnimes -> {
                 TrendingViewPager(
                     trending = homeScreenState.trendingAnimes.take(3),
-                    onTrendingAnimeSwiped = onTrendingAnimeSwiped
+                    onTrendingAnimeSwiped = onTrendingAnimeSwiped,
+                    homeScreenState = homeScreenState,
+                    onToggleAudioClicked = onToggleAudioClicked,
+                    onPlayPauseClicked = onPlayPauseClicked,
+                    onReplayVideoClicked = onReplayVideoClicked
                 )
                 AnimeSection(
                     modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
@@ -265,24 +271,43 @@ fun HomeScreen(
 fun TrendingViewPager(
     modifier: Modifier = Modifier,
     trending: List<Anime>,
-    onTrendingAnimeSwiped: (Int) -> Unit
+    homeScreenState: HomeScreenState,
+    onTrendingAnimeSwiped: (Int) -> Unit,
+    onToggleAudioClicked: () -> Unit,
+    onPlayPauseClicked: () -> Unit,
+    onReplayVideoClicked: () -> Unit
 ) {
-    Log.d("ANIME Swiped 3", "trending")
+    val scope = rememberCoroutineScope()
 
-    var trendingAnimes = rememberSaveable {
-        mutableStateOf<List<Anime>>(listOf())
+    var showVideo by remember {
+        mutableStateOf(false)
     }
-    LaunchedEffect(trending) {
-        trendingAnimes.value = trending
+    var videoHasEnded by remember {
+        mutableStateOf(false)
+    }
+    videoHasEnded = when (homeScreenState.playerState) {
+        PlayerState.ENDEND -> {
+            true
+        }
+        else -> {
+            false
+        }
+    }
 
-        Log.d("ANIME Swiped 3", "launched")
+    LaunchedEffect(Unit) {
+        scope.launch {
+            showVideo = false
+            delay(5000)
+            showVideo = true
+        }
     }
+
     Box(
         modifier = modifier
             .height(300.dp),
         contentAlignment = Alignment.BottomCenter
     ) {
-        trendingAnimes.value.reversed().forEachIndexed { index, anime ->
+        trending.reversed().forEachIndexed { index, anime ->
             key(anime) {
                 val animatedScaleX by animateFloatAsState(
                     targetValue = 1f - (trending.size - index) * 0.15f,
@@ -296,7 +321,7 @@ fun TrendingViewPager(
                     targetValue = ((trending.size - index) * -32).dp,
                     label = ""
                 )
-                Image(
+                Column(
                     modifier = Modifier
                         .offset {
                             IntOffset(x = 0, y = animatedYOffset.roundToPx())
@@ -314,12 +339,37 @@ fun TrendingViewPager(
                             color = AnimeTheme.colors.primary.copy(0.3f)
                         )
                         .clip(shape = AnimeTheme.shapes.mediumShape)
-                        .fillMaxWidth()
-                        .aspectRatio(16 / 9f),
-                    contentScale = ContentScale.FillBounds,
-                    // .height(214.dp),
-                    coverImageUrl = anime.coverImage
-                )
+                ) {
+                    if (trending[index] == trending.last()) {
+                        AnimatedVisibility(visible = showVideo.not() && videoHasEnded) {
+                            Image(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .aspectRatio(16 / 9f),
+                                contentScale = ContentScale.FillBounds,
+                                // .height(214.dp),
+                                coverImageUrl = anime.coverImage
+                            )
+                        }
+                        AnimatedVisibility(visible = showVideo && videoHasEnded.not()) {
+                            TrailerComponent(
+                                homeScreenState = homeScreenState,
+                                onToggleAudioClicked = onToggleAudioClicked,
+                                onPlayPauseClicked = onPlayPauseClicked,
+                                onReplayVideoClicked = onReplayVideoClicked
+                            )
+                        }
+                    } else {
+                        Image(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .aspectRatio(16 / 9f),
+                            contentScale = ContentScale.FillBounds,
+                            // .height(214.dp),
+                            coverImageUrl = anime.coverImage
+                        )
+                    }
+                }
             }
         }
     }
@@ -363,6 +413,7 @@ fun TrailerComponent(
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
+            .aspectRatio(16 / 9f)
     ) {
         AndroidView(
             modifier = Modifier

@@ -76,8 +76,6 @@ class HomeScreenViewModel @Inject constructor(
 
     init {
         player.addListener(playerListener)
-
-        updateMediaItem("HkIKAnwLZCw")
     }
 
     /**
@@ -92,9 +90,11 @@ class HomeScreenViewModel @Inject constructor(
             val streamUrl = fetchYoutubeVideoStreamUrlUseCase(animeTrailerId)
             Log.d("Youtube Stream", streamUrl ?: "No url")
             streamUrl?.let {
+                player.removeMediaItem(0)
                 player.addMediaItem(
                     MediaItem.fromUri(it)
                 )
+
                 player.volume = 0f
                 player.prepare()
                 player.play()
@@ -278,6 +278,9 @@ class HomeScreenViewModel @Inject constructor(
                             trendingUiState = TrendingAnimeStates.TrendingAnimes(trending = it.data),
                             trendingAnimes = it.data.toMutableList()
                         )
+                        homeState.value.trendingAnimes.first().trailer?.id?.let { trailerId ->
+                            updateMediaItem(trailerId)
+                        }
                     }
                 }
             }
@@ -311,9 +314,6 @@ class HomeScreenViewModel @Inject constructor(
         val anime = homeState.value.trendingAnimes.find {
             it.id == swipedAnimeId
         } ?: return
-
-        Log.d("ANIME Swiped", homeState.value.trendingAnimes.first().id.toString())
-
         val list = homeState.value.trendingAnimes.toMutableList()
         list.remove(anime)
         list.add(anime)
@@ -323,8 +323,10 @@ class HomeScreenViewModel @Inject constructor(
             trendingAnimes = list
         )
 
-        Log.d("ANIME Swiped 2", homeState.value.trendingAnimes.first().id.toString())
-        Log.d("ANIME Swiped 3", "viewmodel")
+        player.stop()
+        homeState.value.trendingAnimes.first().trailer?.id?.let {
+            updateMediaItem(it)
+        }
     }
 }
 

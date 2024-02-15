@@ -121,12 +121,12 @@ fun HomeScreen(
         // TODO which image is this coming from:
         // TODO update the media item when a an anime comes in view in the ViewPager
 
-        TrailerComponent(
+        /*TrailerComponent(
             homeScreenState = homeScreenState,
             onToggleAudioClicked = onToggleAudioClicked,
             onPlayPauseClicked = onPlayPauseClicked,
             onReplayVideoClicked = onReplayVideoClicked
-        )
+        )*/
 
         /*  AndroidView(
               modifier = Modifier
@@ -341,7 +341,7 @@ fun TrendingViewPager(
                         .clip(shape = AnimeTheme.shapes.mediumShape)
                 ) {
                     if (trending[index] == trending.last()) {
-                        AnimatedVisibility(visible = showVideo.not() && videoHasEnded) {
+                        AnimatedVisibility(visible = showVideo.not() || videoHasEnded) {
                             Image(
                                 modifier = Modifier
                                     .fillMaxWidth()

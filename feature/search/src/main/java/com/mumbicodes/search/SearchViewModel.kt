@@ -34,24 +34,24 @@ class SearchViewModel @Inject constructor(
                         _searchScreenState.value = searchScreenState.value.copy(
                             animeSearchResultsState = when (it) {
                                 is Result.ApplicationError -> {
-                                    AnimeSearchUiState.Error(it.errors.joinToString())
+                                    SearchUiState.Error(it.errors.joinToString())
                                 }
 
                                 is Result.Failure -> {
-                                    AnimeSearchUiState.Error(it.exception.message.toString())
+                                    SearchUiState.Error(it.exception.message.toString())
                                 }
 
                                 Result.Loading -> {
-                                    AnimeSearchUiState.Loading
+                                    SearchUiState.Loading
                                 }
 
                                 is Result.Success -> {
                                     if (it.data.isNotEmpty()) {
-                                        AnimeSearchUiState.AnimeResults(
+                                        SearchUiState.Results(
                                             data = it.data
                                         )
                                     } else {
-                                        AnimeSearchUiState.EmptyList
+                                        SearchUiState.EmptyList
                                     }
                                 }
                             }
@@ -64,24 +64,24 @@ class SearchViewModel @Inject constructor(
                         _searchScreenState.value = searchScreenState.value.copy(
                             characterSearchResultsState = when (it) {
                                 is Result.ApplicationError -> {
-                                    CharacterSearchUiState.Error(it.errors.joinToString())
+                                    SearchUiState.Error(it.errors.joinToString())
                                 }
 
                                 is Result.Failure -> {
-                                    CharacterSearchUiState.Error(it.exception.message.toString())
+                                    SearchUiState.Error(it.exception.message.toString())
                                 }
 
                                 Result.Loading -> {
-                                    CharacterSearchUiState.Loading
+                                    SearchUiState.Loading
                                 }
 
                                 is Result.Success -> {
                                     if (it.data.isNotEmpty()) {
-                                        CharacterSearchUiState.CharacterResults(
+                                        SearchUiState.Results(
                                             data = it.data
                                         )
                                     } else {
-                                        CharacterSearchUiState.EmptyList
+                                        SearchUiState.EmptyList
                                     }
                                 }
                             }
@@ -96,8 +96,8 @@ class SearchViewModel @Inject constructor(
         _searchScreenState.value =
             searchScreenState.value.copy(
                 searchParam = "",
-                characterSearchResultsState = CharacterSearchUiState.EmptyState,
-                animeSearchResultsState = AnimeSearchUiState.EmptyState
+                characterSearchResultsState = SearchUiState.EmptyState,
+                animeSearchResultsState = SearchUiState.EmptyState
             )
     }
 
@@ -120,8 +120,8 @@ class SearchViewModel @Inject constructor(
         if (searchParam.isEmpty()) {
             _searchScreenState.value =
                 searchScreenState.value.copy(
-                    characterSearchResultsState = CharacterSearchUiState.EmptyState,
-                    animeSearchResultsState = AnimeSearchUiState.EmptyState
+                    characterSearchResultsState = SearchUiState.EmptyState,
+                    animeSearchResultsState = SearchUiState.EmptyState
                 )
         } else {
             onSearchClicked()

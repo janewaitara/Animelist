@@ -38,11 +38,27 @@ enum class PlayerState {
     LOADING, BUFFERING, READY_TO_PLAY, ENDEND
 }
 
+enum class AnimeSortType {
+    RECOMMENDED, TRENDING, POPULAR
+}
+
+enum class SelectedLayoutType {
+    LIST, GRID
+}
+
+/**
+ * @param trendingAnimes is the state used by trailers and is often updated when a trailer is swiped
+ * @param trendingAnimesUiState is the state we are observing from the data sources and is now manually updated
+ * */
 data class HomeScreenState(
     val isVideoPlaying: Boolean = false,
     val isVolumeOn: Boolean = true,
     val player: Player,
     val playerState: PlayerState = PlayerState.LOADING,
     val trendingAnimes: List<Anime> = mutableListOf(),
-    val trendingUiState: TrendingAnimeStates = TrendingAnimeStates.Loading
+    val trendingAnimesUiState: TrendingAnimeStates = TrendingAnimeStates.Loading,
+    val recommendedAnimesUiStates: RecommendedAnimesUiStates = RecommendedAnimesUiStates.Loading,
+    val popularAnimesUiState: PopularAnimeStates = PopularAnimeStates.Loading,
+    val selectedLayoutType: SelectedLayoutType = SelectedLayoutType.LIST,
+    val animeSortType: AnimeSortType = AnimeSortType.RECOMMENDED
 )

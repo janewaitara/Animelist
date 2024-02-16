@@ -15,12 +15,8 @@ import com.mumbicodes.model.data.LocalMediaType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -133,33 +129,6 @@ class HomeScreenViewModel @Inject constructor(
     private val recommendedAnimes: Flow<Result<List<Anime>>> =
         animeRepository.getRecommendations()
 
-    private var _recommendedUiState: StateFlow<RecommendedAnimesUiStates> =
-        recommendedAnimes.map {
-            when (it) {
-                is Result.ApplicationError -> {
-                    RecommendedAnimesUiStates.Error(it.errors.joinToString())
-                }
-
-                is Result.Failure -> {
-                    RecommendedAnimesUiStates.Error(it.toString())
-                }
-
-                Result.Loading -> {
-                    RecommendedAnimesUiStates.Loading
-                }
-
-                is Result.Success -> {
-                    RecommendedAnimesUiStates.RecommendedAnimes(recommended = it.data)
-                }
-            }
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = RecommendedAnimesUiStates.Loading
-        )
-
-    val recommendedUiState: StateFlow<RecommendedAnimesUiStates> = _recommendedUiState
-
     private val popularAnimes: Flow<Result<List<Anime>>> =
         animeRepository.getAnimeList(
             page = 0,
@@ -174,33 +143,6 @@ class HomeScreenViewModel @Inject constructor(
                 LocalMediaFormat.MANGA
             )
         )
-
-    private var _popularUiState: StateFlow<PopularAnimeStates> =
-        popularAnimes.map {
-            when (it) {
-                is Result.ApplicationError -> {
-                    PopularAnimeStates.Error(it.errors.joinToString())
-                }
-
-                is Result.Failure -> {
-                    PopularAnimeStates.Error(it.toString())
-                }
-
-                Result.Loading -> {
-                    PopularAnimeStates.Loading
-                }
-
-                is Result.Success -> {
-                    PopularAnimeStates.PopularAnimes(popular = it.data)
-                }
-            }
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = PopularAnimeStates.Loading
-        )
-
-    val popularUiState: StateFlow<PopularAnimeStates> = _popularUiState
 
     private val trendingAnimes: Flow<Result<List<Anime>>> =
         animeRepository.getAnimeList(
@@ -217,35 +159,10 @@ class HomeScreenViewModel @Inject constructor(
             )
         )
 
-    private var _trendingUiState: StateFlow<TrendingAnimeStates> =
-        trendingAnimes.map {
-            when (it) {
-                is Result.ApplicationError -> {
-                    TrendingAnimeStates.Error(it.errors.joinToString())
-                }
-
-                is Result.Failure -> {
-                    TrendingAnimeStates.Error(it.toString())
-                }
-
-                Result.Loading -> {
-                    TrendingAnimeStates.Loading
-                }
-
-                is Result.Success -> {
-                    TrendingAnimeStates.TrendingAnimes(trending = it.data)
-                }
-            }
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = TrendingAnimeStates.Loading
-        )
-
-    val trendingUiState: StateFlow<TrendingAnimeStates> = _trendingUiState
-
     init {
         observeTrendingAnimes()
+        observePopularAnimes()
+        observeRecommendedAnimes()
     }
 
     private fun observeTrendingAnimes() {
@@ -254,28 +171,28 @@ class HomeScreenViewModel @Inject constructor(
                 when (it) {
                     is Result.ApplicationError -> {
                         _homeState.value = homeState.value.copy(
-                            trendingUiState =
+                            trendingAnimesUiState =
                             TrendingAnimeStates.Error(it.errors.joinToString())
                         )
                     }
 
                     is Result.Failure -> {
                         _homeState.value = homeState.value.copy(
-                            trendingUiState =
+                            trendingAnimesUiState =
                             TrendingAnimeStates.Error(it.toString())
                         )
                     }
 
                     Result.Loading -> {
                         _homeState.value = homeState.value.copy(
-                            trendingUiState =
+                            trendingAnimesUiState =
                             TrendingAnimeStates.Loading
                         )
                     }
 
                     is Result.Success -> {
                         _homeState.value = homeState.value.copy(
-                            trendingUiState = TrendingAnimeStates.TrendingAnimes(trending = it.data),
+                            trendingAnimesUiState = TrendingAnimeStates.TrendingAnimes(trending = it.data),
                             trendingAnimes = it.data.toMutableList()
                         )
                         homeState.value.trendingAnimes.first().trailer?.id?.let { trailerId ->
@@ -287,27 +204,90 @@ class HomeScreenViewModel @Inject constructor(
         }
     }
 
-    private val _animeSortType: MutableStateFlow<AnimeSortType> =
-        MutableStateFlow(AnimeSortType.RECOMMENDED)
-    val animeSortType = _animeSortType.asStateFlow()
+    private fun observePopularAnimes() {
+        viewModelScope.launch {
+            popularAnimes.collectLatest {
+                when (it) {
+                    is Result.ApplicationError -> {
+                        _homeState.value = homeState.value.copy(
+                            popularAnimesUiState = PopularAnimeStates.Error(it.errors.joinToString())
+                        )
+                    }
+
+                    is Result.Failure -> {
+                        _homeState.value = homeState.value.copy(
+                            popularAnimesUiState = PopularAnimeStates.Error(it.toString())
+                        )
+                    }
+
+                    Result.Loading -> {
+                        PopularAnimeStates.Loading
+                        _homeState.value = homeState.value.copy(
+                            popularAnimesUiState = PopularAnimeStates.Loading
+                        )
+                    }
+
+                    is Result.Success -> {
+                        _homeState.value = homeState.value.copy(
+                            popularAnimesUiState = PopularAnimeStates.PopularAnimes(popular = it.data)
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun observeRecommendedAnimes() {
+        viewModelScope.launch {
+            recommendedAnimes.collectLatest {
+                when (it) {
+                    is Result.ApplicationError -> {
+                        _homeState.value = homeState.value.copy(
+                            recommendedAnimesUiStates = RecommendedAnimesUiStates.Error(it.errors.joinToString())
+                        )
+                    }
+
+                    is Result.Failure -> {
+                        _homeState.value = homeState.value.copy(
+                            recommendedAnimesUiStates = RecommendedAnimesUiStates.Error(it.toString())
+                        )
+                    }
+
+                    Result.Loading -> {
+                        _homeState.value = homeState.value.copy(
+                            recommendedAnimesUiStates = RecommendedAnimesUiStates.Loading
+                        )
+                    }
+
+                    is Result.Success -> {
+                        _homeState.value = homeState.value.copy(
+                            recommendedAnimesUiStates = RecommendedAnimesUiStates.RecommendedAnimes(
+                                recommended = it.data
+                            )
+                        )
+                    }
+                }
+            }
+        }
+    }
 
     /**
      * Used when a user clicks see all on any of the sortList in the home page
      * The state is then used to know what list to display
      * */
     fun updateAnimeSortType(selectedAnimeSortType: AnimeSortType) {
-        _animeSortType.value = selectedAnimeSortType
+        _homeState.value = homeState.value.copy(
+            animeSortType = selectedAnimeSortType
+        )
     }
-
-    private val _selectedLayoutType: MutableStateFlow<SelectedLayoutType> =
-        MutableStateFlow(SelectedLayoutType.LIST)
-    val selectedLayout = _selectedLayoutType.asStateFlow()
 
     /**
      * Updated when a user toggles the layout type in the all categories screen
      * */
     fun updateSelectedLayoutType(selectedLayoutType: SelectedLayoutType) {
-        _selectedLayoutType.value = selectedLayoutType
+        _homeState.value = homeState.value.copy(
+            selectedLayoutType = selectedLayoutType
+        )
     }
 
     fun updateTrendingListOnSwipe(swipedAnimeId: Int) {
@@ -328,12 +308,4 @@ class HomeScreenViewModel @Inject constructor(
             updateMediaItem(it)
         }
     }
-}
-
-enum class AnimeSortType {
-    RECOMMENDED, TRENDING, POPULAR
-}
-
-enum class SelectedLayoutType {
-    LIST, GRID
 }

@@ -71,24 +71,16 @@ fun HomeScreenRoute(
     homeScreenViewModel: HomeScreenViewModel = hiltViewModel(),
     onSeeAllButtonClicked: () -> Unit
 ) {
-    val recommendedAnimeUiStates: RecommendedAnimesUiStates
-        by homeScreenViewModel.recommendedUiState.collectAsStateWithLifecycle()
-    val popularAnimeUiStates: PopularAnimeStates by homeScreenViewModel.popularUiState.collectAsStateWithLifecycle()
-    val trendingAnimeUiStates: TrendingAnimeStates by homeScreenViewModel.trendingUiState.collectAsStateWithLifecycle()
     val homeScreenState: HomeScreenState by homeScreenViewModel.homeState.collectAsStateWithLifecycle()
 
     HomeScreen(
         modifier = modifier,
         homeScreenState = homeScreenState,
-        recommendedAnimeUiStates = recommendedAnimeUiStates,
-        popularAnimeUiStates = popularAnimeUiStates,
-        trendingAnimeUiStates = trendingAnimeUiStates,
         onAnimeClicked = onAnimeClicked,
         onSeeAllButtonClicked = {
             homeScreenViewModel.updateAnimeSortType(it)
             onSeeAllButtonClicked()
         },
-        updatePlayerMediaItem = {},
         onToggleAudioClicked = homeScreenViewModel::toggleAudioStateVideo,
         onPlayPauseClicked = homeScreenViewModel::onPlayPauseClicked,
         onReplayVideoClicked = homeScreenViewModel::replayVideo,
@@ -100,12 +92,8 @@ fun HomeScreenRoute(
 fun HomeScreen(
     modifier: Modifier = Modifier,
     homeScreenState: HomeScreenState,
-    recommendedAnimeUiStates: RecommendedAnimesUiStates,
-    popularAnimeUiStates: PopularAnimeStates,
-    trendingAnimeUiStates: TrendingAnimeStates,
     onAnimeClicked: (Int) -> Unit,
     onSeeAllButtonClicked: (AnimeSortType) -> Unit,
-    updatePlayerMediaItem: (String) -> Unit,
     onToggleAudioClicked: () -> Unit,
     onPlayPauseClicked: () -> Unit,
     onReplayVideoClicked: () -> Unit,
@@ -149,7 +137,7 @@ fun HomeScreen(
         )
         */
         // Trending section
-        when (trendingAnimeUiStates) {
+        when (homeScreenState.trendingAnimesUiState) {
             is TrendingAnimeStates.TrendingAnimes -> {
                 TrendingViewPager(
                     trending = homeScreenState.trendingAnimes.take(3),
@@ -169,7 +157,7 @@ fun HomeScreen(
                         horizontalArrangement = Arrangement.spacedBy(AnimeTheme.space.space12dp),
                         contentPadding = PaddingValues(horizontal = AnimeTheme.space.space20dp)
                     ) {
-                        items(trendingAnimeUiStates.trending) { anime ->
+                        items(homeScreenState.trendingAnimesUiState.trending) { anime ->
                             VerticalAnimeComponent(
                                 onClick = { onAnimeClicked(anime.id) },
                                 coverImageUrl = anime.coverImage,
@@ -182,7 +170,7 @@ fun HomeScreen(
             }
 
             is TrendingAnimeStates.Error -> {
-                ErrorBannerComponent(errorMessage = trendingAnimeUiStates.errorMessage)
+                ErrorBannerComponent(errorMessage = homeScreenState.trendingAnimesUiState.errorMessage)
             }
 
             TrendingAnimeStates.Loading -> {
@@ -191,7 +179,7 @@ fun HomeScreen(
         }
 
         // Recommended section
-        when (recommendedAnimeUiStates) {
+        when (homeScreenState.recommendedAnimesUiStates) {
             is RecommendedAnimesUiStates.RecommendedAnimes -> {
                 AnimeSection(
                     modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
@@ -203,7 +191,7 @@ fun HomeScreen(
                         horizontalArrangement = Arrangement.spacedBy(AnimeTheme.space.space12dp),
                         contentPadding = PaddingValues(horizontal = AnimeTheme.space.space20dp)
                     ) {
-                        items(recommendedAnimeUiStates.recommended) { anime ->
+                        items(homeScreenState.recommendedAnimesUiStates.recommended) { anime ->
                             VerticalAnimeComponent(
                                 onClick = { onAnimeClicked(anime.id) },
                                 coverImageUrl = anime.coverImage,
@@ -216,7 +204,7 @@ fun HomeScreen(
             }
 
             is RecommendedAnimesUiStates.Error -> {
-                ErrorBannerComponent(errorMessage = recommendedAnimeUiStates.errorMessage)
+                ErrorBannerComponent(errorMessage = homeScreenState.recommendedAnimesUiStates.errorMessage)
             }
 
             RecommendedAnimesUiStates.Loading -> {
@@ -225,7 +213,7 @@ fun HomeScreen(
         }
 
         // Popular section
-        when (popularAnimeUiStates) {
+        when (homeScreenState.popularAnimesUiState) {
             is PopularAnimeStates.PopularAnimes -> {
                 AnimeSection(
                     modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
@@ -237,7 +225,7 @@ fun HomeScreen(
                         horizontalArrangement = Arrangement.spacedBy(AnimeTheme.space.space12dp),
                         contentPadding = PaddingValues(horizontal = AnimeTheme.space.space20dp)
                     ) {
-                        items(popularAnimeUiStates.popular) { anime ->
+                        items(homeScreenState.popularAnimesUiState.popular) { anime ->
                             VerticalAnimeComponent(
                                 onClick = { onAnimeClicked(anime.id) },
                                 coverImageUrl = anime.coverImage,
@@ -250,7 +238,7 @@ fun HomeScreen(
             }
 
             is PopularAnimeStates.Error -> {
-                ErrorBannerComponent(errorMessage = popularAnimeUiStates.errorMessage)
+                ErrorBannerComponent(errorMessage = homeScreenState.popularAnimesUiState.errorMessage)
             }
 
             PopularAnimeStates.Loading -> {
@@ -289,6 +277,7 @@ fun TrendingViewPager(
         PlayerState.ENDEND -> {
             true
         }
+
         else -> {
             false
         }

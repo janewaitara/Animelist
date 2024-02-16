@@ -138,7 +138,7 @@ fun HomeScreen(
         */
         // Trending section
         when (homeScreenState.trendingAnimesUiState) {
-            is TrendingAnimeStates.TrendingAnimes -> {
+            is AnimeUiStates.Success -> {
                 TrendingViewPager(
                     trending = homeScreenState.trendingAnimes.take(3),
                     onTrendingAnimeSwiped = onTrendingAnimeSwiped,
@@ -157,7 +157,7 @@ fun HomeScreen(
                         horizontalArrangement = Arrangement.spacedBy(AnimeTheme.space.space12dp),
                         contentPadding = PaddingValues(horizontal = AnimeTheme.space.space20dp)
                     ) {
-                        items(homeScreenState.trendingAnimesUiState.trending) { anime ->
+                        items(homeScreenState.trendingAnimesUiState.animes) { anime ->
                             VerticalAnimeComponent(
                                 onClick = { onAnimeClicked(anime.id) },
                                 coverImageUrl = anime.coverImage,
@@ -169,18 +169,18 @@ fun HomeScreen(
                 }
             }
 
-            is TrendingAnimeStates.Error -> {
+            is AnimeUiStates.Error -> {
                 ErrorBannerComponent(errorMessage = homeScreenState.trendingAnimesUiState.errorMessage)
             }
 
-            TrendingAnimeStates.Loading -> {
+            AnimeUiStates.Loading -> {
                 HorizontalListLoading()
             }
         }
 
         // Recommended section
         when (homeScreenState.recommendedAnimesUiStates) {
-            is RecommendedAnimesUiStates.RecommendedAnimes -> {
+            is AnimeUiStates.Success -> {
                 AnimeSection(
                     modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
                     sectionTitle = R.string.recommended,
@@ -191,7 +191,7 @@ fun HomeScreen(
                         horizontalArrangement = Arrangement.spacedBy(AnimeTheme.space.space12dp),
                         contentPadding = PaddingValues(horizontal = AnimeTheme.space.space20dp)
                     ) {
-                        items(homeScreenState.recommendedAnimesUiStates.recommended) { anime ->
+                        items(homeScreenState.recommendedAnimesUiStates.animes) { anime ->
                             VerticalAnimeComponent(
                                 onClick = { onAnimeClicked(anime.id) },
                                 coverImageUrl = anime.coverImage,
@@ -203,18 +203,18 @@ fun HomeScreen(
                 }
             }
 
-            is RecommendedAnimesUiStates.Error -> {
+            is AnimeUiStates.Error -> {
                 ErrorBannerComponent(errorMessage = homeScreenState.recommendedAnimesUiStates.errorMessage)
             }
 
-            RecommendedAnimesUiStates.Loading -> {
+            AnimeUiStates.Loading -> {
                 HorizontalListLoading()
             }
         }
 
         // Popular section
         when (homeScreenState.popularAnimesUiState) {
-            is PopularAnimeStates.PopularAnimes -> {
+            is AnimeUiStates.Success -> {
                 AnimeSection(
                     modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
                     sectionTitle = R.string.popular,
@@ -225,7 +225,7 @@ fun HomeScreen(
                         horizontalArrangement = Arrangement.spacedBy(AnimeTheme.space.space12dp),
                         contentPadding = PaddingValues(horizontal = AnimeTheme.space.space20dp)
                     ) {
-                        items(homeScreenState.popularAnimesUiState.popular) { anime ->
+                        items(homeScreenState.popularAnimesUiState.animes) { anime ->
                             VerticalAnimeComponent(
                                 onClick = { onAnimeClicked(anime.id) },
                                 coverImageUrl = anime.coverImage,
@@ -237,11 +237,11 @@ fun HomeScreen(
                 }
             }
 
-            is PopularAnimeStates.Error -> {
+            is AnimeUiStates.Error -> {
                 ErrorBannerComponent(errorMessage = homeScreenState.popularAnimesUiState.errorMessage)
             }
 
-            PopularAnimeStates.Loading -> {
+            AnimeUiStates.Loading -> {
                 HorizontalListLoading()
             }
         }

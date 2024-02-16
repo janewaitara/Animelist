@@ -4,34 +4,15 @@ import androidx.media3.common.Player
 import com.mumbicodes.model.data.Anime
 
 // TODO create a model class and mapper for the different classes to remove the network from the features
-sealed interface RecommendedAnimesUiStates {
-    object Loading : RecommendedAnimesUiStates
 
-    data class RecommendedAnimes(
-        val recommended: List<Anime> = listOf()
-    ) : RecommendedAnimesUiStates
+sealed interface AnimeUiStates<out T> {
+    object Loading : AnimeUiStates<Nothing>
 
-    data class Error(val errorMessage: String) : RecommendedAnimesUiStates
-}
+    data class Success<T>(
+        val animes: T
+    ) : AnimeUiStates<T>
 
-sealed interface PopularAnimeStates {
-    object Loading : PopularAnimeStates
-
-    data class PopularAnimes(
-        val popular: List<Anime> = listOf()
-    ) : PopularAnimeStates
-
-    data class Error(val errorMessage: String) : PopularAnimeStates
-}
-
-sealed interface TrendingAnimeStates {
-    object Loading : TrendingAnimeStates
-
-    data class TrendingAnimes(
-        val trending: List<Anime> = listOf()
-    ) : TrendingAnimeStates
-
-    data class Error(val errorMessage: String) : TrendingAnimeStates
+    data class Error(val errorMessage: String) : AnimeUiStates<Nothing>
 }
 
 enum class PlayerState {
@@ -56,9 +37,9 @@ data class HomeScreenState(
     val player: Player,
     val playerState: PlayerState = PlayerState.LOADING,
     val trendingAnimes: List<Anime> = mutableListOf(),
-    val trendingAnimesUiState: TrendingAnimeStates = TrendingAnimeStates.Loading,
-    val recommendedAnimesUiStates: RecommendedAnimesUiStates = RecommendedAnimesUiStates.Loading,
-    val popularAnimesUiState: PopularAnimeStates = PopularAnimeStates.Loading,
+    val trendingAnimesUiState: AnimeUiStates<List<Anime>> = AnimeUiStates.Loading,
+    val recommendedAnimesUiStates: AnimeUiStates<List<Anime>> = AnimeUiStates.Loading,
+    val popularAnimesUiState: AnimeUiStates<List<Anime>> = AnimeUiStates.Loading,
     val selectedLayoutType: SelectedLayoutType = SelectedLayoutType.LIST,
     val animeSortType: AnimeSortType = AnimeSortType.RECOMMENDED
 )

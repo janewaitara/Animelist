@@ -172,27 +172,27 @@ class HomeScreenViewModel @Inject constructor(
                     is Result.ApplicationError -> {
                         _homeState.value = homeState.value.copy(
                             trendingAnimesUiState =
-                            TrendingAnimeStates.Error(it.errors.joinToString())
+                            AnimeUiStates.Error(it.errors.joinToString())
                         )
                     }
 
                     is Result.Failure -> {
                         _homeState.value = homeState.value.copy(
                             trendingAnimesUiState =
-                            TrendingAnimeStates.Error(it.toString())
+                            AnimeUiStates.Error(it.toString())
                         )
                     }
 
                     Result.Loading -> {
                         _homeState.value = homeState.value.copy(
                             trendingAnimesUiState =
-                            TrendingAnimeStates.Loading
+                            AnimeUiStates.Loading
                         )
                     }
 
                     is Result.Success -> {
                         _homeState.value = homeState.value.copy(
-                            trendingAnimesUiState = TrendingAnimeStates.TrendingAnimes(trending = it.data),
+                            trendingAnimesUiState = AnimeUiStates.Success(animes = it.data),
                             trendingAnimes = it.data.toMutableList()
                         )
                         homeState.value.trendingAnimes.first().trailer?.id?.let { trailerId ->
@@ -210,26 +210,25 @@ class HomeScreenViewModel @Inject constructor(
                 when (it) {
                     is Result.ApplicationError -> {
                         _homeState.value = homeState.value.copy(
-                            popularAnimesUiState = PopularAnimeStates.Error(it.errors.joinToString())
+                            popularAnimesUiState = AnimeUiStates.Error(it.errors.joinToString())
                         )
                     }
 
                     is Result.Failure -> {
                         _homeState.value = homeState.value.copy(
-                            popularAnimesUiState = PopularAnimeStates.Error(it.toString())
+                            popularAnimesUiState = AnimeUiStates.Error(it.toString())
                         )
                     }
 
                     Result.Loading -> {
-                        PopularAnimeStates.Loading
                         _homeState.value = homeState.value.copy(
-                            popularAnimesUiState = PopularAnimeStates.Loading
+                            popularAnimesUiState = AnimeUiStates.Loading
                         )
                     }
 
                     is Result.Success -> {
                         _homeState.value = homeState.value.copy(
-                            popularAnimesUiState = PopularAnimeStates.PopularAnimes(popular = it.data)
+                            popularAnimesUiState = AnimeUiStates.Success(animes = it.data)
                         )
                     }
                 }
@@ -243,26 +242,26 @@ class HomeScreenViewModel @Inject constructor(
                 when (it) {
                     is Result.ApplicationError -> {
                         _homeState.value = homeState.value.copy(
-                            recommendedAnimesUiStates = RecommendedAnimesUiStates.Error(it.errors.joinToString())
+                            recommendedAnimesUiStates = AnimeUiStates.Error(it.errors.joinToString())
                         )
                     }
 
                     is Result.Failure -> {
                         _homeState.value = homeState.value.copy(
-                            recommendedAnimesUiStates = RecommendedAnimesUiStates.Error(it.toString())
+                            recommendedAnimesUiStates = AnimeUiStates.Error(it.toString())
                         )
                     }
 
                     Result.Loading -> {
                         _homeState.value = homeState.value.copy(
-                            recommendedAnimesUiStates = RecommendedAnimesUiStates.Loading
+                            recommendedAnimesUiStates = AnimeUiStates.Loading
                         )
                     }
 
                     is Result.Success -> {
                         _homeState.value = homeState.value.copy(
-                            recommendedAnimesUiStates = RecommendedAnimesUiStates.RecommendedAnimes(
-                                recommended = it.data
+                            recommendedAnimesUiStates = AnimeUiStates.Success(
+                                animes = it.data
                             )
                         )
                     }

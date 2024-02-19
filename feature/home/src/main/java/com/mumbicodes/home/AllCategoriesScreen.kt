@@ -35,22 +35,13 @@ fun AllCategoriesScreenRoute(
     onAnimeClicked: (Int) -> Unit,
     onBackButtonClicked: () -> Unit = {}
 ) {
-    val animeSortType by homeScreenViewModel.animeSortType.collectAsStateWithLifecycle()
-    val selectedLayoutType by homeScreenViewModel.selectedLayout.collectAsStateWithLifecycle()
+    // TODO - research whether to have a separate all categories screen state
 
-    // TODO - research whether to collect all flows
-    val recommendedAnimeUiStates: RecommendedAnimesUiStates
-        by homeScreenViewModel.recommendedUiState.collectAsStateWithLifecycle()
-    val popularAnimeUiStates: PopularAnimeStates by homeScreenViewModel.popularUiState.collectAsStateWithLifecycle()
-    val trendingAnimeUiStates: TrendingAnimeStates by homeScreenViewModel.trendingUiState.collectAsStateWithLifecycle()
+    val screenState: HomeScreenState by homeScreenViewModel.homeState.collectAsStateWithLifecycle()
 
     AllCategoriesScreen(
         modifier = modifier,
-        animeSortType = animeSortType,
-        selectedLayoutType = selectedLayoutType,
-        recommendedAnimeUiStates = recommendedAnimeUiStates,
-        popularAnimeUiStates = popularAnimeUiStates,
-        trendingAnimeUiStates = trendingAnimeUiStates,
+        screenState = screenState,
         onAnimeClicked = onAnimeClicked,
         onBackButtonClicked = onBackButtonClicked,
         onLayoutButtonClicked = {
@@ -62,31 +53,27 @@ fun AllCategoriesScreenRoute(
 @Composable
 fun AllCategoriesScreen(
     modifier: Modifier = Modifier,
-    animeSortType: AnimeSortType,
-    selectedLayoutType: SelectedLayoutType,
-    recommendedAnimeUiStates: RecommendedAnimesUiStates,
-    popularAnimeUiStates: PopularAnimeStates,
-    trendingAnimeUiStates: TrendingAnimeStates,
+    screenState: HomeScreenState,
     onAnimeClicked: (Int) -> Unit,
     onBackButtonClicked: () -> Unit,
     onLayoutButtonClicked: (SelectedLayoutType) -> Unit = {}
 ) {
-    when (animeSortType) {
+    when (screenState.animeSortType) {
         AnimeSortType.RECOMMENDED -> {
-            when (recommendedAnimeUiStates) {
-                is RecommendedAnimesUiStates.Error -> {
-                    ErrorBannerComponent(errorMessage = recommendedAnimeUiStates.errorMessage)
+            when (screenState.recommendedAnimesUiStates) {
+                is AnimeUiStates.Error -> {
+                    ErrorBannerComponent(errorMessage = screenState.recommendedAnimesUiStates.errorMessage)
                 }
-                is RecommendedAnimesUiStates.Loading -> {
+                is AnimeUiStates.Loading -> {
                     ListLoadingComponent()
                 }
 
-                is RecommendedAnimesUiStates.RecommendedAnimes -> {
+                is AnimeUiStates.Success -> {
                     CategorizedAnimeContent(
                         modifier = modifier,
-                        animeList = recommendedAnimeUiStates.recommended,
-                        animeSortType = animeSortType,
-                        selectedLayoutType = selectedLayoutType,
+                        animeList = screenState.recommendedAnimesUiStates.animes,
+                        animeSortType = screenState.animeSortType,
+                        selectedLayoutType = screenState.selectedLayoutType,
                         onAnimeClicked = onAnimeClicked,
                         onBackButtonClicked = onBackButtonClicked,
                         onLayoutButtonClicked = onLayoutButtonClicked
@@ -96,20 +83,20 @@ fun AllCategoriesScreen(
         }
 
         AnimeSortType.TRENDING -> {
-            when (trendingAnimeUiStates) {
-                is TrendingAnimeStates.Error -> {
-                    ErrorBannerComponent(errorMessage = trendingAnimeUiStates.errorMessage)
+            when (screenState.trendingAnimesUiState) {
+                is AnimeUiStates.Error -> {
+                    ErrorBannerComponent(errorMessage = screenState.trendingAnimesUiState.errorMessage)
                 }
-                TrendingAnimeStates.Loading -> {
+                AnimeUiStates.Loading -> {
                     ListLoadingComponent()
                 }
 
-                is TrendingAnimeStates.TrendingAnimes -> {
+                is AnimeUiStates.Success -> {
                     CategorizedAnimeContent(
                         modifier = modifier,
-                        animeList = trendingAnimeUiStates.trending,
-                        animeSortType = animeSortType,
-                        selectedLayoutType = selectedLayoutType,
+                        animeList = screenState.trendingAnimesUiState.animes,
+                        animeSortType = screenState.animeSortType,
+                        selectedLayoutType = screenState.selectedLayoutType,
                         onAnimeClicked = onAnimeClicked,
                         onBackButtonClicked = onBackButtonClicked,
                         onLayoutButtonClicked = onLayoutButtonClicked
@@ -119,20 +106,20 @@ fun AllCategoriesScreen(
         }
 
         AnimeSortType.POPULAR -> {
-            when (popularAnimeUiStates) {
-                is PopularAnimeStates.Error -> {
-                    ErrorBannerComponent(errorMessage = popularAnimeUiStates.errorMessage)
+            when (screenState.popularAnimesUiState) {
+                is AnimeUiStates.Error -> {
+                    ErrorBannerComponent(errorMessage = screenState.popularAnimesUiState.errorMessage)
                 }
-                PopularAnimeStates.Loading -> {
+                AnimeUiStates.Loading -> {
                     ListLoadingComponent()
                 }
 
-                is PopularAnimeStates.PopularAnimes -> {
+                is AnimeUiStates.Success -> {
                     CategorizedAnimeContent(
                         modifier = modifier,
-                        animeList = popularAnimeUiStates.popular,
-                        animeSortType = animeSortType,
-                        selectedLayoutType = selectedLayoutType,
+                        animeList = screenState.popularAnimesUiState.animes,
+                        animeSortType = screenState.animeSortType,
+                        selectedLayoutType = screenState.selectedLayoutType,
                         onAnimeClicked = onAnimeClicked,
                         onBackButtonClicked = onBackButtonClicked,
                         onLayoutButtonClicked = onLayoutButtonClicked

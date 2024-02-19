@@ -88,7 +88,7 @@ fun SearchScreenContent(
         when (searchScreenState.searchMainFilter) {
             SearchType.ANIME -> {
                 when (searchScreenState.animeSearchResultsState) {
-                    is AnimeSearchUiState.AnimeResults -> {
+                    is SearchUiState.Results -> {
                         LazyColumn(
                             modifier = Modifier
                                 .background(color = AnimeTheme.colors.background)
@@ -123,20 +123,20 @@ fun SearchScreenContent(
                         }
                     }
 
-                    AnimeSearchUiState.EmptyList ->
+                    SearchUiState.EmptyList ->
                         EmptyListSection(searchParam = searchScreenState.searchParam)
 
-                    is AnimeSearchUiState.Error ->
+                    is SearchUiState.Error ->
                         ErrorBannerComponent(errorMessage = searchScreenState.animeSearchResultsState.errorMessage)
 
-                    AnimeSearchUiState.Loading -> ListLoadingComponent()
-                    AnimeSearchUiState.EmptyState -> EmptyStateSection()
+                    SearchUiState.Loading -> ListLoadingComponent()
+                    SearchUiState.EmptyState -> EmptyStateSection()
                 }
             }
 
             SearchType.CHARACTER -> {
                 when (searchScreenState.characterSearchResultsState) {
-                    is CharacterSearchUiState.CharacterResults -> {
+                    is SearchUiState.Results -> {
                         LazyColumn(
                             modifier = Modifier
                                 .background(color = AnimeTheme.colors.background)
@@ -171,14 +171,14 @@ fun SearchScreenContent(
                         }
                     }
 
-                    CharacterSearchUiState.EmptyList ->
+                    SearchUiState.EmptyList ->
                         EmptyListSection(searchParam = searchScreenState.searchParam)
 
-                    is CharacterSearchUiState.Error ->
+                    is SearchUiState.Error ->
                         ErrorBannerComponent(errorMessage = searchScreenState.characterSearchResultsState.errorMessage)
 
-                    CharacterSearchUiState.Loading -> ListLoadingComponent()
-                    CharacterSearchUiState.EmptyState -> EmptyStateSection()
+                    SearchUiState.Loading -> ListLoadingComponent()
+                    SearchUiState.EmptyState -> EmptyStateSection()
                 }
             }
         }

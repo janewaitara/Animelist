@@ -14,4 +14,9 @@ object AnimeListIcons {
     val grid_layout = R.drawable.grid
     val warning = R.drawable.info_circle
     val close = R.drawable.close
+    val play = R.drawable.play
+    val pause = R.drawable.pause
+    val replay = R.drawable.replay
+    val mute_audio = R.drawable.mute
+    val unmute_audio = R.drawable.unmute
 }

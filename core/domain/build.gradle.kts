@@ -2,6 +2,7 @@ plugins {
     id("animelist.android.library")
     id("org.jlleitschuh.gradle.ktlint")
     id("io.gitlab.arturbosch.detekt")
+    id("animelist.android.hilt")
 }
 
 android {
@@ -33,4 +34,7 @@ dependencies {
     // Coroutines
     implementation(libs.coroutines)
     implementation(libs.coroutinesAndroid)
+
+    // Youtube extractor
+    implementation(libs.maxrave.youtube.extractor)
 }

@@ -283,7 +283,9 @@ fun TrendingViewPager(
         }
     }
 
-    LaunchedEffect(Unit) {
+    // TODO This state should happen for every anime in the first position
+    // TODO check for internet connectivity in the whole app
+    LaunchedEffect(trending.reversed().first()) {
         scope.launch {
             showVideo = false
             delay(5000)
@@ -293,21 +295,36 @@ fun TrendingViewPager(
 
     Box(
         modifier = modifier
-            .height(300.dp),
+            .padding(horizontal = AnimeTheme.space.space20dp)
+            .height(296.dp),
         contentAlignment = Alignment.BottomCenter
     ) {
         trending.reversed().forEachIndexed { index, anime ->
             key(anime) {
+                val getXSpacing = {
+                    when (index) {
+                        trending.reversed().lastIndex -> 0f
+                        1 -> 0.1f
+                        else -> 0.125f
+                    }
+                }
                 val animatedScaleX by animateFloatAsState(
-                    targetValue = 1f - (trending.size - index) * 0.15f,
+                    targetValue = 1f - (trending.size - index) * getXSpacing(),
                     label = ""
                 )
                 val animatedScaleY by animateFloatAsState(
                     targetValue = 1f - (trending.size - index) * 0.05f,
                     label = ""
                 )
+                val getYSpacing = {
+                    when (index) {
+                        trending.reversed().lastIndex -> 1
+                        1 -> -16
+                        else -> -22
+                    }
+                }
                 val animatedYOffset by animateDpAsState(
-                    targetValue = ((trending.size - index) * -32).dp,
+                    targetValue = ((trending.size - index) * getYSpacing()).dp,
                     label = ""
                 )
                 Column(
@@ -402,13 +419,13 @@ fun TrailerComponent(
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .aspectRatio(16 / 9f)
     ) {
         AndroidView(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(16 / 9f),
-            // .height(214.dp),
+            // .height(214.dp)
+
             update = { playerView ->
                 when (lifecycle) {
                     Lifecycle.Event.ON_RESUME -> {

@@ -7,6 +7,7 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import com.mumbicodes.common.result.Result
 import com.mumbicodes.domain.repository.AnimeRepository
+import com.mumbicodes.domain.repository.TrailerRepository
 import com.mumbicodes.domain.usecases.FetchYoutubeVideoStreamUrlUseCase
 import com.mumbicodes.model.data.Anime
 import com.mumbicodes.model.data.LocalMediaFormat
@@ -23,6 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
     private val animeRepository: AnimeRepository,
+    private val trailerRepository: TrailerRepository,
     private val player: Player,
     private val fetchYoutubeVideoStreamUrlUseCase: FetchYoutubeVideoStreamUrlUseCase
 ) : ViewModel() {
@@ -305,6 +307,12 @@ class HomeScreenViewModel @Inject constructor(
         player.stop()
         homeState.value.trendingAnimes.first().trailer?.id?.let {
             updateMediaItem(it)
+        }
+    }
+
+    fun saveAnimeTrailerPosition() {
+        viewModelScope.launch {
+            trailerRepository.updateTrailerPosition(player.currentPosition)
         }
     }
 }

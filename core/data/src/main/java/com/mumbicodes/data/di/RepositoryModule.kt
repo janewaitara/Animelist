@@ -4,9 +4,12 @@ import com.apollographql.apollo3.ApolloClient
 import com.mumbicodes.data.repository.AnimeRepositoryImpl
 import com.mumbicodes.data.repository.CharacterRepositoryImpl
 import com.mumbicodes.data.repository.SearchRepositoryImpl
+import com.mumbicodes.data.repository.TrailerRepositoryImpl
 import com.mumbicodes.domain.repository.AnimeRepository
 import com.mumbicodes.domain.repository.CharacterRepository
 import com.mumbicodes.domain.repository.SearchRepository
+import com.mumbicodes.domain.repository.TrailerRepository
+import com.mumbicodes.local.preferences.TrailerPreferences
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,4 +34,8 @@ object RepositoryModule {
     @Singleton
     fun provideAnimeRepository(apolloClient: ApolloClient): AnimeRepository =
         AnimeRepositoryImpl(apolloClient = apolloClient)
+
+    @Provides
+    @Singleton
+    fun provideTrailerRepository(trailerPreferences: TrailerPreferences): TrailerRepository = TrailerRepositoryImpl(trailerPreferences = trailerPreferences)
 }

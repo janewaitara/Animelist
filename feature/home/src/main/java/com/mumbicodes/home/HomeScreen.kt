@@ -6,6 +6,7 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -76,7 +77,10 @@ fun HomeScreenRoute(
     HomeScreen(
         modifier = modifier,
         homeScreenState = homeScreenState,
-        onAnimeClicked = onAnimeClicked,
+        onAnimeClicked = { animeId ->
+            homeScreenViewModel.saveAnimeTrailerPosition()
+            onAnimeClicked(animeId)
+        },
         onSeeAllButtonClicked = {
             homeScreenViewModel.updateAnimeSortType(it)
             onSeeAllButtonClicked()
@@ -145,7 +149,8 @@ fun HomeScreen(
                     homeScreenState = homeScreenState,
                     onToggleAudioClicked = onToggleAudioClicked,
                     onPlayPauseClicked = onPlayPauseClicked,
-                    onReplayVideoClicked = onReplayVideoClicked
+                    onReplayVideoClicked = onReplayVideoClicked,
+                    onAnimeClicked = onAnimeClicked
                 )
                 AnimeSection(
                     modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
@@ -263,7 +268,8 @@ fun TrendingViewPager(
     onTrendingAnimeSwiped: (Int) -> Unit,
     onToggleAudioClicked: () -> Unit,
     onPlayPauseClicked: () -> Unit,
-    onReplayVideoClicked: () -> Unit
+    onReplayVideoClicked: () -> Unit,
+    onAnimeClicked: (Int) -> Unit
 ) {
     val scope = rememberCoroutineScope()
 
@@ -345,6 +351,9 @@ fun TrendingViewPager(
                             color = AnimeTheme.colors.primary.copy(0.3f)
                         )
                         .clip(shape = AnimeTheme.shapes.mediumShape)
+                        .clickable {
+                            onAnimeClicked(anime.id)
+                        }
                 ) {
                     if (trending[index] == trending.last()) {
                         AnimatedVisibility(visible = showVideo.not() || videoHasEnded) {

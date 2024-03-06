@@ -37,5 +37,6 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideTrailerRepository(trailerPreferences: TrailerPreferences): TrailerRepository = TrailerRepositoryImpl(trailerPreferences = trailerPreferences)
+    fun provideTrailerRepository(trailerPreferences: TrailerPreferences): TrailerRepository =
+        TrailerRepositoryImpl(trailerPreferences = trailerPreferences)
 }

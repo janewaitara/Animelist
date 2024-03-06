@@ -2,6 +2,7 @@ plugins {
     id("animelist.android.library")
     id("org.jlleitschuh.gradle.ktlint")
     id("io.gitlab.arturbosch.detekt")
+    id("animelist.android.hilt")
 }
 
 android {
@@ -28,4 +29,7 @@ dependencies {
 
     // Enables formatting rule set in detekt
     detektPlugins(libs.detekt.formatting)
+
+    // Media3
+    implementation(libs.bundles.media3)
 }

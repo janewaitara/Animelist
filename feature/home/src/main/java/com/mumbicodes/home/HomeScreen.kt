@@ -109,37 +109,6 @@ fun HomeScreen(
             .background(color = AnimeTheme.colors.background),
         verticalArrangement = Arrangement.spacedBy(AnimeTheme.space.space32dp)
     ) {
-        // These states are for testing
-        // TODO which image is this coming from:
-        // TODO update the media item when a an anime comes in view in the ViewPager
-
-        /*TrailerComponent(
-            homeScreenState = homeScreenState,
-            onToggleAudioClicked = onToggleAudioClicked,
-            onPlayPauseClicked = onPlayPauseClicked,
-            onReplayVideoClicked = onReplayVideoClicked
-        )*/
-
-        /*  AndroidView(
-              modifier = Modifier
-                  .fillMaxWidth()
-                  .aspectRatio(16 / 9f)
-                  .height(214.dp),
-              factory = { context ->
-                  PlayerView(context).apply {
-                      player = homeScreenState.player
-                      useController = false
-                  }
-              })*/
-        // }
-        /*Image(
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(16 / 9f),
-            // .height(214.dp),
-            coverImageUrl = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx153518-7FNR7zCxO2X5.jpg"
-        )
-        */
         // Trending section
         when (homeScreenState.trendingAnimesUiState) {
             is AnimeUiStates.Success -> {
@@ -276,20 +245,7 @@ fun TrendingViewPager(
     var showVideo by remember {
         mutableStateOf(false)
     }
-    var videoHasEnded by remember {
-        mutableStateOf(false)
-    }
-    videoHasEnded = when (homeScreenState.playerState) {
-        PlayerState.ENDEND -> {
-            true
-        }
 
-        else -> {
-            false
-        }
-    }
-
-    // TODO This state should happen for every anime in the first position
     // TODO check for internet connectivity in the whole app
     LaunchedEffect(trending.reversed().first()) {
         scope.launch {
@@ -342,6 +298,9 @@ fun TrendingViewPager(
                             scaleX = animatedScaleX
                             scaleY = animatedScaleY
                         }
+                        .clickable {
+                            onAnimeClicked(anime.id)
+                        }
                         .swipeToDismiss {
                             onTrendingAnimeSwiped(anime.id)
                         }
@@ -350,28 +309,27 @@ fun TrendingViewPager(
                             shape = AnimeTheme.shapes.mediumShape,
                             color = AnimeTheme.colors.primary.copy(0.3f)
                         )
-                        .clip(shape = AnimeTheme.shapes.mediumShape)
-                        .clickable {
-                            onAnimeClicked(anime.id)
-                        }
+                        .clip(shape = AnimeTheme.shapes.mediumShape),
+                    verticalArrangement = Arrangement.Bottom
                 ) {
                     if (trending[index] == trending.last()) {
-                        AnimatedVisibility(visible = showVideo.not() || videoHasEnded) {
-                            Image(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .aspectRatio(16 / 9f),
-                                contentScale = ContentScale.FillBounds,
-                                // .height(214.dp),
-                                coverImageUrl = anime.coverImage
+                        AnimatedVisibility(
+                            visible = showVideo.not() || homeScreenState.playerControllerState.videoHasEnded
+                        ) {
+                            TrailerImage(
+                                animeCoverImage = anime.coverImage,
+                                videoHasEnded = homeScreenState.playerControllerState.videoHasEnded,
+                                onReplayVideoClicked = onReplayVideoClicked
                             )
                         }
-                        AnimatedVisibility(visible = showVideo && videoHasEnded.not()) {
+
+                        AnimatedVisibility(
+                            visible = showVideo && homeScreenState.playerControllerState.videoHasEnded.not()
+                        ) {
                             TrailerComponent(
                                 homeScreenState = homeScreenState,
                                 onToggleAudioClicked = onToggleAudioClicked,
-                                onPlayPauseClicked = onPlayPauseClicked,
-                                onReplayVideoClicked = onReplayVideoClicked
+                                onPlayPauseClicked = onPlayPauseClicked
                             )
                         }
                     } else {
@@ -395,14 +353,11 @@ fun TrendingViewPager(
 fun TrailerComponent(
     modifier: Modifier = Modifier,
     homeScreenState: HomeScreenState,
-    // trailerPlayer: Player,
     onToggleAudioClicked: () -> Unit,
-    onPlayPauseClicked: () -> Unit,
-    onReplayVideoClicked: () -> Unit
+    onPlayPauseClicked: () -> Unit
 ) {
-    // TODO update the icon if to replay player is ended
     // TODO show video when it's fully loaded
-    // When buffering show the play icon as loading
+    // TODO When buffering show the play icon as loading
 
     /**
      * This is needed to pause the video when the activity is in the background
@@ -433,7 +388,6 @@ fun TrailerComponent(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(16 / 9f),
-            // .height(214.dp)
 
             update = { playerView ->
                 when (lifecycle) {
@@ -453,8 +407,7 @@ fun TrailerComponent(
                 PlayerView(context).apply {
                     player = homeScreenState.player
                     useController = false
-                    setShowBuffering(PlayerView.SHOW_BUFFERING_WHEN_PLAYING)
-                    /*setShowRewindButton(false)
+                    setShowBuffering(PlayerView.SHOW_BUFFERING_WHEN_PLAYING)/*setShowRewindButton(false)
                     setShowFastForwardButton(false)
                     setShowNextButton(false)
                     setShowPreviousButton(false)
@@ -471,13 +424,20 @@ fun TrailerComponent(
             verticalArrangement = Arrangement.spacedBy(AnimeTheme.space.space8dp)
         ) {
             val playPauseIcon =
-                if (homeScreenState.isVideoPlaying) AnimeListIcons.pause else AnimeListIcons.play
+                if (homeScreenState.playerControllerState.isVideoPlaying) {
+                    AnimeListIcons.pause
+                } else {
+                    AnimeListIcons.play
+                }
             val muteUnMuteIcon =
-                if (homeScreenState.isVolumeOn) AnimeListIcons.mute_audio else AnimeListIcons.unmute_audio
+                if (homeScreenState.playerControllerState.isVolumeOn) {
+                    AnimeListIcons.mute_audio
+                } else {
+                    AnimeListIcons.unmute_audio
+                }
             IconButton(
                 modifier = Modifier,
-                colors =
-                IconButtonColors(
+                colors = IconButtonColors(
                     containerColor = Background_dark.copy(alpha = 0.75f),
                     contentColor = Background_light,
                     disabledContainerColor = AnimeTheme.colors.background,
@@ -496,8 +456,7 @@ fun TrailerComponent(
 
             IconButton(
                 modifier = Modifier,
-                colors =
-                IconButtonColors(
+                colors = IconButtonColors(
                     containerColor = Background_dark.copy(alpha = 0.75f),
                     contentColor = Background_light,
                     disabledContainerColor = AnimeTheme.colors.background,
@@ -509,6 +468,55 @@ fun TrailerComponent(
             ) {
                 Icon(
                     painter = painterResource(id = playPauseIcon),
+                    contentDescription = stringResource(com.mumbicodes.designsystem.R.string.back_button),
+                    tint = Background_light
+                )
+            }
+        }
+    }
+}
+
+/**
+ * A box with the trailer image and the replay button which only shows if the video has ended
+ * */
+@Composable
+fun TrailerImage(
+    modifier: Modifier = Modifier,
+    animeCoverImage: String?,
+    videoHasEnded: Boolean,
+    onReplayVideoClicked: () -> Unit
+) {
+    Box(
+        modifier = modifier
+    ) {
+        Image(
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(16 / 9f),
+            contentScale = ContentScale.FillBounds,
+            coverImageUrl = animeCoverImage
+        )
+
+        AnimatedVisibility(
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(AnimeTheme.space.space12dp),
+            visible = videoHasEnded
+        ) {
+            IconButton(
+                modifier = Modifier,
+                colors = IconButtonColors(
+                    containerColor = Background_dark.copy(alpha = 0.75f),
+                    contentColor = Background_light,
+                    disabledContainerColor = AnimeTheme.colors.background,
+                    disabledContentColor = AnimeTheme.colors.surfacePrimaryDisabled
+                ),
+                onClick = {
+                    onReplayVideoClicked()
+                }
+            ) {
+                Icon(
+                    painter = painterResource(id = AnimeListIcons.replay),
                     contentDescription = stringResource(com.mumbicodes.designsystem.R.string.back_button),
                     tint = Background_light
                 )

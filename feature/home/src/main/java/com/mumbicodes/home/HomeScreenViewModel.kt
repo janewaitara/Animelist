@@ -3,8 +3,6 @@ package com.mumbicodes.home
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.media3.common.MediaItem
-import androidx.media3.common.Player
 import com.mumbicodes.common.result.Result
 import com.mumbicodes.domain.repository.AnimeRepository
 import com.mumbicodes.domain.repository.TrailerRepository
@@ -13,6 +11,7 @@ import com.mumbicodes.model.data.Anime
 import com.mumbicodes.model.data.LocalMediaFormat
 import com.mumbicodes.model.data.LocalMediaSort
 import com.mumbicodes.model.data.LocalMediaType
+import com.mumbicodes.ui.controller.PlayerController
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,62 +24,31 @@ import javax.inject.Inject
 class HomeScreenViewModel @Inject constructor(
     private val animeRepository: AnimeRepository,
     private val trailerRepository: TrailerRepository,
-    private val player: Player,
+    private val playerController: PlayerController,
     private val fetchYoutubeVideoStreamUrlUseCase: FetchYoutubeVideoStreamUrlUseCase
 ) : ViewModel() {
 
     private val _homeState: MutableStateFlow<HomeScreenState> =
-        MutableStateFlow(HomeScreenState(player = player))
+        MutableStateFlow(HomeScreenState(player = playerController.controllerPlayer))
     val homeState = _homeState.asStateFlow()
 
-    // Listening to the Player's playback events
-    private val playerListener = object : Player.Listener {
-        override fun onIsPlayingChanged(isPlaying: Boolean) {
-            super.onIsPlayingChanged(isPlaying)
-            _homeState.value = homeState.value.copy(
-                isVideoPlaying = isPlaying
-            )
-        }
-
-        override fun onPlaybackStateChanged(playbackState: Int) {
-            super.onPlaybackStateChanged(playbackState)
-            when (playbackState) {
-                Player.STATE_BUFFERING -> {
-                    _homeState.value = homeState.value.copy(
-                        playerState = PlayerState.BUFFERING
-                    )
-                }
-
-                Player.STATE_ENDED -> {
-                    _homeState.value = homeState.value.copy(
-                        playerState = PlayerState.ENDEND
-                    )
-                }
-
-                Player.STATE_IDLE -> {
-                    _homeState.value = homeState.value.copy(
-                        playerState = PlayerState.LOADING
-                    )
-                }
-
-                Player.STATE_READY -> {
-                    _homeState.value = homeState.value.copy(
-                        playerState = PlayerState.READY_TO_PLAY
-                    )
-                }
+    init {
+        updatePlayerState()
+    }
+    private fun updatePlayerState() {
+        viewModelScope.launch {
+            playerController.playerState.collectLatest { playerState ->
+                _homeState.value = homeState.value.copy(
+                    playerControllerState = playerState
+                )
             }
         }
     }
 
-    init {
-        player.addListener(playerListener)
-    }
-
     /**
      * Called when a user swipes on the view pager
-     * TODO - what happens on the first video - also, how is the list update on swipe
      * */
-    fun updateMediaItem(animeTrailerId: String) {
+    private fun updateMediaItem(animeTrailerId: String) {
         Log.d("Media trailer", animeTrailerId)
 
         // TODO check whether the youtube id is present and if the source is youtube.
@@ -88,45 +56,16 @@ class HomeScreenViewModel @Inject constructor(
             val streamUrl = fetchYoutubeVideoStreamUrlUseCase(animeTrailerId)
             Log.d("Youtube Stream", streamUrl ?: "No url")
             streamUrl?.let {
-                player.removeMediaItem(0)
-                player.addMediaItem(
-                    MediaItem.fromUri(it)
-                )
-
-                player.volume = 0f
-                player.prepare()
-                player.play()
-                player.apply {
-                    this.playWhenReady = true
-                }
+                playerController.updateMediaItem(it)
             }
         }
     }
 
-    fun onPlayPauseClicked() {
-        if (player.isPlaying) {
-            player.pause()
-        } else {
-            player.play()
-        }
-    }
+    fun onPlayPauseClicked() = playerController.playOrPause()
 
-    fun replayVideo() {
-        player.seekTo(0)
-        player.playWhenReady = true
-    }
+    fun replayVideo() = playerController.replay()
 
-    fun toggleAudioStateVideo() = if (player.volume == 0f) {
-        _homeState.value = homeState.value.copy(
-            isVolumeOn = true
-        )
-        player.volume = 1f
-    } else {
-        _homeState.value = homeState.value.copy(
-            isVolumeOn = false
-        )
-        player.volume = 0f
-    }
+    fun toggleAudioStateVideo() = playerController.toggleAudioState()
 
     private val recommendedAnimes: Flow<Result<List<Anime>>> =
         animeRepository.getRecommendations()
@@ -304,7 +243,7 @@ class HomeScreenViewModel @Inject constructor(
             trendingAnimes = list
         )
 
-        player.stop()
+        playerController.stop()
         homeState.value.trendingAnimes.first().trailer?.id?.let {
             updateMediaItem(it)
         }
@@ -312,7 +251,7 @@ class HomeScreenViewModel @Inject constructor(
 
     fun saveAnimeTrailerPosition() {
         viewModelScope.launch {
-            trailerRepository.updateTrailerPosition(player.currentPosition)
+            trailerRepository.updateTrailerPosition(playerController.controllerPlayer.currentPosition)
         }
     }
 }

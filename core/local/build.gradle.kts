@@ -10,5 +10,9 @@ android {
 }
 
 dependencies {
+    // Preference Datastore
     implementation(libs.preference.datastore)
+
+    // Enables formatting rule set in detekt
+    detektPlugins(libs.detekt.formatting)
 }

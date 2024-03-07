@@ -75,12 +75,12 @@ class HomeScreenViewModel @Inject constructor(
             page = 0,
             perPage = 30,
             type = LocalMediaType.ANIME,
-            sortList = listOf(LocalMediaSort.POPULARITY),
+            sortList = listOf(LocalMediaSort.POPULARITY_DESC),
             formatIn = listOf(
                 LocalMediaFormat.MOVIE,
-                LocalMediaFormat.MUSIC,
+                // LocalMediaFormat.MUSIC,
                 LocalMediaFormat.TV,
-                LocalMediaFormat.SPECIAL,
+                // LocalMediaFormat.SPECIAL,
                 LocalMediaFormat.MANGA
             )
         )
@@ -93,10 +93,7 @@ class HomeScreenViewModel @Inject constructor(
             sortList = listOf(LocalMediaSort.TRENDING_DESC),
             formatIn = listOf(
                 LocalMediaFormat.MOVIE,
-                LocalMediaFormat.MUSIC,
-                LocalMediaFormat.TV,
-                LocalMediaFormat.SPECIAL,
-                LocalMediaFormat.MANGA
+                LocalMediaFormat.TV
             )
         )
 

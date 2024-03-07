@@ -30,7 +30,7 @@ fun AllCharactersRoute(
 
     AllCharactersScreen(
         modifier = modifier,
-        animeDetailsUiState = animeDetailsUiState,
+        animeDetailsUiState = animeDetailsUiState.data,
         onCharacterClicked = onCharacterClicked,
         onBackButtonClicked = onBackButtonClicked
     )

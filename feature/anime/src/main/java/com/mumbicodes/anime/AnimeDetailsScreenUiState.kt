@@ -15,7 +15,7 @@ sealed interface AnimeDetailsScreenUiState {
 }
 
 data class AnimeDetailsScreenState(
-    val data: AnimeDetailsScreenUiState = AnimeDetailsScreenUiState.Loading,
+    val animeDetails: AnimeDetailsScreenUiState = AnimeDetailsScreenUiState.Loading,
     val playerControllerState: PlayerControllerState = PlayerControllerState(),
     val player: Player
 )

@@ -69,7 +69,7 @@ fun AnimeDetailsRoute(
 
     AnimeDetailsScreen(
         modifier = modifier,
-        animeDetailsState = animeDetailsState.data,
+        animeDetailsState = animeDetailsState.animeDetails,
         onCharacterClicked = onCharacterClicked,
         onSaveButtonClicked = {},
         onAnimeClicked = onAnimeClicked,

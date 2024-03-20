@@ -19,6 +19,7 @@ coroutines = "1.5.0"
 accompanist = "0.32.0"
 media3 = "1.2.1"
 maxraveYoutubeExtractor = "0.0.7"
+datastore = "1.0.0"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "ktx" }
@@ -68,6 +69,9 @@ androidx-media3-common = { module = "androidx.media3:media3-common", version.ref
 
 #Youtube extractor
 maxrave-youtube-extractor = {module = "com.github.maxrave-dev:kotlin-youtubeExtractor", version.ref = "maxraveYoutubeExtractor"}
+
+#DataStore
+preference-datastore = {module = "androidx.datastore:datastore-preferences", version.ref = "datastore"}
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidApplication" }

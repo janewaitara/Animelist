@@ -64,12 +64,12 @@ fun AnimeDetailsRoute(
     onCharactersSeeAllClicked: () -> Unit,
     onBackButtonClicked: () -> Unit
 ) {
-    val animeDetailsState: AnimeDetailsScreenUiState
+    val animeDetailsState: AnimeDetailsScreenState
         by animeViewModel.animeDetails.collectAsStateWithLifecycle()
 
     AnimeDetailsScreen(
         modifier = modifier,
-        animeDetailsState = animeDetailsState,
+        animeDetailsState = animeDetailsState.animeDetails,
         onCharacterClicked = onCharacterClicked,
         onSaveButtonClicked = {},
         onAnimeClicked = onAnimeClicked,

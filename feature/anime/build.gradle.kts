@@ -30,12 +30,16 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:model"))
     implementation(project(":core:designsystem"))
+    implementation(project(":core:ui"))
 
     implementation(libs.androidx.appCompat)
 
     // lifecycle
     implementation(libs.bundles.lifecycle)
     implementation(libs.androidx.constraintlayout)
+
+    // Media3
+    implementation(libs.bundles.media3)
 
     // Enables formatting rule set in detekt
     detektPlugins(libs.detekt.formatting)

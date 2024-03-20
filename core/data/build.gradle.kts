@@ -30,6 +30,7 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:common"))
     implementation(project(":core:model"))
+    implementation(project(":core:local"))
 
     // Enables formatting rule set in detekt
     detektPlugins(libs.detekt.formatting)

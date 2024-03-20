@@ -1,11 +1,11 @@
 package com.mumbicodes.home
 
-import androidx.annotation.OptIn
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,13 +15,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -35,18 +33,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.media3.common.util.UnstableApi
-import androidx.media3.ui.PlayerView
 import com.mumbicodes.designsystem.atoms.Icon
 import com.mumbicodes.designsystem.atoms.IconButton
 import com.mumbicodes.designsystem.atoms.IconButtonColors
@@ -61,6 +53,7 @@ import com.mumbicodes.designsystem.theme.Background_dark
 import com.mumbicodes.designsystem.theme.Background_light
 import com.mumbicodes.home.components.VerticalAnimeComponent
 import com.mumbicodes.model.data.Anime
+import com.mumbicodes.ui.components.TrailerComponent
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -76,7 +69,10 @@ fun HomeScreenRoute(
     HomeScreen(
         modifier = modifier,
         homeScreenState = homeScreenState,
-        onAnimeClicked = onAnimeClicked,
+        onAnimeClicked = { animeId ->
+            homeScreenViewModel.saveAnimeTrailerPosition()
+            onAnimeClicked(animeId)
+        },
         onSeeAllButtonClicked = {
             homeScreenViewModel.updateAnimeSortType(it)
             onSeeAllButtonClicked()
@@ -105,37 +101,6 @@ fun HomeScreen(
             .background(color = AnimeTheme.colors.background),
         verticalArrangement = Arrangement.spacedBy(AnimeTheme.space.space32dp)
     ) {
-        // These states are for testing
-        // TODO which image is this coming from:
-        // TODO update the media item when a an anime comes in view in the ViewPager
-
-        /*TrailerComponent(
-            homeScreenState = homeScreenState,
-            onToggleAudioClicked = onToggleAudioClicked,
-            onPlayPauseClicked = onPlayPauseClicked,
-            onReplayVideoClicked = onReplayVideoClicked
-        )*/
-
-        /*  AndroidView(
-              modifier = Modifier
-                  .fillMaxWidth()
-                  .aspectRatio(16 / 9f)
-                  .height(214.dp),
-              factory = { context ->
-                  PlayerView(context).apply {
-                      player = homeScreenState.player
-                      useController = false
-                  }
-              })*/
-        // }
-        /*Image(
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(16 / 9f),
-            // .height(214.dp),
-            coverImageUrl = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx153518-7FNR7zCxO2X5.jpg"
-        )
-        */
         // Trending section
         when (homeScreenState.trendingAnimesUiState) {
             is AnimeUiStates.Success -> {
@@ -145,7 +110,8 @@ fun HomeScreen(
                     homeScreenState = homeScreenState,
                     onToggleAudioClicked = onToggleAudioClicked,
                     onPlayPauseClicked = onPlayPauseClicked,
-                    onReplayVideoClicked = onReplayVideoClicked
+                    onReplayVideoClicked = onReplayVideoClicked,
+                    onAnimeClicked = onAnimeClicked
                 )
                 AnimeSection(
                     modifier = Modifier.padding(horizontal = AnimeTheme.space.space20dp),
@@ -263,27 +229,17 @@ fun TrendingViewPager(
     onTrendingAnimeSwiped: (Int) -> Unit,
     onToggleAudioClicked: () -> Unit,
     onPlayPauseClicked: () -> Unit,
-    onReplayVideoClicked: () -> Unit
+    onReplayVideoClicked: () -> Unit,
+    onAnimeClicked: (Int) -> Unit
 ) {
     val scope = rememberCoroutineScope()
 
     var showVideo by remember {
         mutableStateOf(false)
     }
-    var videoHasEnded by remember {
-        mutableStateOf(false)
-    }
-    videoHasEnded = when (homeScreenState.playerState) {
-        PlayerState.ENDEND -> {
-            true
-        }
 
-        else -> {
-            false
-        }
-    }
-
-    LaunchedEffect(Unit) {
+    // TODO check for internet connectivity in the whole app
+    LaunchedEffect(trending.reversed().first()) {
         scope.launch {
             showVideo = false
             delay(5000)
@@ -293,21 +249,36 @@ fun TrendingViewPager(
 
     Box(
         modifier = modifier
-            .height(300.dp),
+            .padding(horizontal = AnimeTheme.space.space20dp)
+            .height(296.dp),
         contentAlignment = Alignment.BottomCenter
     ) {
         trending.reversed().forEachIndexed { index, anime ->
             key(anime) {
+                val getXSpacing = {
+                    when (index) {
+                        trending.reversed().lastIndex -> 0f
+                        1 -> 0.1f
+                        else -> 0.125f
+                    }
+                }
                 val animatedScaleX by animateFloatAsState(
-                    targetValue = 1f - (trending.size - index) * 0.15f,
+                    targetValue = 1f - (trending.size - index) * getXSpacing(),
                     label = ""
                 )
                 val animatedScaleY by animateFloatAsState(
                     targetValue = 1f - (trending.size - index) * 0.05f,
                     label = ""
                 )
+                val getYSpacing = {
+                    when (index) {
+                        trending.reversed().lastIndex -> 1
+                        1 -> -16
+                        else -> -22
+                    }
+                }
                 val animatedYOffset by animateDpAsState(
-                    targetValue = ((trending.size - index) * -32).dp,
+                    targetValue = ((trending.size - index) * getYSpacing()).dp,
                     label = ""
                 )
                 Column(
@@ -319,6 +290,9 @@ fun TrendingViewPager(
                             scaleX = animatedScaleX
                             scaleY = animatedScaleY
                         }
+                        .clickable {
+                            onAnimeClicked(anime.id)
+                        }
                         .swipeToDismiss {
                             onTrendingAnimeSwiped(anime.id)
                         }
@@ -327,25 +301,29 @@ fun TrendingViewPager(
                             shape = AnimeTheme.shapes.mediumShape,
                             color = AnimeTheme.colors.primary.copy(0.3f)
                         )
-                        .clip(shape = AnimeTheme.shapes.mediumShape)
+                        .clip(shape = AnimeTheme.shapes.mediumShape),
+                    verticalArrangement = Arrangement.Bottom
                 ) {
                     if (trending[index] == trending.last()) {
-                        AnimatedVisibility(visible = showVideo.not() || videoHasEnded) {
-                            Image(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .aspectRatio(16 / 9f),
-                                contentScale = ContentScale.FillBounds,
-                                // .height(214.dp),
-                                coverImageUrl = anime.coverImage
+                        AnimatedVisibility(
+                            visible = showVideo.not() || homeScreenState.playerControllerState.videoHasEnded
+                        ) {
+                            TrailerImage(
+                                animeCoverImage = anime.coverImage,
+                                videoHasEnded = homeScreenState.playerControllerState.videoHasEnded,
+                                onReplayVideoClicked = onReplayVideoClicked
                             )
                         }
-                        AnimatedVisibility(visible = showVideo && videoHasEnded.not()) {
+
+                        AnimatedVisibility(
+                            visible = showVideo && homeScreenState.playerControllerState.videoHasEnded.not()
+                        ) {
                             TrailerComponent(
-                                homeScreenState = homeScreenState,
+                                modifier = Modifier,
+                                playerControllerState = homeScreenState.playerControllerState,
+                                trailerPlayer = homeScreenState.player,
                                 onToggleAudioClicked = onToggleAudioClicked,
-                                onPlayPauseClicked = onPlayPauseClicked,
-                                onReplayVideoClicked = onReplayVideoClicked
+                                onPlayPauseClicked = onPlayPauseClicked
                             )
                         }
                     } else {
@@ -364,125 +342,47 @@ fun TrendingViewPager(
     }
 }
 
-@OptIn(UnstableApi::class)
+/**
+ * A box with the trailer image and the replay button which only shows if the video has ended
+ * */
 @Composable
-fun TrailerComponent(
+fun TrailerImage(
     modifier: Modifier = Modifier,
-    homeScreenState: HomeScreenState,
-    // trailerPlayer: Player,
-    onToggleAudioClicked: () -> Unit,
-    onPlayPauseClicked: () -> Unit,
+    animeCoverImage: String?,
+    videoHasEnded: Boolean,
     onReplayVideoClicked: () -> Unit
 ) {
-    // TODO update the icon if to replay player is ended
-    // TODO show video when it's fully loaded
-    // When buffering show the play icon as loading
-
-    /**
-     * This is needed to pause the video when the activity is in the background
-     * */
-    var lifecycle by remember {
-        mutableStateOf(Lifecycle.Event.ON_CREATE)
-    }
-    val lifecycleOwner = LocalLifecycleOwner.current
-
-    DisposableEffect(key1 = lifecycleOwner) {
-        val lifecycleObserver = LifecycleEventObserver { _, event ->
-            lifecycle = event
-        }
-
-        lifecycleOwner.lifecycle.addObserver(lifecycleObserver)
-
-        onDispose {
-            lifecycleOwner.lifecycle.removeObserver(lifecycleObserver)
-        }
-    }
-
     Box(
         modifier = modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .aspectRatio(16 / 9f)
     ) {
-        AndroidView(
+        Image(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(16 / 9f),
-            // .height(214.dp),
-            update = { playerView ->
-                when (lifecycle) {
-                    Lifecycle.Event.ON_RESUME -> {
-                        playerView.onResume()
-                    }
-
-                    Lifecycle.Event.ON_PAUSE -> {
-                        playerView.onPause()
-                        playerView.player?.pause()
-                    }
-
-                    else -> {}
-                }
-            },
-            factory = { context ->
-                PlayerView(context).apply {
-                    player = homeScreenState.player
-                    useController = false
-                    setShowBuffering(PlayerView.SHOW_BUFFERING_WHEN_PLAYING)
-                    /*setShowRewindButton(false)
-                    setShowFastForwardButton(false)
-                    setShowNextButton(false)
-                    setShowPreviousButton(false)
-                    setShowPlayButtonIfPlaybackIsSuppressed(false)
-                    setShowMultiWindowTimeBar(false)*/
-                }
-            }
+            contentScale = ContentScale.FillBounds,
+            coverImageUrl = animeCoverImage
         )
 
-        Column(
+        AnimatedVisibility(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(AnimeTheme.space.space12dp),
-            verticalArrangement = Arrangement.spacedBy(AnimeTheme.space.space8dp)
+            visible = videoHasEnded
         ) {
-            val playPauseIcon =
-                if (homeScreenState.isVideoPlaying) AnimeListIcons.pause else AnimeListIcons.play
-            val muteUnMuteIcon =
-                if (homeScreenState.isVolumeOn) AnimeListIcons.mute_audio else AnimeListIcons.unmute_audio
             IconButton(
                 modifier = Modifier,
-                colors =
-                IconButtonColors(
+                colors = IconButtonColors(
                     containerColor = Background_dark.copy(alpha = 0.75f),
                     contentColor = Background_light,
                     disabledContainerColor = AnimeTheme.colors.background,
                     disabledContentColor = AnimeTheme.colors.surfacePrimaryDisabled
                 ),
                 onClick = {
-                    onToggleAudioClicked()
+                    onReplayVideoClicked()
                 }
             ) {
                 Icon(
-                    painter = painterResource(id = muteUnMuteIcon),
-                    contentDescription = stringResource(com.mumbicodes.designsystem.R.string.back_button),
-                    tint = Background_light
-                )
-            }
-
-            IconButton(
-                modifier = Modifier,
-                colors =
-                IconButtonColors(
-                    containerColor = Background_dark.copy(alpha = 0.75f),
-                    contentColor = Background_light,
-                    disabledContainerColor = AnimeTheme.colors.background,
-                    disabledContentColor = AnimeTheme.colors.surfacePrimaryDisabled
-                ),
-                onClick = {
-                    onPlayPauseClicked()
-                }
-            ) {
-                Icon(
-                    painter = painterResource(id = playPauseIcon),
+                    painter = painterResource(id = AnimeListIcons.replay),
                     contentDescription = stringResource(com.mumbicodes.designsystem.R.string.back_button),
                     tint = Background_light
                 )
